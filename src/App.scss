@@ -1,0 +1,118 @@
+@import "~bootstrap/scss/bootstrap";
+
+$clipboard-width: 300px;
+$clipboard-height: 500px;
+$clipboard-top-width: 200px;
+$clipboard-top-height: 75px;
+$green: rgb(42, 245, 42);
+$background-dark: rgb(34, 34, 34);
+$mainFont: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+
+html,
+body {
+    color: white;
+    font-family: $mainFont;
+    font-size: 1.1em;
+    background-color: $background-dark;
+}
+
+.App {
+    height: 100%;
+    background-color: $background-dark;
+}
+
+.title {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.clipboard {
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    margin: 20% auto;
+    width: $clipboard-width;
+    height: $clipboard-height;
+    border: 3px $green solid;
+    border-radius: 3%;
+    z-index: 100;
+}
+
+.top {
+    display: block;
+    position: relative;
+    background-color: $background-dark;
+    top: -35px;
+    margin: auto;
+    width: $clipboard-top-width;
+    height: $clipboard-top-height;
+    z-index: 200;
+    border-radius: 10% 10% 0 0;
+}
+
+.flex-fill {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    top: 0;
+    overflow: auto;
+    align-items: center;
+}
+
+#main-title,
+#main-title h1 {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: $green;
+    height: 80%;
+    justify-self: start;
+}
+
+#sign-in {
+    text-decoration: none;
+    color: black;
+    display: block;
+    width: 80%;
+}
+
+.navLink {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: white;
+}
+
+@media (min-width: 756px) {
+    .clipboard {
+        width: $clipboard-width * 1.3;
+        height: $clipboard-height * 1.3;
+    }
+    .top {
+        width: $clipboard-top-width * 1.3;
+        height: $clipboard-top-height * 1.3;
+        top: (-35px * 1.3);
+    }
+    #main-title,
+    #main-title h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .clipboard {
+        width: $clipboard-width * 1.9;
+        height: $clipboard-height * 1.9;
+        margin: 5% auto;
+    }
+    .top {
+        width: $clipboard-top-width * 1.9;
+        height: $clipboard-top-height * 1.9;
+        top: (-35px * 1.9);
+    }
+    #main-title,
+    #main-title h1 {
+        font-size: 4rem;
+    }
+}
