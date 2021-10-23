@@ -1,11 +1,11 @@
 import React from "react";
+import { Header } from "../../components/Header/Header";
 
 
-export function ClassesPage(){
+export function ClassesPage({title}){
+    
     return (
-        <div>
-            <h1>Classes</h1>
-        </div>
+        <Header header={title} />
     )
 }
 

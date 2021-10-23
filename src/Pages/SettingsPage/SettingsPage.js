@@ -1,10 +1,11 @@
 import React from "react";
+import { Header } from "../../components/Header/Header";
 
 
-export function SettingsPage(){
+export function SettingsPage({title}){
     return (
         <div>
-            <h1>Settings</h1>
+        <Header header={title} />
         </div>
     )
 }

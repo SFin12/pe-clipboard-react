@@ -1,5 +1,6 @@
 import "./sidebarMenu.scss";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class SidebarMenu extends Component {
     render() {
@@ -7,11 +8,9 @@ class SidebarMenu extends Component {
         <div className="sidebar-container">
             <div>
                 <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
+                    <li><Link to="/classes">Classes</Link></li>
+                    <li><Link to="/gradebook">Gradebook</Link></li>
+                    <li><Link to="/settings">Settings</Link></li>
                 </ul>
             </div>
         </div>
