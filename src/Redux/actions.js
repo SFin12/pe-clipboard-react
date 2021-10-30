@@ -9,7 +9,7 @@ export const updateLogin = (signedIn = false) => ({
     }
 })
 
-export const updatePage = (currentPage = "Class") => ({
+export const updatePage = (currentPage = "Classes") => ({
     type: ActionTypes.UPDATE_PAGE,
     payload: {
         currentPage

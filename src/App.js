@@ -1,35 +1,29 @@
 import SignIn from "./Pages/SignIn/SignIn";
 import "./App.scss";
-import { Redirect, Route, Switch, withRouter } from "react-router";
+import { Route, Switch, withRouter } from "react-router";
 import { ClassesPage } from "./Pages/ClassesPage/ClassesPage";
 import { GradebookPage } from "./Pages/GradebookPage/GradebookPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import { SettingsPage } from "./Pages/SettingsPage/SettingsPage";
 import React from "react";
-import { Nav } from "./components/Navbar/Navbar";
 import NavMenu from "./components/Navbar/NavMenu";
 import { store } from "./Redux/createStore";
 import { connect } from "react-redux";
 import * as action from "./Redux/actions";
 
-
 const mapStateToProps = (state) => ({
-    signedIn: state.signIn,
-    currentPage: state.currentPage
+    signedIn: state.signedIn,
+    currentPage: state.currentPage,
 });
 
 const mapDispatchToProps = {
     updateLogin: (signIn) => action.updateLogin(signIn),
-    updatePage: (page) => action.updatePage(page)
-
-}
+    updatePage: (page) => action.updatePage(page),
+};
 class App extends React.Component {
-
     componentDidMount() {
-        this.props.updateLogin();
-        this.props.updatePage()
+        this.props.updatePage();
     }
-    
 
     // constructor(props) {
     //     super(props);
@@ -51,29 +45,32 @@ class App extends React.Component {
     // }
 
     render() {
-       console.log(store.getState())
+        console.log(store.getState());
+        console.log("this props signedIn ? : " + this.props.signedIn);
+        
         return (
             //Check if user is signed in, if so, render navbar
-            
+
             <div className="App">
                 {this.props.signedIn ? (
-                    <NavMenu updatePage={this.updateCurrentPage} />
-                ) : 
-                <SignIn/>
-                }
+                    <NavMenu updatePage={this.props.updatePage} />
+                ) : (
+                    <SignIn
+                        updateLogin={this.props.updateLogin}
+                        signIn={this.props.signedIn}
+                    />
+                )}
 
                 <main className="container">
-                    
                     <Switch>
-                        <Route exact path="/" render={<SignIn updateLogin={this.props.updateLogin}/>} />
-                        <Route path="/classes" component={ClassesPage} />
-                        <Route path="/gradebook" component={GradebookPage} />
-                        <Route path="/info" component={InfoPage} />
-                        <Route path="/settings" component={SettingsPage} />
+                        <Route exact path="/" component={ClassesPage} />
+                        <Route path="/classes" render={() => <ClassesPage title={this.props.currentPage}/>} />
+                        <Route path="/gradebook" render={() => <GradebookPage title={this.props.currentPage}/>}/>
+                        <Route path="/info" render={() => <InfoPage title={this.props.currentPage}/>} />
+                        <Route path="/settings" render={() => <SettingsPage title={this.props.currentPage}/>} />
                     </Switch>
                 </main>
             </div>
-            
         );
     }
 }

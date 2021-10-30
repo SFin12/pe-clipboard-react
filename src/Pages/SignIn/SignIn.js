@@ -1,13 +1,11 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-
-
+import { Link } from "react-router-dom";
 
 function SignIn(props) {
-    function handleClick(){
-        props.updateLogin()
+    function handleClick() {
+        props.updateLogin(props.signIn);
     }
-    
+
     return (
         <div>
             <div className="clipboard">
@@ -17,7 +15,13 @@ function SignIn(props) {
                         <h1>PE Clipboard</h1>
                     </div>
 
-                    <Link to="/classes"  id="sign-in" className="btn bg-light" type="link" onClick={handleClick}>
+                    <Link
+                        to="/classes"
+                        id="sign-in"
+                        className="btn bg-light"
+                        type="link"
+                        onClick={handleClick}
+                    >
                         Sign In
                     </Link>
                 </div>

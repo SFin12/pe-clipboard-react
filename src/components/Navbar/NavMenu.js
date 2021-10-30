@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Styles from './NavMenu.scss';
+import './NavMenu.scss';
+
 import {
     Collapse,
     Navbar,
@@ -36,6 +37,11 @@ export default class NavMenu extends Component {
             isOpen: !this.state.isOpen,
         });
     }
+    
+    handleClick(e) {
+        return this.props.updatePage(e.target.text)
+    }
+
 
     createNavItem = ({ to, text, className }) => (
         <NavItem>
@@ -46,10 +52,7 @@ export default class NavMenu extends Component {
         </NavItem>
     );
 
-    handleClick(e) {
-        return this.props.updatePage(e.target.text)
-    }
-
+    
     render() {
         return (
             <div>
