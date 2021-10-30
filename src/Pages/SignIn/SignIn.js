@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
+
+
 function SignIn(props) {
     function handleClick(){
-        props.signIn()
+        props.updateLogin()
     }
     
     return (
