@@ -4,6 +4,7 @@ import { MainReducer } from "./reducers";
 const initialState = {
     signedIn: false,
     currentPage: "Classes",
+    gradebookList: [ {gradebookId: "IdTest1", gradebookName: "NameTest1"}, {gradebookId: "IdTest2", gradebookName: "NameTest2"}]
 };
 
 export const store = createStore(MainReducer, initialState);

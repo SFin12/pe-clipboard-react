@@ -1,14 +1,13 @@
 @import "~bootstrap/scss/bootstrap";
 
-
 $clipboard-width: 300px;
 $clipboard-height: 500px;
 $clipboard-top-width: 200px;
 $clipboard-top-height: 75px;
 $green: rgb(42, 245, 42);
-$background-dark: rgb(34, 34, 34);
+$background-dark: #212529;
 $mainFont: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 
 html,
 body {
@@ -21,13 +20,6 @@ body {
 .App {
     height: 100%;
     background-color: $background-dark;
-}
-
-.title {
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    font-size: 2rem;
 }
 
 .clipboard {
@@ -77,17 +69,6 @@ body {
     color: black;
     display: block;
     width: 80%;
-}
-
-.navLink {
-    font-size: 1.5rem;
-    text-decoration: none;
-    color: white;
-}
-
-.header {
-    color: $green;
-    text-align: center;
 }
 
 @media (min-width: 756px) {

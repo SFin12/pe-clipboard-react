@@ -1,0 +1,33 @@
+@import '../../App.scss';
+
+
+.custom-select {
+    min-width: 250px;
+}
+
+
+.flex {
+    display: flex;
+
+    &.center {
+        justify-content: center;
+    }
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    max-width: 600px;
+    margin: auto;
+}
+
+@media screen and (min-width: 768px) {
+    .form-container {
+        display: block;
+        width: 90%;
+        max-width: 600px;
+    }
+}

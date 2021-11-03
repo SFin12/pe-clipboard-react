@@ -16,3 +16,17 @@ export const updatePage = (currentPage = "Classes") => ({
     }
 })
 
+export const createGradebook = (gradebookId, gradebookName) => ({
+    type: ActionTypes.CREATE_GRADEBOOK,
+    payload: {gradebookId, gradebookName}
+})
+
+export const updateGradebookList = (gradebookId, gradebookName) => ({
+    type: ActionTypes.UPDATE_GRADEBOOKLIST,
+    payload: {gradebookId, gradebookName}
+})
+
+export const getGradebook = () => ({
+    type: ActionTypes.GET_GRADEBOOK,
+})
+

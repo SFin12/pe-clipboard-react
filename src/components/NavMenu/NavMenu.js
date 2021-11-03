@@ -39,7 +39,8 @@ export default class NavMenu extends Component {
     }
     
     handleClick(e) {
-        return this.props.updatePage(e.target.text)
+        this.props.updatePage(e.target.text)
+        this.toggle();
     }
 
 
@@ -56,7 +57,7 @@ export default class NavMenu extends Component {
     render() {
         return (
             <div>
-                <Navbar color="dark" light expand="md">
+                <Navbar color="dark" light expand="md" fixed="top">
                     <NavbarBrand className="nav-text" href="/">PE Clipboard</NavbarBrand>
                     <NavbarToggler className="nav-text" id="toggler" onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>

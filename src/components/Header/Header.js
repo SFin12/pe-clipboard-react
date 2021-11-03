@@ -1,10 +1,12 @@
 import React from "react";
+import './Header.scss';
 
-
-export function Header({header}){
+export function Header(props){
+    console.log(props)
     return (
-        <div className="container">
-            <h1 className="header">{header}</h1>
+        <div className="container-fluid">
+            <h1 className="header">{props.header}</h1>
+            <hr/>
         </div>
     )
 }
