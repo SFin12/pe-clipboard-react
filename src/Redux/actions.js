@@ -17,19 +17,20 @@ export const updatePage = (currentPage = "Classes") => {
     };
 };
 
-export const createGradebook = (gradebookId, gradebookName) => {
-    console.log("creating gradebook...", gradebookId, gradebookName);
+export const createGradebook = (gradebookName) => {
+    console.log("creating gradebook...",gradebookName);
     return {
         type: ActionTypes.CREATE_GRADEBOOK,
-        payload: { gradebookId: gradebookId, gradebookName: gradebookName },
+        payload: { gradebookName: gradebookName },
     };
 };
 
-export const updateGradebookList = (gradebookId, gradebookName) => ({
+export const updateGradebookList = (gradebookName) => ({
     type: ActionTypes.UPDATE_GRADEBOOKLIST,
-    payload: { gradebookId: gradebookId, gradebookName: gradebookName },
+    payload: { gradebookName: gradebookName },
 });
 
 export const getGradebook = () => ({
     type: ActionTypes.GET_GRADEBOOK,
+    //async fetch to get gradebooks from google api
 });

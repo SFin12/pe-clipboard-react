@@ -4,6 +4,7 @@ import { MainReducer } from "./reducers";
 const initialState = {
     signedIn: false,
     currentPage: "Classes",
+    gradebook:{},
     gradebookList: []
 };
 

@@ -19,39 +19,34 @@ const mapDispatchToProps = {
 };
 
 function GradebookPage(props) {
-    const [input, setInput] = useState();
+    console.log('gb props: ', props)
+    const [input, setInput] = useState("");
+    const [choice, setChoice] = useState("");
 
-    let currentSelect = {};
-    if (props.gradebook) {
-        currentSelect = props.gradebook;
-    } else if (props.gradebookList.length > 0) {
-        currentSelect = props.gradebookList[0];
-    }
-    console.log(props.gradebookList);
+
     function handleChange(e) {
-        console.log(e.target.value);
-        if (e.target.id === "select-gradebook") {
-            currentSelect.gradebookId = e.target.value;
-            currentSelect.gradebookName = e.target.selectedOptions[0].text;
+        // If gradebook is being created
+        if ( e.target.id === "create-gradebook") {
+            setInput(e.target.value)
+        // If gradebook is being selected
         } else {
-            setInput(e.target.value);
-            currentSelect.gradebookName = input;
-            currentSelect.gradebookId = input + "Id";
-            console.log(currentSelect.gradebookId);
-            
+            setChoice(e.target.value)
         }
     }
 
     function handleClick(e) {
-        props.createGradebook(
-            currentSelect.gradebookId,
-            currentSelect.gradebookName
-        );
-        props.updateGradebookList(
-            currentSelect.gradebookId,
-            currentSelect.gradebookName
-        );
+        console.log('current gb state: ', input, choice)
+        console.log('target Id: ', e.target)
+        // If gradebook was created and saved
+        if (e.target.id === "save-gradebook") {
+        props.createGradebook(input);
+        props.updateGradebookList(input);
+        } else /* If gradebook was selected and saved */{
+        props.createGradebook(choice);
+        props.updateGradebookList(choice);
+        };
     }
+
     function ListGradebooks() {
         if (props.gradebookList.length > 0) {
             console.log("props gbl ", props.gradebookList);
@@ -65,6 +60,7 @@ function GradebookPage(props) {
                             className="custom-select"
                             id="select-gradebook"
                             onChange={handleChange}
+                            value={choice}
                         >
                             {props.gradebookList.map((gradebook, i) => (
                                 <option
@@ -79,10 +75,12 @@ function GradebookPage(props) {
                         <div
                             className="input-group-append"
                             onClick={handleClick}
+                            id="save-gradebook"
                         >
                             <label
                                 className="input-group-text"
                                 htmlFor="inputGroupSelect02"
+                                id="save-gradebook-label"
                             >
                                 save
                             </label>
@@ -119,15 +117,17 @@ function GradebookPage(props) {
                     <input
                         id="create-gradebook"
                         type="text"
-                        
+                        value={input}
                         placeholder="Gradebook Name"
                         className="text-input"
                         onChange={handleChange}
                     />
-                    <div className="input-group-append" onClick={handleClick}>
+                    <div className="input-group-append" >
                         <label
                             className="input-group-text"
-                            htmlFor="inputGroupSelect02"
+                            htmlFor="create-gradebook"
+                            id="save-gradebook"
+                            onClick={handleClick}
                         >
                             save
                         </label>
@@ -135,6 +135,10 @@ function GradebookPage(props) {
                 </div>
 
                 <ListGradebooks />
+                <span>
+                    <p>Current Gradebook:<span ><h4 className="inline"> {props.gradebook.gradebookName}</h4></span></p>
+                </span>
+                
             </div>
         </React.Fragment>
     );
