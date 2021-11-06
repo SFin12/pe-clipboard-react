@@ -1,26 +1,45 @@
-import React from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from "reactstrap";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Component } from "react";
+import { Button, CardBody, Card } from "reactstrap";
+import Collapse from "reactstrap/lib/Collapse";
+
 import "./DropDown.scss";
 
-function DropDown(props) {
-    return (
-        <div className="dropdown-content">
-            <UncontrolledDropdown>
-                <DropdownToggle caret color="dark">
-                    First Gradebook?
-                </DropdownToggle>
-                <DropdownMenu>
-                    <p>{props.content}</p>
-                </DropdownMenu>
-            </UncontrolledDropdown>
-        </div>
-    );
+class DropDown extends Component {
+    constructor(props) {
+        super(props);
+        this.toggle = this.toggle.bind(this);
+        this.state = { collapse: false };
+    }
+
+    toggle(e) {
+        console.log(e.type)
+        e.type === "mouseenter" || e.type === "click" ?
+        this.setState({ collapse: true }) :
+        this.setState({ collapse: false})
+    }
+
+    render() {
+        return (
+            <div>
+                <Button
+                    color="dark"
+                    onMouseEnter={this.toggle}
+                    onMouseLeave={this.toggle}
+                    onClick={this.toggle}
+                    style={{ marginBottom: "1rem" }}
+                >
+                    {this.props.buttonTitle} <FontAwesomeIcon icon={faCaretDown} />
+                </Button>
+                <Collapse isOpen={this.state.collapse}>
+                    <Card color="dark" inverse>
+                        <CardBody>{this.props.content}</CardBody>
+                    </Card>
+                </Collapse>
+            </div>
+        );
+    }
 }
 
 export default DropDown;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { connect } from "react-redux";
 import { createGradebook, updateGradebookList } from "../../Redux/actions";
@@ -19,15 +19,53 @@ const mapDispatchToProps = {
 };
 
 function GradebookPage(props) {
-    console.log(props);
+    const [input, setInput] = useState();
+
+    let currentSelect = {};
+    if (props.gradebook) {
+        currentSelect = props.gradebook;
+    } else if (props.gradebookList.length > 0) {
+        currentSelect = props.gradebookList[0];
+    }
+    console.log(props.gradebookList);
+    function handleChange(e) {
+        console.log(e.target.value);
+        if (e.target.id === "select-gradebook") {
+            currentSelect.gradebookId = e.target.value;
+            currentSelect.gradebookName = e.target.selectedOptions[0].text;
+        } else {
+            setInput(e.target.value);
+            currentSelect.gradebookName = input;
+            currentSelect.gradebookId = input + "Id";
+            console.log(currentSelect.gradebookId);
+            
+        }
+    }
+
+    function handleClick(e) {
+        props.createGradebook(
+            currentSelect.gradebookId,
+            currentSelect.gradebookName
+        );
+        props.updateGradebookList(
+            currentSelect.gradebookId,
+            currentSelect.gradebookName
+        );
+    }
     function ListGradebooks() {
-        if (props.gradebookList) {
+        if (props.gradebookList.length > 0) {
+            console.log("props gbl ", props.gradebookList);
             return (
                 <React.Fragment>
                     <p>or</p>
-                    <label for="select-gradebook">Change Gradebook</label>
+                    <label htmlFor="select-gradebook">Change Gradebook</label>
                     <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
-                        <select className="custom-select" id="select-gradebook">
+                        <select
+                            // defaultValue={currentSelect.gradebookName}
+                            className="custom-select"
+                            id="select-gradebook"
+                            onChange={handleChange}
+                        >
                             {props.gradebookList.map((gradebook, i) => (
                                 <option
                                     key={"gb" + i}
@@ -38,16 +76,18 @@ function GradebookPage(props) {
                                 </option>
                             ))}
                         </select>
-                        <div class="input-group-append">
+                        <div
+                            className="input-group-append"
+                            onClick={handleClick}
+                        >
                             <label
                                 className="input-group-text"
-                                for="inputGroupSelect02"
+                                htmlFor="inputGroupSelect02"
                             >
                                 save
                             </label>
                         </div>
                     </div>
-                    
                 </React.Fragment>
             );
         } else {
@@ -59,9 +99,9 @@ function GradebookPage(props) {
         <React.Fragment>
             <Header header={props.currentPage} />
             <div className="form-container">
-                
                 <section>
                     <DropDown
+                        buttonTitle="First Gradebook?"
                         content="Creating a gradebook will automatically create a new
                             google sheet in your PE Clipboard folder. Any
                             classes you add will be added as tabs. To customize
@@ -72,27 +112,29 @@ function GradebookPage(props) {
                             app."
                     />
                 </section>
-                <br/>
-                <label for="create-gradebook">Create Gradebook</label>
+                <br />
+
+                <label htmlFor="create-gradebook">Create Gradebook</label>
                 <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
                     <input
                         id="create-gradebook"
                         type="text"
+                        
                         placeholder="Gradebook Name"
                         className="text-input"
+                        onChange={handleChange}
                     />
-                    <div class="input-group-append">
+                    <div className="input-group-append" onClick={handleClick}>
                         <label
                             className="input-group-text"
-                            for="inputGroupSelect02"
+                            htmlFor="inputGroupSelect02"
                         >
                             save
                         </label>
                     </div>
                 </div>
-                
+
                 <ListGradebooks />
-                
             </div>
         </React.Fragment>
     );
