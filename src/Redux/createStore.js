@@ -5,7 +5,9 @@ const initialState = {
     signedIn: false,
     currentPage: "Classes",
     gradebook:{},
-    gradebookList: []
+    gradebookList: [],
+    class:{},
+    classList:[],
 };
 
 export const store = createStore(MainReducer, initialState);

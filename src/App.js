@@ -1,7 +1,7 @@
 import SignIn from "./Pages/SignIn/SignIn";
 import "./App.scss";
 import { Route, Switch, withRouter } from "react-router";
-import { ClassesPage } from "./Pages/ClassesPage/ClassesPage";
+import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import { SettingsPage } from "./Pages/SettingsPage/SettingsPage";
@@ -36,7 +36,7 @@ class App extends React.Component {
                     <main className="container">
                     <Switch>
                         <Route exact path="/" component={SignIn} />
-                        <Route path="/classes" render={() => <ClassesPage title={this.props.currentPage}/>} />
+                        <Route path="/classes" component={ClassesPage} />
                         <Route path="/gradebook" component={GradebookPage}/>
                         <Route path="/info" render={() => <InfoPage title={this.props.currentPage}/>} />
                         <Route path="/settings" render={() => <SettingsPage title={this.props.currentPage}/>} />

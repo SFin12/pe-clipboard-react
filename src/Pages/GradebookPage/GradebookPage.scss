@@ -14,25 +14,13 @@
     }
 }
 
-.form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 98%;
-    max-width: 600px;
-    margin: auto;
-}
+
 .inline {
     text-align: center;
 }
 
 @media screen and (min-width: 768px) {
-    .form-container {
-        display: block;
-        width: 90%;
-        max-width: 600px;
-    }
+
     .inline {
         display: inline;
     }

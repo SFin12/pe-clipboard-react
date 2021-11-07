@@ -34,3 +34,24 @@ export const getGradebook = () => ({
     type: ActionTypes.GET_GRADEBOOK,
     //async fetch to get gradebooks from google api
 });
+
+export const createClass = (className) => {
+    console.log("creating class name...",className);
+    return {
+        type: ActionTypes.CREATE_CLASS,
+        payload: { className },
+    };
+};
+
+export const updateClassList = (className) => {
+    console.log("updating class list...",className);
+    return {
+    type: ActionTypes.UPDATE_CLASSES,
+    payload: { className },
+    }
+};
+
+export const getClasses = () => ({
+    type: ActionTypes.GET_CLASSES,
+    //async fetch to get classes from google api
+});

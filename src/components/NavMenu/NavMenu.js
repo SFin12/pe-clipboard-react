@@ -12,10 +12,10 @@ import {
 import { NavLink } from "react-router-dom";
 
 const links = [
-    { to: "/classes", text: "Classes" },
-    { to: "/gradebook", text: "Gradebook" },
+    { to: "/classes", text: "Classes", key: "link1"},
+    { to: "/gradebook", text: "Gradebook", key: "link2" },
     { to: "/info", text: "Info" },
-    { to: "/settings", text: "Settings" },
+    { to: "/settings", text: "Settings", key: "link3" },
 ];
 
 
@@ -23,7 +23,7 @@ const links = [
 export default class NavMenu extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             isOpen: false,
         };
@@ -31,6 +31,7 @@ export default class NavMenu extends Component {
         this.toggle = this.toggle.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
+    
 
     toggle() {
         this.setState({
@@ -44,17 +45,21 @@ export default class NavMenu extends Component {
     }
 
 
-    createNavItem = ({ to, text, className }) => (
+    createNavItem = ({ to, text, className, key }) => (
         <NavItem>
             {/* //NavLink below is from react router not reactstrap */}
-            <NavLink to={to} className={className} className="nav-text" onClick={this.handleClick} text={text}>
+            <NavLink to={to} className={`${className} nav-text`}  onClick={this.handleClick} text={text} key={key}>
                 {text}
             </NavLink>
         </NavItem>
     );
 
+    logProps(){
+        console.log("nave props: ", this.props)
+    }
     
     render() {
+        this.logProps()
         return (
             <div>
                 <Navbar color="dark" light expand="md" fixed="top">

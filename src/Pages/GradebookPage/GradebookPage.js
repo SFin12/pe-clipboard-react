@@ -22,7 +22,7 @@ function GradebookPage(props) {
     console.log('gb props: ', props)
     const [input, setInput] = useState("");
     const [choice, setChoice] = useState("");
-
+    console.log("gb props: ", props)
 
     function handleChange(e) {
         // If gradebook is being created
@@ -65,7 +65,7 @@ function GradebookPage(props) {
                             {props.gradebookList.map((gradebook, i) => (
                                 <option
                                     key={"gb" + i}
-                                    value={gradebook.gradebookId}
+                                    value={gradebook.gradebookName}
                                     name={gradebook.gradebookName}
                                 >
                                     {gradebook.gradebookName}
@@ -133,7 +133,7 @@ function GradebookPage(props) {
                         </label>
                     </div>
                 </div>
-
+                
                 <ListGradebooks />
                 <span>
                     <p>Current Gradebook:<span ><h4 className="inline"> {props.gradebook.gradebookName}</h4></span></p>
