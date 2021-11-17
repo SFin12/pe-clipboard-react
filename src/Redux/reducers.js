@@ -4,9 +4,11 @@ export const MainReducer = (state, action) => {
     console.log("main reducer: ", action);
     switch (action.type) {
         case ActionTypes.UPDATE_LOGIN:
-            const signedIn = !action.payload.signedIn;
-            console.log("signed in? : " + signedIn);
-            return { ...state, signedIn: signedIn };
+            console.log("signed in? : " + action.payload);
+            return { ...state, signedIn: action.payload };
+        case ActionTypes.UPDATE_USER_INFO:
+            return { ...state, userInfo: action.payload };
+
         case ActionTypes.UPDATE_PAGE:
             return { ...state, currentPage: action.payload.currentPage };
         case ActionTypes.CREATE_GRADEBOOK:
@@ -15,42 +17,41 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_GRADEBOOKLIST:
             const gbMatch = action.payload.gradebookName;
             if (
-                !state.gradebookList.some((obj) => obj.gradebookName === gbMatch)
+                !state.gradebookList.some(
+                    (obj) => obj.gradebookName === gbMatch
+                )
             ) {
                 return {
                     ...state,
                     gradebookList: [...state.gradebookList, action.payload],
                 };
             } else {
-                return {...state};
+                return { ...state };
             }
         case ActionTypes.GET_GRADEBOOK:
             return { ...state };
         case ActionTypes.DELETE_GRADEBOOK:
             return { ...state };
 
-
         case ActionTypes.CREATE_CLASS:
             return { ...state, class: action.payload };
         case ActionTypes.UPDATE_CLASSES:
-            console.log('updating class list: ', action.payload)
+            console.log("updating class list: ", action.payload);
             const cMatch = action.payload.className;
-            if (
-                !state.classList.some((obj) => obj.className === cMatch)
-            ) {
-                console.log('No duplicate classes found: ', action.payload)
+            if (!state.classList.some((obj) => obj.className === cMatch)) {
+                console.log("No duplicate classes found: ", action.payload);
                 return {
                     ...state,
                     classList: [...state.classList, action.payload],
                 };
             } else {
-                return {...state};
+                return { ...state };
             }
         case ActionTypes.GET_CLASSES:
             return { ...state };
         case ActionTypes.DELETE_CLASS:
             return { ...state };
-        
+
         default:
             console.log("default action type: ", action);
             return state;

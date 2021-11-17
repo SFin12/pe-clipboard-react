@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { createClass, updateClassList } from "../../Redux/actions";
 import { Header } from "../../components/Header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+
 import "./ClassesPage.scss";
 
 const mapStateToProps = (state) => {
@@ -19,7 +20,7 @@ const mapDispatchToProps = {
     updateClassList,
 };
 
-function ClassesPage(props) {
+function RosterPage(props) {
     const [toggleAdd, setToggleAdd] = useState(false);
     const [newClass, setNewClass] = useState("");
     console.log(props);
@@ -103,17 +104,10 @@ function ClassesPage(props) {
                 ) : (
                     <div>
                         <ListClasses />
-                        <div className="d-flex justify-content-around">
+                        <div className="d-flex justify-content-center">
                             <FontAwesomeIcon
                                 icon={faPlusCircle}
                                 className="plus-icon mt-4"
-                                onClick={handleClick}
-                            />
-                        
-                        
-                            <FontAwesomeIcon
-                                icon={faMinusCircle}
-                                className="minus-icon mt-4"
                                 onClick={handleClick}
                             />
                         </div>

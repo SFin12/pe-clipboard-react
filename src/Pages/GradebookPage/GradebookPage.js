@@ -19,32 +19,30 @@ const mapDispatchToProps = {
 };
 
 function GradebookPage(props) {
-    console.log('gb props: ', props)
     const [input, setInput] = useState("");
     const [choice, setChoice] = useState("");
-    console.log("gb props: ", props)
 
     function handleChange(e) {
         // If gradebook is being created
-        if ( e.target.id === "create-gradebook") {
-            setInput(e.target.value)
-        // If gradebook is being selected
+        if (e.target.id === "create-gradebook") {
+            setInput(e.target.value);
+            // If gradebook is being selected
         } else {
-            setChoice(e.target.value)
+            setChoice(e.target.value);
         }
     }
 
     function handleClick(e) {
-        console.log('current gb state: ', input, choice)
-        console.log('target Id: ', e.target)
+        console.log("current gb state: ", input, choice);
+        console.log("target Id: ", e.target);
         // If gradebook was created and saved
         if (e.target.id === "save-gradebook") {
-        props.createGradebook(input);
-        props.updateGradebookList(input);
-        } else /* If gradebook was selected and saved */{
-        props.createGradebook(choice);
-        props.updateGradebookList(choice);
-        };
+            props.createGradebook(input);
+            props.updateGradebookList(input);
+        } /* If gradebook was selected and saved */ else {
+            props.createGradebook(choice);
+            props.updateGradebookList(choice);
+        }
     }
 
     function ListGradebooks() {
@@ -122,7 +120,7 @@ function GradebookPage(props) {
                         className="text-input"
                         onChange={handleChange}
                     />
-                    <div className="input-group-append" >
+                    <div className="input-group-append">
                         <label
                             className="input-group-text"
                             htmlFor="create-gradebook"
@@ -133,12 +131,19 @@ function GradebookPage(props) {
                         </label>
                     </div>
                 </div>
-                
+
                 <ListGradebooks />
                 <span>
-                    <p>Current Gradebook:<span ><h4 className="inline"> {props.gradebook.gradebookName}</h4></span></p>
+                    <p>
+                        Current Gradebook:
+                        <span>
+                            <h4 className="inline">
+                                {" "}
+                                {props.gradebook.gradebookName}
+                            </h4>
+                        </span>
+                    </p>
                 </span>
-                
             </div>
         </React.Fragment>
     );

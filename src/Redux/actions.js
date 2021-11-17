@@ -1,4 +1,6 @@
 import * as ActionTypes from "./actionTypes";
+import { baseUrl } from "../shared/baseUrl";
+
 
 export const updateLogin = (signedIn = false) => ({
     type: ActionTypes.UPDATE_LOGIN,
@@ -6,6 +8,14 @@ export const updateLogin = (signedIn = false) => ({
         signedIn,
     },
 });
+
+export const updateUserInfo = (userName, userEmail, userImg) => ({
+    type: ActionTypes.UPDATE_USER_INFO,
+    payload: {
+        userName, userEmail, userImg
+    },
+});
+
 
 export const updatePage = (currentPage = "Classes") => {
     console.log("updatingPage...");
@@ -32,8 +42,19 @@ export const updateGradebookList = (gradebookName) => ({
 
 export const getGradebook = () => ({
     type: ActionTypes.GET_GRADEBOOK,
-    //async fetch to get gradebooks from google api
+    //async fetch to get current gradebook from google api
+    
 });
+
+export const getGradebookList = () => ({
+    type: ActionTypes.GET_GRADEBOOKLIST,
+    //async fetch to get list of gradebooks from google api
+})
+
+export const deleteGradebook = (gradebookName) => ({
+    type: ActionTypes.DELETE_GRADEBOOK,
+    payload: {gradebookName}
+})
 
 export const createClass = (className) => {
     console.log("creating class name...",className);
@@ -55,3 +76,8 @@ export const getClasses = () => ({
     type: ActionTypes.GET_CLASSES,
     //async fetch to get classes from google api
 });
+
+export const deleteClass = (className) => ({
+    type: ActionTypes.DELETE_CLASS,
+    payload: { className }
+})

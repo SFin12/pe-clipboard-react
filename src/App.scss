@@ -104,17 +104,17 @@ body {
 
 @media (min-width: 1024px) {
     .clipboard {
-        width: $clipboard-width * 1.9;
-        height: $clipboard-height * 1.9;
+        width: $clipboard-width * 1.6;
+        height: $clipboard-height * 1.6;
         margin: 5% auto;
     }
     .top {
-        width: $clipboard-top-width * 1.9;
-        height: $clipboard-top-height * 1.9;
-        top: (-35px * 1.9);
+        width: $clipboard-top-width * 1.6;
+        height: $clipboard-top-height * 1.6;
+        top: (-35px * 1.6);
     }
     #main-title,
     #main-title h1 {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 }
