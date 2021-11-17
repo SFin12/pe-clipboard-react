@@ -16,6 +16,14 @@ export const updateUserInfo = (userName, userEmail, userImg) => ({
     },
 });
 
+export const updateGoogleAuth = (googleAuth, gapi) => ({
+    type: ActionTypes.UPDATE_GOOGLEAUTH,
+    payload: {
+        googleAuth,
+        gapi
+    },
+});
+
 
 export const updatePage = (currentPage = "Classes") => {
     console.log("updatingPage...");

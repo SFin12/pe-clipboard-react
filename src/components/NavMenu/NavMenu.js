@@ -10,16 +10,28 @@ import {
     NavItem,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
+import { updateLogin } from "../../Redux/actions";
+import { connect } from "react-redux";
 
 const links = [
     { to: "/classes", text: "Classes", key: "link1" },
     { to: "/gradebook", text: "Gradebook", key: "link2" },
     { to: "/info", text: "Info" },
     { to: "/settings", text: "Settings", key: "link3" },
-    { to: "/sign-out", text: "Logout", key: "link4"}
+    { to: "/", text: "Logout", key: "link4"}
 ];
 
-export default class NavMenu extends Component {
+const mapStateToProps = (state) => {
+    return {
+    isLoggedIn: state.signedIn,
+    googleAuth: state.googleAuth
+    }
+}
+
+const mapDispatchToProps = {
+    updateLogin
+}
+class NavMenu extends Component {
     constructor(props) {
         super(props);
 
@@ -37,7 +49,22 @@ export default class NavMenu extends Component {
         });
     }
 
+    logOut = () => {
+        // (Ref. 8)
+        console.log('nav-logout');
+        (async () => {
+            await this.props.googleAuth.googleAuth.signOut();
+            this.props.updateLogin(false);
+            console.log("loggedIn? ", this.props.isLoggedIn);
+            window.location.reload();
+            //renderSigninButton(props.googleAuth.gapi);
+        })();
+    };
+
     handleClick(e) {
+        if(e.target.text === 'Logout'){
+            this.logOut()
+        }
         this.props.updatePage(e.target.text);
         this.toggle();
     }
@@ -79,3 +106,5 @@ export default class NavMenu extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);

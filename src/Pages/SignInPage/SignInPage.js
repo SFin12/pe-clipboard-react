@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { loadGoogleScript } from "../../Lib/GoogleLogin";
-import { updateLogin, updateUserInfo } from "../../Redux/actions";
+import { updateLogin, updateUserInfo, updateGoogleAuth } from "../../Redux/actions";
+import App from "../../App";
 
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -12,12 +13,15 @@ const mapStateToProps = (state) => {
         name: state.userInfo.userName,
         email: state.userInfo.userEmail,
         imageUrl: state.userInfo.userImg,
+        googleAuth: state.googleAuth,
+
     };
 };
 
 const mapDispatchToProps = {
     updateLogin,
     updateUserInfo,
+    updateGoogleAuth,
 };
 
 //Part of this page came from the following tutorial...
@@ -26,33 +30,36 @@ const mapDispatchToProps = {
 function SignInPage(props) {
     const [gapi, setGapi] = useState();
     const [googleAuth, setGoogleAuth] = useState();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [imageUrl, setImageUrl] = useState();
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [name, setName] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [imageUrl, setImageUrl] = useState();
 
     const onSuccess = (googleUser) => {
         // (Ref. 7)
-        setIsLoggedIn(true);
+        props.updateLogin(true);
         const profile = googleUser.getBasicProfile();
-        setName(profile.getName());
-        setEmail(profile.getEmail());
-        setImageUrl(profile.getImageUrl());
+        const name = profile.getName();
+        const email = profile.getEmail();
+        const imageUrl = profile.getImageUrl();
+        props.updateUserInfo(name, email, imageUrl);
     };
 
     const onFailure = () => {
-        setIsLoggedIn(false);
+        props.updateLogin(false);
     };
 
-    const logOut = () => {
-        // (Ref. 8)
-        console.log('googleAuth: ', googleAuth);
-        (async () => {
-            await googleAuth.signOut();
-            setIsLoggedIn(false);
-            renderSigninButton(gapi);
-        })();
-    };
+    // const logOut = () => {
+    //     // (Ref. 8)
+    //     console.log('googleAuth: ', googleAuth);
+    //     (async () => {
+    //         await props.googleAuth.googleAuth.signOut();
+    //         props.updateLogin(false);
+    //         console.log("loggedIn? ", props.isLoggedIn);
+    //         window.location.reload();
+    //         //renderSigninButton(props.googleAuth.gapi);
+    //     })();
+    // };
 
     const renderSigninButton = (_gapi) => {
         // (Ref. 6)
@@ -83,6 +90,7 @@ function SignInPage(props) {
                         client_id: googleClientId,
                     });
                     setGoogleAuth(_googleAuth); // (Ref. 5)
+                    props.updateGoogleAuth(_googleAuth, _gapi); //updates redux store for global access
                     renderSigninButton(_gapi); // (Ref. 6)
                 })();
             });
@@ -91,7 +99,8 @@ function SignInPage(props) {
         // Ensure everything is set before loading the script
         loadGoogleScript(); // (Ref. 9)
     }, []);
-
+    console.log('googleAuth: ', googleAuth);
+    console.log('props.googleAuth: ', props.googleAuth.gapi);
     return (
         <div>
             <div className="clipboard">
@@ -100,22 +109,22 @@ function SignInPage(props) {
                     <div id="main-title">
                         <h1>PE Clipboard</h1>
                     </div>
-                    {!isLoggedIn && <div to='/classes' key="signInKey" id="google-signin"/>}
+                    {!props.isLoggedIn && <div to='/classes' key="signInKey" id="google-signin"/>}
 
-                    {isLoggedIn && (
+                    {props.isLoggedIn && (
                         <div className="d-flex flex-column align-items-center mb-3">
                             <div>
                                 <img
                                     className="rounded-circle"
-                                    src={imageUrl}
+                                    src={props.imageUrl}
                                 />
                             </div>
-                            <div>{name}</div>
-                            <div>{email}</div>
+                            <div>{props.name}</div>
+                            <div>{props.email}</div>
 
-                            <button className="btn-primary" onClick={logOut}>
+                            {/* <button className="btn-primary" onClick={logOut}>
                                 Log Out
-                            </button>
+                            </button> */}
                         </div>
                     )}
                 </div>

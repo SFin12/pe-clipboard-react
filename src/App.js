@@ -1,6 +1,6 @@
 import SignInPage from "./Pages/SignInPage/SignInPage";
 import "./App.scss";
-import { Route, Switch, withRouter } from "react-router";
+import { Route, Switch, withRouter, Redirect } from "react-router";
 import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
@@ -13,6 +13,7 @@ import * as action from "./Redux/actions";
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
     currentPage: state.currentPage,
+    gradebook: state.gradebook
 });
 
 const mapDispatchToProps = {
@@ -20,11 +21,11 @@ const mapDispatchToProps = {
     updatePage: (page) => action.updatePage(page),
 };
 
-function fetchData() {
-    fetch("/api")
-        .then((res) => res.json())
-        .then((data) => alert(data.message));
-}
+// function fetchData() {
+//     fetch("/api")
+//         .then((res) => res.json())
+//         .then((data) => alert(data.message));
+// }
 class App extends React.Component {
     componentDidMount() {
         this.props.updatePage();
@@ -42,7 +43,14 @@ class App extends React.Component {
                         <NavMenu updatePage={this.props.updatePage} />
                         <main className="container">
                             <Switch>
-                                <Route exact path="/sign-out" component={SignInPage} />
+                                <Route exact path='/' render={()=>{
+                                    return(
+                                !this.props.gradebook.gradebook ?
+                                <Redirect to="/gradebook" /> :
+                                <Redirect to="/classes" /> 
+                                )
+                            }}
+                            />
                                 <Route
                                     path="/classes"
                                     component={ClassesPage}

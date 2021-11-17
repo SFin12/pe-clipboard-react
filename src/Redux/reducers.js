@@ -8,7 +8,8 @@ export const MainReducer = (state, action) => {
             return { ...state, signedIn: action.payload };
         case ActionTypes.UPDATE_USER_INFO:
             return { ...state, userInfo: action.payload };
-
+        case ActionTypes.UPDATE_GOOGLEAUTH:
+            return { ...state, googleAuth: action.payload};
         case ActionTypes.UPDATE_PAGE:
             return { ...state, currentPage: action.payload.currentPage };
         case ActionTypes.CREATE_GRADEBOOK:

@@ -5,7 +5,7 @@ import { MainReducer } from "./reducers";
 const initialState = {
     signedIn: false,
     userInfo: {userName: "", userEmail: "", userImg: "" },
-
+    googleAuth: {},
     currentPage: "Classes",
     gradebook:{},
     gradebookList: [],

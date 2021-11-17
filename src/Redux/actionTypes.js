@@ -3,6 +3,7 @@
 
 export const UPDATE_LOGIN = 'UPDATE_LOGIN';
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
+export const UPDATE_GOOGLEAUTH = 'UPDATE_GOOGLEAUTH';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 
 export const CREATE_CLASS = 'CREATE_CLASS';
