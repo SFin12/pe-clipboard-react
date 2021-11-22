@@ -1,9 +1,11 @@
 import { connect } from "react-redux";
-import React, { useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
 import { loadGoogleScript } from "../../Lib/GoogleLogin";
-import { updateLogin, updateUserInfo, updateGoogleAuth } from "../../Redux/actions";
-import App from "../../App";
+import {
+    updateLogin,
+    updateUserInfo,
+    updateGoogleAuth,
+} from "../../Redux/actions";
 
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -14,7 +16,6 @@ const mapStateToProps = (state) => {
         email: state.userInfo.userEmail,
         imageUrl: state.userInfo.userImg,
         googleAuth: state.googleAuth,
-
     };
 };
 
@@ -28,13 +29,6 @@ const mapDispatchToProps = {
 //https://www.quod.ai/post/how-to-integrate-google-api-into-your-react-app
 
 function SignInPage(props) {
-    const [gapi, setGapi] = useState();
-    const [googleAuth, setGoogleAuth] = useState();
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [name, setName] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [imageUrl, setImageUrl] = useState();
-
     const onSuccess = (googleUser) => {
         // (Ref. 7)
         props.updateLogin(true);
@@ -49,17 +43,6 @@ function SignInPage(props) {
         props.updateLogin(false);
     };
 
-    // const logOut = () => {
-    //     // (Ref. 8)
-    //     console.log('googleAuth: ', googleAuth);
-    //     (async () => {
-    //         await props.googleAuth.googleAuth.signOut();
-    //         props.updateLogin(false);
-    //         console.log("loggedIn? ", props.isLoggedIn);
-    //         window.location.reload();
-    //         //renderSigninButton(props.googleAuth.gapi);
-    //     })();
-    // };
 
     const renderSigninButton = (_gapi) => {
         // (Ref. 6)
@@ -78,9 +61,8 @@ function SignInPage(props) {
         // Window.gapi is available at this point
         window.onGoogleScriptLoad = () => {
             // (Ref. 1)
-            console.log('on google script loading...');
+            console.log("on google script loading...");
             const _gapi = window.gapi; // (Ref. 2)
-            setGapi(_gapi);
 
             _gapi.load("auth2", () => {
                 // (Ref. 3)
@@ -89,7 +71,7 @@ function SignInPage(props) {
                         // (Ref. 4)
                         client_id: googleClientId,
                     });
-                    setGoogleAuth(_googleAuth); // (Ref. 5)
+
                     props.updateGoogleAuth(_googleAuth, _gapi); //updates redux store for global access
                     renderSigninButton(_gapi); // (Ref. 6)
                 })();
@@ -99,8 +81,7 @@ function SignInPage(props) {
         // Ensure everything is set before loading the script
         loadGoogleScript(); // (Ref. 9)
     }, []);
-    console.log('googleAuth: ', googleAuth);
-    console.log('props.googleAuth: ', props.googleAuth.gapi);
+
     return (
         <div>
             <div className="clipboard">
@@ -109,7 +90,9 @@ function SignInPage(props) {
                     <div id="main-title">
                         <h1>PE Clipboard</h1>
                     </div>
-                    {!props.isLoggedIn && <div to='/classes' key="signInKey" id="google-signin"/>}
+                    {!props.isLoggedIn && (
+                        <div to="/classes" key="signInKey" id="google-signin" />
+                    )}
 
                     {props.isLoggedIn && (
                         <div className="d-flex flex-column align-items-center mb-3">
@@ -134,25 +117,3 @@ function SignInPage(props) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
-
-{
-    /* <div className="clipboard">
-                <div className="clipboard top"></div>
-                <div className="flex-fill">
-                    <div id="main-title">
-                        <h1>PE Clipboard</h1>
-                    </div>
-                    <SignIn />
-
-                    <Link
-                        to="/classes"
-                        id="sign-in"
-                        className="btn bg-light"
-                        type="link"
-                        onClick={handleClick}
-                    >
-                        Sign In
-                    </Link>
-                </div>
-            </div> */
-}

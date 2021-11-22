@@ -48,11 +48,31 @@ export const updateGradebookList = (gradebookName) => ({
     payload: { gradebookName: gradebookName },
 });
 
-export const getGradebook = () => ({
-    type: ActionTypes.GET_GRADEBOOK,
-    //async fetch to get current gradebook from google api
+// export const getGradebook = () => (dispatch) => {
+//         return fetch(baseUrl + "comments")
+//             .then(
+//                 (response) => {
+//                     if (response.ok) {
+//                         return response;
+//                     } else {
+//                         const error = new Error(
+//                             `Error ${response.status}: ${response.statusText}`
+//                         );
+//                         error.response = response;
+//                         throw error;
+//                     }
+//                 },
+//                 (error) => {
+//                     const errMess = new Error(error.message);
+//                     throw errMess;
+//                 }
+//             )
+//             .then((response) => response.json())
+//             .then((comments) => dispatch(addComments(comments)))
+//             .catch((error) => dispatch(commentsFailed(error.message)));
+//     };
     
-});
+
 
 export const getGradebookList = () => ({
     type: ActionTypes.GET_GRADEBOOKLIST,

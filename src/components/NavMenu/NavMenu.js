@@ -70,14 +70,15 @@ class NavMenu extends Component {
     }
 
     createNavItem = ({ to, text, className, key }) => (
-        <NavItem>
+        <NavItem key={'Nav-item' + key}>
             {/* //NavLink below is from react router not reactstrap */}
             <NavLink
+                key={key}
                 to={to}
                 className={`${className} nav-text`}
                 onClick={this.handleClick}
                 text={text}
-                key={key}
+                
             >
                 {text}
             </NavLink>
