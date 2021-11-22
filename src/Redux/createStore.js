@@ -4,15 +4,17 @@ import { MainReducer } from "./reducers";
 
 const initialState = {
     signedIn: false,
-    userInfo: {userName: "", userEmail: "", userImg: "" },
+    userInfo: { id: "", name: "", email: "", userImg: "" },
     googleAuth: {},
     currentPage: "Classes",
-    gradebook:{},
+    gradebook: {},
     gradebookList: [],
-    class:{},
-    classList:[],
-
+    class: {},
+    classList: [],
 };
 
-export const store = createStore(MainReducer, initialState, applyMiddleware(thunk));
-
+export const store = createStore(
+    MainReducer,
+    initialState,
+    applyMiddleware(thunk)
+);

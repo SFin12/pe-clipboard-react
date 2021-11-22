@@ -33,10 +33,11 @@ function SignInPage(props) {
         // (Ref. 7)
         props.updateLogin(true);
         const profile = googleUser.getBasicProfile();
+        const userId = profile.getId();
         const name = profile.getName();
         const email = profile.getEmail();
         const imageUrl = profile.getImageUrl();
-        props.updateUserInfo(name, email, imageUrl);
+        props.updateUserInfo(userId, name, email, imageUrl);
     };
 
     const onFailure = () => {

@@ -6,18 +6,17 @@ import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import React from "react";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
 import NavMenu from "./components/NavMenu/NavMenu";
 import { connect } from "react-redux";
 import * as action from "./Redux/actions";
-import { firebaseConfig } from "./Lib/FirebaseConfig";
+import { db } from "./Lib/FirebaseConfig";
+import { ref, set, onValue, push } from "firebase/database";
 
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
     currentPage: state.currentPage,
     gradebook: state.gradebook,
-    
+    userInfo: state.userInfo,
 });
 
 const mapDispatchToProps = {
@@ -25,49 +24,41 @@ const mapDispatchToProps = {
     updatePage: (page) => action.updatePage(page),
 };
 
-function fetchData() {
-    fetch("http://openlibrary.org/search.json?q=harry+potter")
-        .then((res) => res.json())
-        .then((data) => console.log("fetched book data: ", data.docs[0].title));
-}
-
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getDatabase(firebaseApp);
-
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        initializeApp(firebaseConfig);
-        this.state = {
-            databaseTest: "test",
-        };
-    }
+    
     componentDidMount() {
         this.props.updatePage();
-        this.getUserData();
+        this.setState({ database: db });
         //fetchData();
     }
 
     componentDidUpdate(prevProps, prevState) {
         // check on previous state
         // only write when it's different with the new state
-        if (prevState !== this.state) {
-            this.writeUserData();
+        if (prevProps !== this.props) {
+            this.writeUserData(this.props.userInfo.userId);
+            this.getUserData();
         }
     }
 
-    writeUserData(userId, name, email, imageUrl) {
-        set(ref(db, "/"), {
-            state: this.state,
+    writeUserData(dataToAdd) {
+        const userId = dataToAdd;
+        console.log(userId);
+        push()
+        set(ref(db, "/users"), {
+            userId: this.props.userInfo.id,
+            email: this.props.userInfo.email,
+            name: this.props.userInfo.name,
+            userImg: this.props.userInfo.userImg,
         });
         console.log("data saved");
     }
 
     getUserData = () => {
-        const allData = ref(db, "/state");
+        const allData = ref(this.state.database, "/");
         onValue(allData, (snapshot) => {
             const data = snapshot.val();
-            console.log("data: ", data);
+            console.log("get data: ", data);
         });
         console.log("DATA RETRIEVED");
     };
@@ -121,14 +112,7 @@ class App extends React.Component {
                 ) : (
                     <SignInPage />
                 )}
-                <button
-                    onClick={() => this.setState({ databaseTest: "changed" })}
-                >
-                    Change Database
-                </button>
-                <button onClick={() => this.setState({ databaseTest: "test" })}>
-                    test Database
-                </button>
+               
             </div>
         );
     }
