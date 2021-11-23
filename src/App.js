@@ -10,7 +10,7 @@ import NavMenu from "./components/NavMenu/NavMenu";
 import { connect } from "react-redux";
 import * as action from "./Redux/actions";
 import { db } from "./Lib/FirebaseConfig";
-import { ref, set, onValue, push } from "firebase/database";
+import { ref, set, onValue, push, update } from "firebase/database";
 
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
@@ -25,7 +25,6 @@ const mapDispatchToProps = {
 };
 
 class App extends React.Component {
-    
     componentDidMount() {
         this.props.updatePage();
         this.setState({ database: db });
@@ -36,26 +35,32 @@ class App extends React.Component {
         // check on previous state
         // only write when it's different with the new state
         if (prevProps !== this.props) {
-            this.writeUserData(this.props.userInfo.userId);
-            this.getUserData();
+            const userObject = {
+                id: this.props.userInfo.id,
+                name: this.props.userInfo.name,
+                email: this.props.userInfo.email,
+                userImg: this.props.userInfo.userImg,
+            };
+
+            if (userObject.id !== "") {
+                this.writeUserData(userObject);
+                this.getUserData();
+            }
         }
     }
 
-    writeUserData(dataToAdd) {
-        const userId = dataToAdd;
-        console.log(userId);
-        push()
-        set(ref(db, "/users"), {
-            userId: this.props.userInfo.id,
-            email: this.props.userInfo.email,
-            name: this.props.userInfo.name,
-            userImg: this.props.userInfo.userImg,
-        });
-        console.log("data saved");
+    writeUserData(userObject) {
+        console.log("user object: ", userObject);
+        console.log("ref", ref(db, "/users/" + this.props.userInfo.id));
+        if (ref(db, "/users/" + this.props.userInfo.id)) {
+            update(ref(db, "/users/" + this.props.userInfo.id), userObject);
+
+            console.log("data saved");
+        }
     }
 
     getUserData = () => {
-        const allData = ref(this.state.database, "/");
+        const allData = ref(this.state.database, "/users");
         onValue(allData, (snapshot) => {
             const data = snapshot.val();
             console.log("get data: ", data);
@@ -112,7 +117,6 @@ class App extends React.Component {
                 ) : (
                     <SignInPage />
                 )}
-               
             </div>
         );
     }
