@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "../../components/Header/Header";
+
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -7,7 +7,8 @@ import { Header } from "../../components/Header/Header";
 export function InfoPage({title}){
     return (
         <div>
-        <Header header={title} />
+        <h1 className="header">Info</h1>
+        <hr/>
         
         </div>
     )

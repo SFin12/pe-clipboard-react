@@ -21,6 +21,22 @@
     height: 60px;
 }
 
+.delete-class-button {
+    padding: 0;
+    border: 4px red solid;
+    width: 90vw;
+    max-width: 400px;
+    margin: 10px;
+    height: 60px;
+}
+
+
+.highlight {
+    outline: 4px rgba(255,25,25,.8) solid;
+    color: rgba(150,150,150,.7);
+    border-radius: 50%
+}
+
 .subtitle {
     color: $green;
     margin: auto;

@@ -8,98 +8,94 @@ import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import React from "react";
 import NavMenu from "./components/NavMenu/NavMenu";
 import { connect } from "react-redux";
-import * as action from "./Redux/actions";
-import { db } from "./Lib/FirebaseConfig";
-import { ref, set, onValue, push, update } from "firebase/database";
+import { store } from "./Redux/createStore";
+import { updatePage } from "./Redux/actions";
+import { writeUserData, getUserData } from "./Lib/LinkReduxToDb";
 
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
-    currentPage: state.currentPage,
+    id: state.id,
+    email: state.email,
+    name: state.name,
+    userImg: state.userImg,
     gradebook: state.gradebook,
-    userInfo: state.userInfo,
+    gradebookList: state.gradebookList,
+    classList: state.classList,
+    class: state.class,
 });
 
 const mapDispatchToProps = {
-    updateLogin: (signIn) => action.updateLogin(signIn),
-    updatePage: (page) => action.updatePage(page),
+    updatePage,
 };
 
 class App extends React.Component {
     componentDidMount() {
-        this.props.updatePage();
-        this.setState({ database: db });
-        //fetchData();
+        !this.props.gradebook && this.props.updatePage("Gradebook");
+        console.log(this.props.id);
     }
 
     componentDidUpdate(prevProps, prevState) {
         // check on previous state
         // only write when it's different with the new state
-        if (prevProps !== this.props) {
+        if (
+            (this.props.signedIn && prevProps.id !== this.props.id) ||
+            prevProps.gradebook !== this.props.gradebook ||
+            prevProps.gradebookList !== this.props.gradebookList ||
+            prevProps.classList !== this.props.classList
+        ) {
             const userObject = {
-                id: this.props.userInfo.id,
-                name: this.props.userInfo.name,
-                email: this.props.userInfo.email,
-                userImg: this.props.userInfo.userImg,
+                id: this.props.id,
+                name: this.props.name,
+                email: this.props.email,
+                userImg: this.props.userImg,
+                gradebook: this.props.gradebook,
+                gradebookList: this.props.gradebookList,
+                classList: this.props.classList,
+                class: this.props.class,
             };
 
-            if (userObject.id !== "") {
-                this.writeUserData(userObject);
-                this.getUserData();
+            if (this.props.id) {
+                writeUserData(this.props.id, userObject);
             }
         }
     }
 
-    writeUserData(userObject) {
-        console.log("user object: ", userObject);
-        console.log("ref", ref(db, "/users/" + this.props.userInfo.id));
-        if (ref(db, "/users/" + this.props.userInfo.id)) {
-            update(ref(db, "/users/" + this.props.userInfo.id), userObject);
-
-            console.log("data saved");
-        }
-    }
-
-    getUserData = () => {
-        const allData = ref(this.state.database, "/users");
-        onValue(allData, (snapshot) => {
-            const data = snapshot.val();
-            console.log("get data: ", data);
-        });
-        console.log("DATA RETRIEVED");
-    };
-
     render() {
-        console.log("signed in? ", this.props.signedIn);
+        console.log("store", store.getState());
+        console.log("gradebook?", this.props.gradbook);
         return (
             //Check if user is signed in, if so, render navbar
-
             <div className="App">
                 {this.props.signedIn ? (
                     <React.Fragment>
-                        <NavMenu updatePage={this.props.updatePage} />
+                        <NavMenu />
                         <main className="container">
                             <Switch>
+                                {/* If no gradebook is found, start on gradebook page otherwise
+                                start on class page. */}
                                 <Route
                                     exact
                                     path="/"
                                     render={() => {
-                                        return !this.props.gradebook
-                                            .gradebook ? (
-                                            <Redirect to="/gradebook" />
-                                        ) : (
+                                        return this.props.gradebook ? (
                                             <Redirect to="/classes" />
+                                        ) : (
+                                            <Redirect to="/gradebook" />
                                         );
                                     }}
                                 />
                                 <Route
+                                    exact
                                     path="/classes"
                                     component={ClassesPage}
                                 />
                                 <Route
+                                    exact
                                     path="/gradebook"
                                     component={GradebookPage}
                                 />
                                 <Route
+                                    exact
                                     path="/info"
                                     render={() => (
                                         <InfoPage
@@ -108,6 +104,7 @@ class App extends React.Component {
                                     )}
                                 />
                                 <Route
+                                    exact
                                     path="/settings"
                                     component={SettingsPage}
                                 />

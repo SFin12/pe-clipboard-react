@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { createClass, updateClassList } from "../../Redux/actions";
-import { Header } from "../../components/Header/Header";
+import  Header from "../../components/Header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -50,8 +50,10 @@ function RosterPage(props) {
 
     const inputClass = (
         <React.Fragment>
+            <h1 className="header">Roster</h1>
+            <hr/>
             <div className="form-container">
-                <label htmlFor="create-class">Create class</label>
+                <label htmlFor="create-class">Add Student</label>
                 <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
                     <input
                         id="create-class"
@@ -90,11 +92,11 @@ function RosterPage(props) {
     // Main return for ClassPage
     return (
         <React.Fragment>
-            <Header header={props.currentPage} />
+            <h1 className="header">{props.class}</h1>
             <div className="d-flex justify-content-center">
                 <span>
                     <h2 className="subtitle mb-4">
-                        {props.gradebook.gradebookName}
+                        {props.gradebook}
                     </h2>
                 </span>
             </div>

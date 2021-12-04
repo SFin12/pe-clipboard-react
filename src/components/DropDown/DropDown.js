@@ -14,10 +14,9 @@ class DropDown extends Component {
     }
 
     toggle(e) {
-        console.log(e.type)
-        e.type === "mouseenter" || e.type === "click" ?
-        this.setState({ collapse: true }) :
-        this.setState({ collapse: false})
+        e.type === "mouseenter" || e.type === "click"
+            ? this.setState({ collapse: true })
+            : this.setState({ collapse: false });
     }
 
     render() {
@@ -30,7 +29,8 @@ class DropDown extends Component {
                     onClick={this.toggle}
                     style={{ marginBottom: "1rem" }}
                 >
-                    {this.props.buttonTitle} <FontAwesomeIcon icon={faCaretDown} />
+                    {this.props.buttonTitle}{" "}
+                    <FontAwesomeIcon icon={faCaretDown} />
                 </Button>
                 <Collapse isOpen={this.state.collapse}>
                     <Card color="dark" inverse>

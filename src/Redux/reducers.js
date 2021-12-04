@@ -1,27 +1,26 @@
 import * as ActionTypes from "./actionTypes";
 
 export const MainReducer = (state, action) => {
-    console.log("main reducer: ", action);
+    const currentGb = state.gradebook;
+
     switch (action.type) {
         case ActionTypes.UPDATE_LOGIN:
-            console.log("signed in? : " + action.payload);
             return { ...state, signedIn: action.payload };
         case ActionTypes.UPDATE_USER_INFO:
-            return { ...state, userInfo: action.payload };
+            return { ...state, ...action.payload };
         case ActionTypes.UPDATE_GOOGLEAUTH:
-            return { ...state, googleAuth: action.payload};
+            return { ...state, googleAuth: action.payload };
         case ActionTypes.UPDATE_PAGE:
             return { ...state, currentPage: action.payload.currentPage };
+        case ActionTypes.UPDATE_STORE:
+            console.log("updating store: ", action.payload);
+            return { ...state, ...action.payload };
         case ActionTypes.CREATE_GRADEBOOK:
-            console.log("reducer-create-gb", action.payload);
             return { ...state, gradebook: action.payload };
         case ActionTypes.UPDATE_GRADEBOOKLIST:
-            const gbMatch = action.payload.gradebookName;
-            if (
-                !state.gradebookList.some(
-                    (obj) => obj.gradebookName === gbMatch
-                )
-            ) {
+            const gbMatch = action.payload;
+
+            if (!state.gradebookList.some((obj) => obj === gbMatch)) {
                 return {
                     ...state,
                     gradebookList: [...state.gradebookList, action.payload],
@@ -37,22 +36,45 @@ export const MainReducer = (state, action) => {
         case ActionTypes.CREATE_CLASS:
             return { ...state, class: action.payload };
         case ActionTypes.UPDATE_CLASSES:
-            console.log("updating class list: ", action.payload);
-            const cMatch = action.payload.className;
-            if (!state.classList.some((obj) => obj.className === cMatch)) {
-                console.log("No duplicate classes found: ", action.payload);
+            const cMatch = action.payload;
+
+            console.log("currentGb: ", state.classList[currentGb]);
+            if (
+                state.classList[currentGb] &&
+                !state.classList[currentGb].some((obj) => obj === cMatch)
+            ) {
                 return {
                     ...state,
-                    classList: [...state.classList, action.payload],
+                    classList: {
+                        ...state.classList,
+                        [currentGb]: [
+                            ...state.classList[currentGb],
+                            action.payload,
+                        ],
+                    },
                 };
-            } else {
-                return { ...state };
+            } else if (!state.classList.currentGb) {
+                console.log("duplicate or first time gradebook");
+                return {
+                    ...state,
+                    classList: {
+                        ...state.classList,
+                        [currentGb]: [action.payload],
+                    },
+                };
             }
+            return { ...state };
+
         case ActionTypes.GET_CLASSES:
             return { ...state };
         case ActionTypes.DELETE_CLASS:
-            return { ...state };
-
+            const currentCl = state.classList[currentGb].filter(
+                (item) => item !== action.payload
+            );
+            return {
+                ...state,
+                classList: { ...state.classList, [currentGb]: currentCl },
+            };
         default:
             console.log("default action type: ", action);
             return state;

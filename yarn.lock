@@ -6211,6 +6211,11 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
+firebase-redux@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/firebase-redux/-/firebase-redux-0.0.5.tgz#21cb606d171a3acf4a859eede5e4f44c06d83a0f"
+  integrity sha512-O3i6nd99/coZLJb4VPDMjKNZXDq/nQ8mkV7KRm9Q+cWtju8c333qQd6kafmK2HnFh0+58UmsSodje4XEYqQ0VQ==
+
 firebase@^9.5.0:
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.5.0.tgz#9cddfa840ccba740891d66cfbf5bc222602d5bdc"

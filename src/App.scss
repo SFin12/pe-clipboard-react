@@ -81,6 +81,16 @@ body {
     margin: auto;
 }
 
+.header {
+    color: $green;
+    text-align: center;
+    margin-top: 100px;
+}
+hr {
+    opacity: 0.5;
+    background-color: gray;
+}
+
 @media (min-width: 756px) {
     .clipboard {
         width: $clipboard-width * 1.3;

@@ -2,9 +2,10 @@ import React from "react";
 import { Header } from "../../../components/Header/Header";
 
 
-export function StudentsPage({title}){
+export function StudentsPage(props){
     
     return (
-        <Header header={title} />
+        <h1 className="header">"props.class"</h1>
+        <hr/>
     )
 }

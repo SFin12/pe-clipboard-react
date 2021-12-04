@@ -5,16 +5,21 @@ import {
     updateLogin,
     updateUserInfo,
     updateGoogleAuth,
+    updateStore,
 } from "../../Redux/actions";
+import { db } from "../../Lib/FirebaseConfig";
+import { ref, onValue } from "firebase/database";
+
 
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.signedIn,
-        name: state.userInfo.userName,
-        email: state.userInfo.userEmail,
-        imageUrl: state.userInfo.userImg,
+        id: state.id,
+        name: state.name,
+        email: state.email,
+        imageUrl: state.userImg,
         googleAuth: state.googleAuth,
     };
 };
@@ -23,27 +28,51 @@ const mapDispatchToProps = {
     updateLogin,
     updateUserInfo,
     updateGoogleAuth,
+    updateStore,
 };
 
 //Part of this page came from the following tutorial...
 //https://www.quod.ai/post/how-to-integrate-google-api-into-your-react-app
 
 function SignInPage(props) {
+
+    //fetch current user data to update redux store when first loading
+    function getUserData(userId) {
+        if (!userId) {
+            return console.log("No user Id");
+        }
+        const userRef = ref(db, "/users/" + userId);
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("get data: ", data);
+            //check if user has any saved data
+            if (data) {
+                //updates redux store with user data stored in realtime database from firebase
+                props.updateStore(data);
+            } 
+            // else {
+            //     writeUserData()
+            // }
+            return props.updateLogin(true);
+        });
+        console.log("getting data...");
+    }
+
     const onSuccess = (googleUser) => {
         // (Ref. 7)
-        props.updateLogin(true);
+
         const profile = googleUser.getBasicProfile();
-        const userId = profile.getId();
+        const id = profile.getId();
         const name = profile.getName();
         const email = profile.getEmail();
         const imageUrl = profile.getImageUrl();
-        props.updateUserInfo(userId, name, email, imageUrl);
+        props.updateUserInfo(id, name, email, imageUrl);
+        getUserData(id);
     };
 
     const onFailure = () => {
         props.updateLogin(false);
     };
-
 
     const renderSigninButton = (_gapi) => {
         // (Ref. 6)
@@ -89,7 +118,7 @@ function SignInPage(props) {
                 <div className="clipboard top"></div>
                 <div className="flex-fill">
                     <div id="main-title">
-                        <h1>PE Clipboard</h1>
+                        <h2>PE Clipboard</h2>
                     </div>
                     {!props.isLoggedIn && (
                         <div to="/classes" key="signInKey" id="google-signin" />

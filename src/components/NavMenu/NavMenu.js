@@ -10,7 +10,7 @@ import {
     NavItem,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
-import { updateLogin } from "../../Redux/actions";
+import { updateLogin, updatePage } from "../../Redux/actions";
 import { connect } from "react-redux";
 
 const links = [
@@ -24,12 +24,14 @@ const links = [
 const mapStateToProps = (state) => {
     return {
     isLoggedIn: state.signedIn,
-    googleAuth: state.googleAuth
+    googleAuth: state.googleAuth,
+   
     }
 }
 
 const mapDispatchToProps = {
-    updateLogin
+    updateLogin,
+    updatePage
 }
 class NavMenu extends Component {
     constructor(props) {
@@ -50,12 +52,11 @@ class NavMenu extends Component {
     }
 
     logOut = () => {
-        // (Ref. 8)
-        console.log('nav-logout');
+
         (async () => {
             await this.props.googleAuth.googleAuth.signOut();
             this.props.updateLogin(false);
-            console.log("loggedIn? ", this.props.isLoggedIn);
+            
             window.location.reload();
             //renderSigninButton(props.googleAuth.gapi);
         })();

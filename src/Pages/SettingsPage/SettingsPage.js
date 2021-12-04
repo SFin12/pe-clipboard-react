@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "../../components/Header/Header";
+
 import { connect } from "react-redux";
 import {
     getClasses,
@@ -28,7 +28,8 @@ export function SettingsPage(props) {
     console.log('settingsProps: ',props.currentPage)
     return (
         <React.Fragment>
-            <Header header={props.currentPage} />
+            <h1 className="header">Settings</h1>
+            <hr/>
             <div className="form-container">
                 
             </div>

@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import { Header } from "../../components/Header/Header";
+import React, { useState, useEffect } from "react";
+
 import { connect } from "react-redux";
-import { createGradebook, updateGradebookList } from "../../Redux/actions";
+import {
+    createGradebook,
+    updateGradebookList,
+    updatePage,
+} from "../../Redux/actions";
 import DropDown from "../../components/DropDown/DropDown";
 import "./GradebookPage.scss";
 
@@ -16,6 +20,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     createGradebook,
     updateGradebookList,
+    updatePage,
 };
 
 function GradebookPage(props) {
@@ -33,8 +38,6 @@ function GradebookPage(props) {
     }
 
     function handleClick(e) {
-        console.log("current gb state: ", input, choice);
-        console.log("target Id: ", e.target);
         // If gradebook was created and saved
         if (e.target.id === "save-gradebook") {
             props.createGradebook(input);
@@ -46,12 +49,13 @@ function GradebookPage(props) {
     }
 
     function ListGradebooks() {
+        console.log("gradebook List: ", props.gradebookList)
         if (props.gradebookList.length > 0) {
-            console.log("props gbl ", props.gradebookList);
             return (
                 <React.Fragment>
                     <p>or</p>
                     <label htmlFor="select-gradebook">Change Gradebook</label>
+
                     <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
                         <select
                             // defaultValue={currentSelect.gradebookName}
@@ -60,15 +64,18 @@ function GradebookPage(props) {
                             onChange={handleChange}
                             value={choice}
                         >
-                            {props.gradebookList.map((gradebook, i) => (
-                                <option
-                                    key={"gb" + i}
-                                    value={gradebook.gradebookName}
-                                    name={gradebook.gradebookName}
-                                >
-                                    {gradebook.gradebookName}
-                                </option>
-                            ))}
+                            {props.gradebookList.map((gradebook, i) => {
+                                console.log("gb list: ", props.gradebookList);
+                                return (
+                                    <option
+                                        key={"gb" + i}
+                                        value={gradebook}
+                                        name={gradebook}
+                                    >
+                                        {gradebook}
+                                    </option>
+                                );
+                            })}
                         </select>
                         <div
                             className="input-group-append"
@@ -93,7 +100,8 @@ function GradebookPage(props) {
 
     return (
         <React.Fragment>
-            <Header header={props.currentPage} />
+            <h1 className="header">Gradebook</h1>
+            <hr/>
             <div className="form-container">
                 <section>
                     <DropDown
@@ -137,10 +145,7 @@ function GradebookPage(props) {
                     <p>
                         Current Gradebook:
                         <span>
-                            <h4 className="inline">
-                                {" "}
-                                {props.gradebook.gradebookName}
-                            </h4>
+                            <h4 className="inline"> {props.gradebook}</h4>
                         </span>
                     </p>
                 </span>
