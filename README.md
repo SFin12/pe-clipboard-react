@@ -16,12 +16,12 @@ can still be utilized for attendence and daily evaluations but the data will onl
 web app, not in google drive.
 
 ## Technology
--- React
--- Redux
--- Google Sign-in
--- Firebase Realtime Data
+- React
+- Redux
+- Google Sign-in
+- Firebase Realtime Data
 
-* ###Important Note:
+###Important Note:
 Since google sign-in and Firebase are used, users must create their own
 google client id through google cloud platform. 
 set up a .env file in your root directory with the
