@@ -12,7 +12,7 @@ of daily points, weekly points, notes, absenses, grades, ect.
 
 ## Current Version
 The current version of the app doesn't utilize google sheets as a gradebook yet.  The current version
-can still be utilized for attendence and daily evaluations but the data will only available through the
+can still be utilized for attendence and daily evaluations but the data will only be available through the
 web app, not in google drive.
 
 ## Technology
