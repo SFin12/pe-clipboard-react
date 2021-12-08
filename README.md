@@ -21,7 +21,7 @@ web app, not in google drive.
 - Google Sign-in
 - Firebase Realtime Data
 
-###Important Note:
+**Important Note**:
 Since google sign-in and Firebase are used, users must create their own
 google client id through google cloud platform. 
 set up a .env file in your root directory with the
