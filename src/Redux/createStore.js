@@ -13,7 +13,9 @@ const initialState = {
     gradebook: "",
     gradebookList: [],
     class: "",
-    classList: {}
+    classList: {},
+    student:"",
+    studentList: {}
 };
 
 export const store = createStore(

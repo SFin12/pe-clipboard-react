@@ -27,7 +27,6 @@ export const updateGoogleAuth = (googleAuth, gapi) => ({
 });
 
 export const updatePage = (currentPage = "Classes") => {
-   
     return {
         type: ActionTypes.UPDATE_PAGE,
         payload: {
@@ -37,7 +36,6 @@ export const updatePage = (currentPage = "Classes") => {
 };
 
 export const createGradebook = (gradebookName) => {
-    
     return {
         type: ActionTypes.CREATE_GRADEBOOK,
         payload: gradebookName,
@@ -45,19 +43,18 @@ export const createGradebook = (gradebookName) => {
 };
 
 export const updateGradebookList = (gradebookName) => {
-  
     return {
-    type: ActionTypes.UPDATE_GRADEBOOKLIST,
-    payload: gradebookName,
-}
+        type: ActionTypes.UPDATE_GRADEBOOKLIST,
+        payload: gradebookName,
+    };
 };
 
 export const updateStore = (data) => {
-    console.log('updating store: ', data)
+    console.log("updating store: ", data);
     return {
-    type: ActionTypes.UPDATE_STORE,
-    payload: data,
-    }
+        type: ActionTypes.UPDATE_STORE,
+        payload: data,
+    };
 };
 
 export const getGradebookList = () => ({
@@ -71,7 +68,7 @@ export const deleteGradebook = (gradebookName) => ({
 });
 
 export const createClass = (className) => {
- 
+    console.log("creating class... ", className);
     return {
         type: ActionTypes.CREATE_CLASS,
         payload: className,
@@ -79,7 +76,6 @@ export const createClass = (className) => {
 };
 
 export const updateClassList = (className) => {
-    
     return {
         type: ActionTypes.UPDATE_CLASSES,
         payload: className,
@@ -96,3 +92,9 @@ export const deleteClass = (className) => ({
     payload: className,
 });
 
+export const updateStudentList = (studentName) => {
+    return {
+        type: ActionTypes.UPDATE_STUDENTLIST,
+        payload: studentName,
+    };
+};

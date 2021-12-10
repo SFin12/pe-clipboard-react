@@ -3,6 +3,7 @@ import "./App.scss";
 import { Route, Switch, withRouter, Redirect } from "react-router";
 import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
+import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import React from "react";
@@ -107,6 +108,11 @@ class App extends React.Component {
                                     exact
                                     path="/settings"
                                     component={SettingsPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/students"
+                                    component={StudentsPage}
                                 />
                             </Switch>
                         </main>

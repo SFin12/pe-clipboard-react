@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { createClass, updateClassList, deleteClass } from "../../Redux/actions";
-
+import {
+    createClass,
+    updateClassList,
+    deleteClass,
+    updatePage,
+} from "../../Redux/actions";
+import { useHistory } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ClassesPage.scss";
@@ -19,6 +24,7 @@ const mapDispatchToProps = {
     createClass,
     updateClassList,
     deleteClass,
+    updatePage,
 };
 
 function ClassesPage(props) {
@@ -28,6 +34,7 @@ function ClassesPage(props) {
     const [newClass, setNewClass] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
+    const history = useHistory();
 
     function ListClasses() {
         const gb = props.gradebook;
@@ -41,7 +48,7 @@ function ClassesPage(props) {
                             <button
                                 key={c + i}
                                 className={buttonClass}
-                                onClick={handleClick}
+                                onClick={handleClassClick}
                                 id={c}
                             >
                                 {c}
@@ -85,6 +92,17 @@ function ClassesPage(props) {
 
     function handleChange(e) {
         setNewClass(e.target.value);
+    }
+
+    function handleClassClick(e) {
+        const classId = e.target.id;
+        if (classId !== "delete-class-button") {
+            console.log("classId clicked", classId);
+            props.createClass(classId);
+            props.updatePage("Students");
+            //redirects to studentsPage
+            history.push("/students");
+        }
     }
 
     function handleClick(e) {

@@ -1,8 +1,10 @@
 import * as ActionTypes from "./actionTypes";
 
 export const MainReducer = (state, action) => {
+    //currentGb is used for multiple cases
     const currentGb = state.gradebook;
 
+    console.log("type and payload: ", action.type + ", " + action.payload);
     switch (action.type) {
         case ActionTypes.UPDATE_LOGIN:
             return { ...state, signedIn: action.payload };
@@ -34,6 +36,7 @@ export const MainReducer = (state, action) => {
             return { ...state };
 
         case ActionTypes.CREATE_CLASS:
+            console.log("create class payload: ", action.payload);
             return { ...state, class: action.payload };
         case ActionTypes.UPDATE_CLASSES:
             const cMatch = action.payload;
@@ -75,6 +78,35 @@ export const MainReducer = (state, action) => {
                 ...state,
                 classList: { ...state.classList, [currentGb]: currentCl },
             };
+        case ActionTypes.UPDATE_STUDENTLIST:
+            const sMatch = action.payload;
+            const currentClass = state.class;
+            console.log("current class: ", state.class);
+            if (
+                currentClass &&
+                !state.classList[currentClass].some((obj) => obj === sMatch)
+            ) {
+                return {
+                    ...state,
+                    studentList: {
+                        ...state.studentList,
+                        [currentClass]: [
+                            ...state.studentClass[currentClass],
+                            action.payload,
+                        ],
+                    },
+                };
+            } else if (!state.studentList[currentClass]) {
+                console.log("duplicate or first time class");
+                return {
+                    ...state,
+                    studentList: {
+                        ...state.studentList,
+                        [currentClass]: [action.payload],
+                    },
+                };
+            }
+            return { ...state };
         default:
             console.log("default action type: ", action);
             return state;
