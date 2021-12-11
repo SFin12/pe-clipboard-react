@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { InputGroup } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { updatePage, updateStudentList } from "../../../Redux/actions";
-import { Input } from "reactstrap";
+import { saveRoster } from "../../../Lib/saveRoster";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -17,12 +17,47 @@ const mapDispatchToProps = {
 };
 
 function StudentsPage(props) {
-    console.log("StudentPage Props: ", props);
+    const [currentRoster, setCurrentRoster] = useState("");
+    //const [saveRoster, setSaveRoster] = useState("");
+
+    function handleChange(e) {
+        saveRoster(e)
+    }
+
+    function handleSave(e) {
+        
+    }
 
     function ListStudents() {}
 
     function AddStudents() {
-        return <Input/>
+        return (
+            <React.Fragment>
+                <div className="form-container">
+                    <label htmlFor="upoload-roster">Upload Roster</label>
+                    <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+                        <input
+                            id="upload-roster"
+                            type="file"
+                            accept=".csv"
+                            placeholder="class Name"
+                            className="file"
+                            onChange={handleChange}
+                        />
+                        <div className="input-group-append">
+                            <label
+                                className="input-group-text"
+                                htmlFor="upload-roster"
+                                id="save-roster"
+                                onClick={handleSave}
+                            >
+                                save
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
+        );
     }
 
     return (
