@@ -1,5 +1,4 @@
 import * as ActionTypes from "./actionTypes";
-import { baseUrl } from "../shared/baseUrl";
 
 export const updateLogin = (signedIn = false) => ({
     type: ActionTypes.UPDATE_LOGIN,
@@ -50,7 +49,7 @@ export const updateGradebookList = (gradebookName) => {
 };
 
 export const updateStore = (data) => {
-    console.log("updating store: ", data);
+ 
     return {
         type: ActionTypes.UPDATE_STORE,
         payload: data,
@@ -68,7 +67,7 @@ export const deleteGradebook = (gradebookName) => ({
 });
 
 export const createClass = (className) => {
-    console.log("creating class... ", className);
+   
     return {
         type: ActionTypes.CREATE_CLASS,
         payload: className,
@@ -92,9 +91,10 @@ export const deleteClass = (className) => ({
     payload: className,
 });
 
-export const updateStudentList = (studentName) => {
+export const updateStudentList = (arrayStudentNames) => {
+    console.log("updating Student List: ", typeof(arrayStudentNames))
     return {
         type: ActionTypes.UPDATE_STUDENTLIST,
-        payload: studentName,
+        payload: arrayStudentNames,
     };
 };

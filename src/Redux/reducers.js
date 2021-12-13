@@ -41,7 +41,6 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_CLASSES:
             const cMatch = action.payload;
 
-            console.log("currentGb: ", state.classList[currentGb]);
             if (
                 state.classList[currentGb] &&
                 !state.classList[currentGb].some((obj) => obj === cMatch)
@@ -81,28 +80,24 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             const currentClass = state.class;
-            console.log("current class: ", state.class);
-            if (
-                currentClass &&
-                !state.classList[currentClass].some((obj) => obj === sMatch)
-            ) {
+            console.log("current class type: ", typeof(state.class));
+            console.log("type of property: ", typeof(state.studentList[currentClass]))
+            if (state.studentList[currentClass]) {
                 return {
                     ...state,
-                    studentList: {
-                        ...state.studentList,
-                        [currentClass]: [
-                            ...state.studentClass[currentClass],
-                            action.payload,
-                        ],
-                    },
+                    [state.studentList[currentClass]]: [
+                            ...action.payload,
+                        ]
+                    }
                 };
-            } else if (!state.studentList[currentClass]) {
+            
+            if (!state.studentList[currentClass]) {
                 console.log("duplicate or first time class");
                 return {
                     ...state,
                     studentList: {
                         ...state.studentList,
-                        [currentClass]: [action.payload],
+                        [currentClass]: [...action.payload],
                     },
                 };
             }

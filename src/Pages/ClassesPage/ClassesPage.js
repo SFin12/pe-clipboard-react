@@ -38,9 +38,9 @@ function ClassesPage(props) {
 
     function ListClasses() {
         const gb = props.gradebook;
-        console.log(gb);
+        
         if (props.classList[gb] && props.classList[gb].length > 0) {
-            console.log("listClasses", props.classList[gb]);
+    
             return (
                 <React.Fragment>
                     <div className="d-flex flex-column align-items-center">
@@ -97,9 +97,9 @@ function ClassesPage(props) {
     function handleClassClick(e) {
         const classId = e.target.id;
         if (classId !== "delete-class-button") {
-            console.log("classId clicked", classId);
+     
             props.createClass(classId);
-            props.updatePage("Students");
+          
             //redirects to studentsPage
             history.push("/students");
         }
@@ -129,11 +129,9 @@ function ClassesPage(props) {
 
     function handleModal(e) {
         setShowModal(false);
-        console.log("delete button: ", e.target.name);
         e.target.name === "delete" && props.deleteClass(itemToDelete);
     }
 
-    console.log("classList: ", props.classList);
     // Main return for ClassPage
     return (
         <React.Fragment>

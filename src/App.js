@@ -4,6 +4,7 @@ import { Route, Switch, withRouter, Redirect } from "react-router";
 import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";
+import RosterPage from "./Pages/ClassesPage/RosterPage/RosterPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import React from "react";
@@ -12,6 +13,10 @@ import { connect } from "react-redux";
 import { store } from "./Redux/createStore";
 import { updatePage } from "./Redux/actions";
 import { writeUserData, getUserData } from "./Lib/LinkReduxToDb";
+
+
+
+
 
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
@@ -32,7 +37,7 @@ const mapDispatchToProps = {
 class App extends React.Component {
     componentDidMount() {
         !this.props.gradebook && this.props.updatePage("Gradebook");
-        console.log(this.props.id);
+  
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -63,7 +68,7 @@ class App extends React.Component {
 
     render() {
         console.log("store", store.getState());
-        console.log("gradebook?", this.props.gradbook);
+      
         return (
             //Check if user is signed in, if so, render navbar
             <div className="App">
@@ -113,6 +118,11 @@ class App extends React.Component {
                                     exact
                                     path="/students"
                                     component={StudentsPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/roster"
+                                    component={RosterPage}
                                 />
                             </Switch>
                         </main>

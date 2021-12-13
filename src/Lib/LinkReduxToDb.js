@@ -5,9 +5,9 @@ export function writeUserData(userId, userObject) {
     if (ref(db, "/users/" + userId)) {
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-            console.log("writing to db: ",userObject);
+           
             update(userRef, userObject);
-            console.log("data saved");
+     
         }
     }
 }
@@ -21,8 +21,8 @@ export function getUserData(userId) {
     const userRef = ref(db, "/users/" + userId);
     onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        console.log("get data: ", data);
+
         return data;
     });
-    console.log("getting data...");
+ 
 }

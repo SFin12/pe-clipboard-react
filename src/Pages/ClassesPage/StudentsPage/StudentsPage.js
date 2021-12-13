@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { updatePage, updateStudentList } from "../../../Redux/actions";
-import { saveRoster } from "../../../Lib/saveRoster";
+
+import { useHistory } from "react-router";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -17,54 +18,34 @@ const mapDispatchToProps = {
 };
 
 function StudentsPage(props) {
-    const [currentRoster, setCurrentRoster] = useState("");
-    //const [saveRoster, setSaveRoster] = useState("");
+    console.log("studentPge props: ", props);
+    useEffect(() => {
+        props.updatePage("Students");
+    }, []);
 
-    function handleChange(e) {
-        saveRoster(e)
+    const history = useHistory();
+
+    function ListStudents() {
+        const currentClass = props.class;
+        const studentButtons = props.studentList[currentClass].map(student => {
+            return (
+                <Button variant="light">{student}</Button>
+            )
+        });
+        return studentButtons;
     }
 
-    function handleSave(e) {
-        
-    }
-
-    function ListStudents() {}
-
-    function AddStudents() {
-        return (
-            <React.Fragment>
-                <div className="form-container">
-                    <label htmlFor="upoload-roster">Upload Roster</label>
-                    <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
-                        <input
-                            id="upload-roster"
-                            type="file"
-                            accept=".csv"
-                            placeholder="class Name"
-                            className="file"
-                            onChange={handleChange}
-                        />
-                        <div className="input-group-append">
-                            <label
-                                className="input-group-text"
-                                htmlFor="upload-roster"
-                                id="save-roster"
-                                onClick={handleSave}
-                            >
-                                save
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
-        );
+    function addStudents() {
+        history.push("/roster");
     }
 
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>
             <hr />
-            {props.studentsList ? <ListStudents /> : <AddStudents />}
+            <div className="form-container">
+                {props.studentList[props.class] ? <ListStudents /> : addStudents}
+            </div>
         </React.Fragment>
     );
 }

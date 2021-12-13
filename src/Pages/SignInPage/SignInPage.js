@@ -44,7 +44,7 @@ function SignInPage(props) {
         const userRef = ref(db, "/users/" + userId);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-            console.log("get data: ", data);
+  
             //check if user has any saved data
             if (data) {
                 //updates redux store with user data stored in realtime database from firebase
@@ -55,7 +55,7 @@ function SignInPage(props) {
             // }
             return props.updateLogin(true);
         });
-        console.log("getting data...");
+    
     }
 
     const onSuccess = (googleUser) => {
@@ -91,7 +91,7 @@ function SignInPage(props) {
         // Window.gapi is available at this point
         window.onGoogleScriptLoad = () => {
             // (Ref. 1)
-            console.log("on google script loading...");
+      
             const _gapi = window.gapi; // (Ref. 2)
 
             _gapi.load("auth2", () => {

@@ -1,22 +1,25 @@
-export function saveRoster(e) {
+export function saveRoster(e, callback) {
     const csvInput = e.target.files[0];
     const reader = new FileReader();
-    let arr;
-    const formattedArr = [];
+    let formattedArr = [];
+    console.log("1st formattedArr: ", formattedArr);
+
     reader.onload = function () {
-        arr = reader.result.split("\n");
-        arr.map((student) => {
-            let formattedStudent = cleanText(student);
-            if (formattedStudent) {
-                formattedArr.push(formattedStudent);
+        const arr = reader.result.split("\n");
+
+        for (let student of arr) {
+            const cleanedStudent = cleanText(student);
+            if (cleanedStudent) {
+                formattedArr = [...formattedArr, cleanedStudent];
             }
-        });
-    };
+        }
+        console.log("2nd formattedArr array?: ", formattedArr[3]);
+        return callback(formattedArr);
+        
+    }
 
     // start reading the file. When it is done, calls the onload event defined above.
-    reader.readAsBinaryString(csvInput);
-
-    console.log(formattedArr);
+    reader.readAsText(csvInput);
 }
 
 function cleanText(string) {

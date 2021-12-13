@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./NavMenu.scss";
-import SignInPage from "../../Pages/SignInPage/SignInPage";
 import {
     Collapse,
     Navbar,
@@ -18,31 +17,50 @@ const links = [
     { to: "/gradebook", text: "Gradebook", key: "link2" },
     { to: "/info", text: "Info" },
     { to: "/settings", text: "Settings", key: "link3" },
-    { to: "/", text: "Logout", key: "link4"}
+    { to: "/", text: "Logout", key: "link4" },
 ];
 
 const mapStateToProps = (state) => {
     return {
-    isLoggedIn: state.signedIn,
-    googleAuth: state.googleAuth,
-   
-    }
-}
+        isLoggedIn: state.signedIn,
+        googleAuth: state.googleAuth,
+        currentPage: state.currentPage,
+    };
+};
 
 const mapDispatchToProps = {
     updateLogin,
-    updatePage
-}
+    updatePage,
+};
 class NavMenu extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             isOpen: false,
+            rosterNav: false,
         };
 
         this.toggle = this.toggle.bind(this);
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidUpdate() {
+        if (this.props.currentPage === "Students") {
+           
+            if (links.length !== 6) {
+                links.push({ to: "/roster", text: "Roster", key: "link5" });
+                this.setState({ rosterNav: true });
+              
+            }
+        } else if (this.props.currentPage !== "Students") {
+         
+            if (links.length === 6) {
+                links.pop();
+                this.setState({ rosterNav: false });
+          
+            }
+        }
     }
 
     toggle() {
@@ -52,26 +70,25 @@ class NavMenu extends Component {
     }
 
     logOut = () => {
-
         (async () => {
             await this.props.googleAuth.googleAuth.signOut();
             this.props.updateLogin(false);
-            
+
             window.location.reload();
             //renderSigninButton(props.googleAuth.gapi);
         })();
     };
 
     handleClick(e) {
-        if(e.target.text === 'Logout'){
-            this.logOut()
+        if (e.target.text === "Logout") {
+            this.logOut();
         }
         this.props.updatePage(e.target.text);
         this.toggle();
     }
 
     createNavItem = ({ to, text, className, key }) => (
-        <NavItem key={'Nav-item' + key}>
+        <NavItem key={"Nav-item" + key}>
             {/* //NavLink below is from react router not reactstrap */}
             <NavLink
                 key={key}
@@ -79,7 +96,6 @@ class NavMenu extends Component {
                 className={`${className} nav-text`}
                 onClick={this.handleClick}
                 text={text}
-                
             >
                 {text}
             </NavLink>

@@ -49,7 +49,7 @@ function GradebookPage(props) {
     }
 
     function ListGradebooks() {
-        console.log("gradebook List: ", props.gradebookList)
+       
         if (props.gradebookList.length > 0) {
             return (
                 <React.Fragment>
@@ -65,7 +65,7 @@ function GradebookPage(props) {
                             value={choice}
                         >
                             {props.gradebookList.map((gradebook, i) => {
-                                console.log("gb list: ", props.gradebookList);
+                    
                                 return (
                                     <option
                                         key={"gb" + i}

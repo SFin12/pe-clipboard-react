@@ -1,123 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { createClass, updateClassList } from "../../Redux/actions";
-import  Header from "../../components/Header/Header";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import DropDown from "../../../components/DropDown/DropDown";
+import { updatePage, updateStudentList } from "../../../Redux/actions";
+import { saveRoster } from "../../../Lib/saveRoster";
+import { Button } from "react-bootstrap";
+import { useHistory } from "react-router";
 
-import "./ClassesPage.scss";
-
-const mapStateToProps = (state) => {
-    return {
-        gradebook: state.gradebook,
-        classList: state.classList,
-        currentPage: state.currentPage,
-    };
-};
+const mapStateToProps = (state) => ({
+    currentPage: state.currentPage,
+    class: state.class,
+    student: state.student,
+    studentList: state.studentList,
+});
 
 const mapDispatchToProps = {
-    createClass,
-    updateClassList,
+    updatePage,
+    updateStudentList,
 };
 
 function RosterPage(props) {
-    const [toggleAdd, setToggleAdd] = useState(false);
-    const [newClass, setNewClass] = useState("");
-    console.log(props);
-
-    function ListClasses() {
-        if (props.classList.length > 0) {
-            console.log("props CL ", props.classList);
-
-            return (
-                <React.Fragment>
-                    <div className="d-flex flex-column align-items-center">
-                        {props.classList.map((c, i) => (
-                            <button
-                                key={c.className + i}
-                                className="class-button"
-                            >
-                                {c.className}
-                            </button>
-                        ))}
-                    </div>
-                </React.Fragment>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    const inputClass = (
-        <React.Fragment>
-            <h1 className="header">Roster</h1>
-            <hr/>
-            <div className="form-container">
-                <label htmlFor="create-class">Add Student</label>
-                <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
-                    <input
-                        id="create-class"
-                        type="text"
-                        value={newClass}
-                        placeholder="class Name"
-                        className="text-input"
-                        onChange={handleChange}
-                    />
-                    <div className="input-group-append">
-                        <label
-                            className="input-group-text"
-                            htmlFor="create-class"
-                            id="save-class"
-                            onClick={handleClick}
-                        >
-                            save
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
-    );
+    const [roster, setRoster] = useState("");
+    const history = useHistory();
 
     function handleChange(e) {
-        setNewClass(e.target.value);
+        saveRoster(e, (response) => {
+            setRoster(response);
+            console.log("response: ", response )
+            props.updateStudentList(response);
+        });
+        //props.updateStudentList(response);
+
+        setTimeout(() => {
+            history.push("/students");
+        }, 3000);
     }
 
-    function handleClick(e) {
-        setToggleAdd(!toggleAdd);
-        if (e.target.id === "save-class") {
-            props.createClass(newClass);
-            props.updateClassList(newClass);
-        }
+    function ListStudents() {}
+
+    function AddStudents() {
+        return (
+            <React.Fragment>
+                <div className="form-container">
+                    <section>
+                        <DropDown
+                            buttonTitle="Uploading Rosters"
+                            content="To upload a roster, the file should be saved as a csv file (ends with .csv). When creating the file through excel, sheets, numbers or a similar spreadsheet program, place all students in the first column with one student in each row.  If you want names to be alphabatized, place last names first folowed by a comma then first names."
+                        />
+                    </section>
+                    <br />
+                    <Button
+                        variant={roster ? "success" : "primary"}
+                        className="mb-4"
+                    >
+                        <label htmlFor="upload-roster" className="">
+                            {roster ? "Success" : "Upload File"}
+                        </label>
+                    </Button>
+                    <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+                        <input
+                            id="upload-roster"
+                            type="file"
+                            accept=".csv"
+                            className="file"
+                            onChange={handleChange}
+                            hidden
+                        />
+                        <div className="input-group-append">
+                            <p>
+                                ( WARNING: Uploading a roster will overwrite
+                                your current roster! )
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
+        );
     }
-    // Main return for ClassPage
+
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>
-            <div className="d-flex justify-content-center">
-                <span>
-                    <h2 className="subtitle mb-4">
-                        {props.gradebook}
-                    </h2>
-                </span>
-            </div>
-            <div>
-                {toggleAdd ? (
-                    inputClass
-                ) : (
-                    <div>
-                        <ListClasses />
-                        <div className="d-flex justify-content-center">
-                            <FontAwesomeIcon
-                                icon={faPlusCircle}
-                                className="plus-icon mt-4"
-                                onClick={handleClick}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
+            <hr />
+            {props.studentsList ? <ListStudents /> : <AddStudents />}
         </React.Fragment>
     );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClassesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RosterPage);
