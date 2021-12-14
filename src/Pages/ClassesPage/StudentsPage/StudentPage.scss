@@ -1,0 +1,70 @@
+@import "../../../App.scss";
+
+.student {
+    display: block;
+    font-size: 40px;
+    margin: auto;
+    margin-bottom: 20px;
+    width: 98%;
+    max-width: 98%;
+}
+
+.flex-space-between{
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+
+.daily-points {
+    display: inline;
+    width: 15%;
+    padding: 3px;
+    border: 0px;
+    min-width: 15%;
+    max-width: 15%;
+    margin: 0px;
+}
+
+.tl-round {
+    border-radius: .5em 0 0 0;
+}
+
+.tr-round {
+    border-radius: 0 .5em 0 0;
+}
+
+.br-round {
+    border-radius: 0 0 .5em 0;
+}
+
+.bl-round {
+    border-radius: 0 0 0 .5em;
+}
+
+.button {
+    -webkit-appearance: none;
+    display: block;
+    // margin: 20px auto;
+    padding: 10px;
+    // width: 70%;
+    min-height: 80px;
+    font-size: 6vw;
+    background-color: white;
+}
+
+.student-button {
+    display: inline-block;
+    padding: 3px;
+    border: 0px;
+    margin: 0px;
+    width: 83%;
+    min-width: 83%;
+    max-width: 83%;
+}
+
+@media (min-width: 1023px) {
+    .button {
+        font-size: 1.7rem;
+    }
+}

@@ -15,7 +15,8 @@ const initialState = {
     class: "",
     classList: {},
     student:"",
-    studentList: {}
+    studentList: {},
+    dailyPoints: 10
 };
 
 export const store = createStore(

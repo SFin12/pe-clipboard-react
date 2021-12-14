@@ -32,7 +32,7 @@ function RosterPage(props) {
 
         setTimeout(() => {
             history.push("/students");
-        }, 3000);
+        }, 2000);
     }
 
     function ListStudents() {}

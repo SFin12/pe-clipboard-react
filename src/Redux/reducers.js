@@ -82,22 +82,22 @@ export const MainReducer = (state, action) => {
             const currentClass = state.class;
             console.log("current class type: ", typeof(state.class));
             console.log("type of property: ", typeof(state.studentList[currentClass]))
-            if (state.studentList[currentClass]) {
+            if (state.studentList[currentGb + "-" + currentClass]) {
                 return {
                     ...state,
-                    [state.studentList[currentClass]]: [
+                    [state.studentList[currentGb + "-" + currentClass]]: [
                             ...action.payload,
                         ]
                     }
                 };
             
-            if (!state.studentList[currentClass]) {
+            if (!state.studentList[currentGb + "-" + currentClass]) {
                 console.log("duplicate or first time class");
                 return {
                     ...state,
                     studentList: {
                         ...state.studentList,
-                        [currentClass]: [...action.payload],
+                        [currentGb + "-" + currentClass]: [...action.payload],
                     },
                 };
             }
