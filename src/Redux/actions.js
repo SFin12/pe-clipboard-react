@@ -91,6 +91,14 @@ export const deleteClass = (className) => ({
     payload: className,
 });
 
+export const createStudent = (student) => {
+   
+    return {
+        type: ActionTypes.CREATE_STUDENT,
+        payload: student,
+    };
+};
+
 export const updateStudentList = (arrayStudentNames) => {
     console.log("updating Student List: ", typeof(arrayStudentNames))
     return {

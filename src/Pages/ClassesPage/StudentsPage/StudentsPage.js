@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
-import { updatePage, updateStudentList } from "../../../Redux/actions";
+import {
+    updatePage,
+    updateStudentList,
+    createStudent,
+} from "../../../Redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import "./StudentPage.scss";
 import { useHistory } from "react-router";
 
@@ -17,9 +23,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
+    createStudent,
 };
 
 function StudentsPage(props) {
+    const [toggleDelete, setToggleDelete] = useState(false);
+    const [toggleAdd, setToggleAdd] = useState(false);
+    const [newStudent, setNewStudent] = useState("");
+
     const classKey = props.gradebook + "-" + props.class;
 
     useEffect(() => {
@@ -29,47 +40,91 @@ function StudentsPage(props) {
     const history = useHistory();
 
     function ListStudents() {
-        
-        const studentButtons = props.studentList[classKey].map(
-            (student, i) => {
-                return (
-                    <div class="student">
-                        <div className="flex-space-between">
-                       
-                            {/* Student Button with their name */}
-                            <input
-                                className="tl-round student-button button"
-                                type="button"
-                                key={student}
-                                id={student}
-                                name="student"
-                                value={student}
-                            />
-                            <input
-                                className="tr-round button daily-points "
-                                key={i + "-points"}
-                                name="daily-points"
-                                type="button"
-                                id={i + "-points"}
-                                value={props.dailyPoints}
-                            />
-                        </div>
-                        {/* <div className="flex-space-between notes" data-toggle="off">
+        const studentButtons = props.studentList[classKey].map((student, i) => {
+            return (
+                <div className="student">
+                    <div className="flex-space-between">
+                        {/* Student Button with their name */}
+                        <input
+                            className="tl-round student-button button"
+                            type="button"
+                            key={student}
+                            id={student}
+                            name="student"
+                            value={student}
+                        />
+                        <input
+                            className="tr-round button daily-points "
+                            key={i + "-points"}
+                            name="daily-points"
+                            type="button"
+                            id={i + "-points"}
+                            value={props.dailyPoints}
+                        />
+                    </div>
+                    {/* <div className="flex-space-between notes" data-toggle="off">
             <input className="bl-round button absent note" name="attendance" type="button" id="${i}-attendance" data-toggle="off" value="P" />
             <input className="button absent note " name="note1" type="button" id="${i}-note1" data-toggle="off" value="${note1}" />
             <input className="button absent note" name="note2" type="button" id="${i}-note2" data-toggle="off" value="${note2}" />
             <input className="button absent note " name="note3" type="button" id="${i}-note3" data-toggle="off" value="${note3}" />
             <input className="br-round button absent note " name="note4" type="button" id="${i}-note4" data-toggle="off" value="${note4}" />
           </div> */}
-                    </div>
-                );
-            }
-        );
+                </div>
+            );
+        });
         return studentButtons;
+    }
+
+    const inputStudent = (
+            <React.Fragment>
+                <div className="form-container">
+                    <label htmlFor="create-class">Add Student</label>
+                    <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+                        <input
+                            id="create-class"
+                            type="text"
+                            value={newStudent}
+                            placeholder="Student Name"
+                            className="text-input"
+                            onChange={handleChange}
+                        />
+                        <div className="input-group-append">
+                            <label
+                                className="input-group-text"
+                                htmlFor="create-class"
+                                id="save-class"
+                                onClick={handleSave}
+                            >
+                                save
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
+        );
+   
+    function handleChange(e) {
+        setNewStudent(e.target.value);
+    }
+
+    function handleSave(e) {
+        if (newStudent) {
+            props.createStudent(newStudent);
+        }
+    }
+
+    function handleDelete(e) {
+        setToggleDelete(!toggleDelete);
     }
 
     function addStudents() {
         history.push("/roster");
+    }
+
+    function handleAdd(e) {
+        if (e.currentTarget.id === "add-class-button") {
+            setToggleAdd(!toggleAdd);
+        }
     }
 
     return (
@@ -77,10 +132,32 @@ function StudentsPage(props) {
             <h1 className="header">{props.class}</h1>
             <hr />
             <div className="form-container">
-                {props.studentList[classKey] ? (
-                    <ListStudents />
+                {props.studentList[classKey] ? <ListStudents /> : addStudents}
+                {toggleAdd ? (
+                    inputStudent
                 ) : (
-                    addStudents
+                    <div className="d-flex justify-content-between w-100">
+                        <div id="add-class-button" onClick={handleAdd}>
+                            <FontAwesomeIcon
+                                name="add-icon"
+                                icon={faPlusCircle}
+                                className="plus-icon m-4"
+                            />
+                        </div>
+
+                        <div onClick={handleDelete} id="delete-a-class">
+                            <FontAwesomeIcon
+                                name="delete-icon"
+                                icon={faMinusCircle}
+                                className={
+                                    toggleDelete
+                                        ? "minus-icon m-4 highlight"
+                                        : "minus-icon m-4"
+                                }
+                            />
+                            <br />
+                        </div>
+                    </div>
                 )}
             </div>
         </React.Fragment>

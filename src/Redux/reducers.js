@@ -1,8 +1,9 @@
 import * as ActionTypes from "./actionTypes";
 
 export const MainReducer = (state, action) => {
-    //currentGb is used for multiple cases
+    //currentGb and currentClass are used for multiple cases
     const currentGb = state.gradebook;
+    const currentClass = state.class;
 
     console.log("type and payload: ", action.type + ", " + action.payload);
     switch (action.type) {
@@ -38,6 +39,7 @@ export const MainReducer = (state, action) => {
         case ActionTypes.CREATE_CLASS:
             console.log("create class payload: ", action.payload);
             return { ...state, class: action.payload };
+
         case ActionTypes.UPDATE_CLASSES:
             const cMatch = action.payload;
 
@@ -77,20 +79,61 @@ export const MainReducer = (state, action) => {
                 ...state,
                 classList: { ...state.classList, [currentGb]: currentCl },
             };
-        case ActionTypes.UPDATE_STUDENTLIST:
+
+        case ActionTypes.CREATE_STUDENT:
             const sMatch = action.payload;
-            const currentClass = state.class;
-            console.log("current class type: ", typeof(state.class));
-            console.log("type of property: ", typeof(state.studentList[currentClass]))
+            //Check if there is alreade a student list for the current class and whether there is a student with the same name.
+            if (
+                state.studentList[currentGb + "-" + currentClass] &&
+                !state.studentList[currentGb + "-" + currentClass].some(
+                    (student) => student === sMatch
+                )
+            ) {
+                console.log("adding student: ", action.payload);
+                console.log({
+                    ...state,
+                    studentList: {
+                        ...state.studentList,
+                        [currentGb + "-" + currentClass]: [
+                            ...state.studentList[
+                                currentGb + "-" + currentClass
+                            ],
+                            action.payload,
+                        ],
+                    },
+                });
+                return {
+                    ...state,
+                    studentList: {
+                        ...state.studentList,
+                        [currentGb + "-" + currentClass]: [
+                            ...state.studentList[
+                                currentGb + "-" + currentClass
+                            ],
+                            action.payload,
+                        ],
+                    },
+                };
+            } else {
+                console.log("not adding student");
+                return { ...state };
+            }
+
+        case ActionTypes.UPDATE_STUDENTLIST:
+            console.log("current class type: ", typeof state.class);
+            console.log(
+                "type of property: ",
+                typeof state.studentList[currentClass]
+            );
             if (state.studentList[currentGb + "-" + currentClass]) {
                 return {
                     ...state,
                     [state.studentList[currentGb + "-" + currentClass]]: [
-                            ...action.payload,
-                        ]
-                    }
+                        ...action.payload,
+                    ],
                 };
-            
+            }
+
             if (!state.studentList[currentGb + "-" + currentClass]) {
                 console.log("duplicate or first time class");
                 return {
