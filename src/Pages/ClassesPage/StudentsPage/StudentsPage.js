@@ -76,33 +76,33 @@ function StudentsPage(props) {
     }
 
     const inputStudent = (
-            <React.Fragment>
-                <div className="form-container">
-                    <label htmlFor="create-class">Add Student</label>
-                    <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
-                        <input
-                            id="create-class"
-                            type="text"
-                            value={newStudent}
-                            placeholder="Student Name"
-                            className="text-input"
-                            onChange={handleChange}
-                        />
-                        <div className="input-group-append">
-                            <label
-                                className="input-group-text"
-                                htmlFor="create-class"
-                                id="save-class"
-                                onClick={handleSave}
-                            >
-                                save
-                            </label>
-                        </div>
+        <React.Fragment>
+            <div className="form-container">
+                <label htmlFor="create-class">Add Student</label>
+                <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+                    <input
+                        id="create-class"
+                        type="text"
+                        value={newStudent}
+                        placeholder="Student Name"
+                        className="text-input"
+                        onChange={handleChange}
+                    />
+                    <div className="input-group-append">
+                        <label
+                            className="input-group-text"
+                            htmlFor="create-class"
+                            id="save-class"
+                            onClick={handleSave}
+                        >
+                            save
+                        </label>
                     </div>
                 </div>
-            </React.Fragment>
-        );
-   
+            </div>
+        </React.Fragment>
+    );
+
     function handleChange(e) {
         setNewStudent(e.target.value);
     }
@@ -110,6 +110,7 @@ function StudentsPage(props) {
     function handleSave(e) {
         if (newStudent) {
             props.createStudent(newStudent);
+            setToggleAdd(false);
         }
     }
 

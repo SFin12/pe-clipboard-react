@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
     createClass,
@@ -29,18 +29,27 @@ const mapDispatchToProps = {
 
 function ClassesPage(props) {
     const [toggleAdd, setToggleAdd] = useState(false);
-    const [toggleDelete, setToggleDelete] = useState(true);
+    const [toggleDelete, setToggleDelete] = useState(false);
     const [buttonClass, setButtonClass] = useState("class-button");
     const [newClass, setNewClass] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
     const history = useHistory();
+    const gb = props.gradebook;
+
+    useEffect(() => {
+        if (toggleDelete) {
+            //highlights classes in red to show they can be deleted.
+            setButtonClass("delete-class-button");
+            console.log(buttonClass);
+            //removes red highlight, clickon on them will not delete but rather take you to student page.
+        } else {
+            setButtonClass("class-button");
+        }
+    }, [toggleDelete]);
 
     function ListClasses() {
-        const gb = props.gradebook;
-        
         if (props.classList[gb] && props.classList[gb].length > 0) {
-    
             return (
                 <React.Fragment>
                     <div className="d-flex flex-column align-items-center">
@@ -48,7 +57,7 @@ function ClassesPage(props) {
                             <button
                                 key={c + i}
                                 className={buttonClass}
-                                onClick={handleClassClick}
+                                onClick={toggleDelete ? handleDelete : handleClassClick }
                                 id={c}
                             >
                                 {c}
@@ -80,7 +89,7 @@ function ClassesPage(props) {
                             className="input-group-text"
                             htmlFor="create-class"
                             id="save-class"
-                            onClick={handleClick}
+                            onClick={handleAdd}
                         >
                             save
                         </label>
@@ -96,32 +105,33 @@ function ClassesPage(props) {
 
     function handleClassClick(e) {
         const classId = e.target.id;
-        if (classId !== "delete-class-button") {
-     
+        if (buttonClass !== "delete-class-button") {
             props.createClass(classId);
-          
+
             //redirects to studentsPage
             history.push("/students");
         }
     }
 
-    function handleClick(e) {
+    function handleAdd(e) {
         if (e.currentTarget.id === "add-class-button") {
             setToggleAdd(!toggleAdd);
         }
         if (e.target.id === "save-class") {
             setToggleAdd(!toggleAdd);
-            props.createClass(newClass);
-            props.updateClassList(newClass);
-        } else if (e.currentTarget.id === "delete-a-class") {
-            setToggleDelete(!toggleDelete);
-
-            if (toggleDelete) {
-                setButtonClass("delete-class-button");
-            } else {
-                setButtonClass("class-button");
+            if (
+                !props.classList[gb].some(
+                    (existingClass) => existingClass === newClass
+                )
+            ) {
+                props.createClass(newClass);
+                props.updateClassList(newClass);
             }
-        } else if (e.target.className === "delete-class-button") {
+        }
+    }
+
+    function handleDelete(e) {
+        if (toggleDelete) {
             setShowModal(true);
             setItemToDelete(e.target.id);
         }
@@ -144,19 +154,20 @@ function ClassesPage(props) {
             )}
             <h1 className="header">Classes</h1>
             <hr />
+
             <div className="d-flex justify-content-center">
                 <span>
                     <h2 className="subtitle mb-4">{props.gradebook}</h2>
                 </span>
             </div>
-            <div>
+            <div className="form-container">
                 {toggleAdd ? (
                     inputClass
                 ) : (
                     <div>
                         <ListClasses />
                         <div className="d-flex justify-content-around">
-                            <div id="add-class-button" onClick={handleClick}>
+                            <div id="add-class-button" onClick={handleAdd}>
                                 <FontAwesomeIcon
                                     name="add-icon"
                                     icon={faPlusCircle}
@@ -164,14 +175,17 @@ function ClassesPage(props) {
                                 />
                             </div>
 
-                            <div onClick={handleClick} id="delete-a-class">
+                            <div
+                                onClick={() => setToggleDelete(!toggleDelete)}
+                                id="delete-a-class"
+                            >
                                 <FontAwesomeIcon
                                     name="delete-icon"
                                     icon={faMinusCircle}
                                     className={
                                         toggleDelete
-                                            ? "minus-icon mt-4"
-                                            : "minus-icon mt-4 highlight"
+                                            ? "minus-icon mt-4 highlight"
+                                            : "minus-icon mt-4"
                                     }
                                 />
                             </div>
