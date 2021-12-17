@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import {
     updatePage,
     updateStudentList,
@@ -28,8 +28,8 @@ const mapDispatchToProps = {
 
 function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
-    const [toggleAdd, setToggleAdd] = useState(false);
     const [newStudent, setNewStudent] = useState("");
+    const [showModal, setShowModal] = useState(false);
 
     const classKey = props.gradebook + "-" + props.class;
 
@@ -75,11 +75,15 @@ function StudentsPage(props) {
         return studentButtons;
     }
 
-    const inputStudent = (
-        <React.Fragment>
-            <div className="form-container">
-                <label htmlFor="create-class">Add Student</label>
-                <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+    const addStudentModal = (
+        <Modal show={showModal} centered size="sm" onHide={toggleModal}>
+            <Modal.Header closeButton className="bg-primary">
+                <Modal.Title className="text-white">Add Student</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="text-dark">
+                
+                <label htmlFor="create-class text-align-center">Add Student</label>
+                <div className="input-group mb-3 d-flex justify-content-start">
                     <input
                         id="create-class"
                         type="text"
@@ -87,20 +91,25 @@ function StudentsPage(props) {
                         placeholder="Student Name"
                         className="text-input"
                         onChange={handleChange}
+                        onKeyDown={handleSave}
                     />
-                    <div className="input-group-append">
-                        <label
-                            className="input-group-text"
-                            htmlFor="create-class"
-                            id="save-class"
-                            onClick={handleSave}
-                        >
-                            save
-                        </label>
-                    </div>
                 </div>
-            </div>
-        </React.Fragment>
+                <p>Press Enter or click add</p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    variant="success"
+                    name="cancel"
+                    id="save-student"
+                    onClick={handleSave}
+                >
+                    Add
+                </Button>
+                <Button variant="primary" name="delete" onClick={toggleModal}>
+                    Finished
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 
     function handleChange(e) {
@@ -108,9 +117,13 @@ function StudentsPage(props) {
     }
 
     function handleSave(e) {
-        if (newStudent) {
+        console.log("e.key and e.target.id: ", e.key + ", " + e.target.id);
+        if (
+            (newStudent && e.key === "Enter") ||
+            (newStudent && e.target.id === "save-student")
+        ) {
             props.createStudent(newStudent);
-            setToggleAdd(false);
+            setNewStudent("");
         }
     }
 
@@ -118,13 +131,16 @@ function StudentsPage(props) {
         setToggleDelete(!toggleDelete);
     }
 
-    function addStudents() {
+    function addStudentRoster() {
         history.push("/roster");
     }
 
-    function handleAdd(e) {
-        if (e.currentTarget.id === "add-class-button") {
-            setToggleAdd(!toggleAdd);
+    function toggleModal(e) {
+        if (e && e.currentTarget.id === "add-class-button") {
+            setShowModal(true);
+        } else {
+            setShowModal(false);
+            setNewStudent("");
         }
     }
 
@@ -133,12 +149,16 @@ function StudentsPage(props) {
             <h1 className="header">{props.class}</h1>
             <hr />
             <div className="form-container">
-                {props.studentList[classKey] ? <ListStudents /> : addStudents}
-                {toggleAdd ? (
-                    inputStudent
+                {props.studentList[classKey] ? (
+                    <ListStudents />
+                ) : (
+                    addStudentRoster
+                )}
+                {showModal ? (
+                    addStudentModal
                 ) : (
                     <div className="d-flex justify-content-between w-100">
-                        <div id="add-class-button" onClick={handleAdd}>
+                        <div id="add-class-button" onClick={toggleModal}>
                             <FontAwesomeIcon
                                 name="add-icon"
                                 icon={faPlusCircle}
