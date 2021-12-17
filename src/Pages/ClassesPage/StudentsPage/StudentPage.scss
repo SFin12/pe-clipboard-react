@@ -9,37 +9,35 @@
     max-width: 98%;
 }
 
-.flex-space-between{
+.flex-space-between {
     display: flex;
     justify-content: space-between;
-  }
-
-
+}
 
 .daily-points {
     display: inline;
-    width: 15%;
+    width: 19.2%;
     padding: 3px;
     border: 0px;
     min-width: 15%;
-    max-width: 15%;
     margin: 0px;
+    max-height: 60px;
 }
 
 .tl-round {
-    border-radius: .5em 0 0 0;
+    border-radius: 0.5em 0 0 0;
 }
 
 .tr-round {
-    border-radius: 0 .5em 0 0;
+    border-radius: 0 0.5em 0 0;
 }
 
 .br-round {
-    border-radius: 0 0 .5em 0;
+    border-radius: 0 0 0.5em 0;
 }
 
 .bl-round {
-    border-radius: 0 0 0 .5em;
+    border-radius: 0 0 0 0.5em;
 }
 
 .button {
@@ -48,7 +46,6 @@
     // margin: 20px auto;
     padding: 10px;
     // width: 70%;
-    min-height: 80px;
     font-size: 6vw;
     background-color: white;
 }
@@ -58,9 +55,35 @@
     padding: 3px;
     border: 0px;
     margin: 0px;
-    width: 83%;
-    min-width: 83%;
-    max-width: 83%;
+    width: 79.8%;
+    min-width: 79.8%;
+    max-height: 60px;
+}
+
+.absent {
+    display: inline;
+    width: 16%;
+    background-color: rgb(50, 255, 50);
+    padding: 3px;
+    border: 0px;
+    margin-top: -5px;
+}
+
+.note {
+    display: inline-block;
+    position: relative;
+    width: 19.2%;
+    margin: 0px;
+    height: 60px;
+}
+
+#submit-button {
+    background: linear-gradient(rgb(7, 80, 0), $green 20% 80%, rgb(7, 80, 0));
+    border: none;
+    border-color: none;
+    color: black;
+    font-weight: bold;
+    width: 40%;
 }
 
 @media (min-width: 1023px) {

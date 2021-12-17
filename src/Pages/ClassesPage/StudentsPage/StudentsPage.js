@@ -30,17 +30,34 @@ function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [studentPoints, setStudentPoints] = useState({});
 
     const classKey = props.gradebook + "-" + props.class;
 
     useEffect(() => {
         props.updatePage("Students");
+        const totalStudents = props.studentList[classKey].length;
+        console.log("studentList length: :", totalStudents);
+        setStudentPoints((prevState) => {
+            let newState = {};
+            for (let i = 0; i < totalStudents; i++) {
+                let pointsId = i + "-points";
+                newState = { ...newState, [pointsId]: props.dailyPoints };
+            }
+            console.log("newState", newState);
+            return newState;
+        });
     }, []);
 
     const history = useHistory();
 
     function ListStudents() {
+        console.log("studentPoints: ", studentPoints);
         const studentButtons = props.studentList[classKey].map((student, i) => {
+            const studentId = i + "-" + student;
+            const pointsId = i + "-points";
+            //console.log("studentPoints: ", studentPoints[pointsId]);
+
             return (
                 <div className="student">
                     <div className="flex-space-between">
@@ -49,9 +66,10 @@ function StudentsPage(props) {
                             className="tl-round student-button button"
                             type="button"
                             key={student}
-                            id={student}
+                            id={i + "-" + student}
                             name="student"
                             value={student}
+                            onClick={handleDecrement}
                         />
                         <input
                             className="tr-round button daily-points "
@@ -59,16 +77,53 @@ function StudentsPage(props) {
                             name="daily-points"
                             type="button"
                             id={i + "-points"}
-                            value={props.dailyPoints}
+                            value={studentPoints[pointsId]}
                         />
                     </div>
-                    {/* <div className="flex-space-between notes" data-toggle="off">
-            <input className="bl-round button absent note" name="attendance" type="button" id="${i}-attendance" data-toggle="off" value="P" />
-            <input className="button absent note " name="note1" type="button" id="${i}-note1" data-toggle="off" value="${note1}" />
-            <input className="button absent note" name="note2" type="button" id="${i}-note2" data-toggle="off" value="${note2}" />
-            <input className="button absent note " name="note3" type="button" id="${i}-note3" data-toggle="off" value="${note3}" />
-            <input className="br-round button absent note " name="note4" type="button" id="${i}-note4" data-toggle="off" value="${note4}" />
-          </div> */}
+                    <div className="flex-space-between notes" data-toggle="off">
+                        <input
+                            className="bl-round button absent note"
+                            name="attendance"
+                            type="button"
+                            id="attendance"
+                            data-toggle="off"
+                            value="P"
+                        />
+                        <input
+                            className="button absent note "
+                            name="note1"
+                            type="button"
+                            id={i + "-note1"}
+                            data-toggle="off"
+                            value="NP"
+                        />
+                        <input
+                            className="button absent note"
+                            name="note2"
+                            type="button"
+                            id={i + "-note2"}
+                            data-toggle="off"
+                            value="ND"
+                        />
+                        <input
+                            className="button absent note "
+                            name="note3"
+                            type="button"
+                            id={i + "-note3"}
+                            data-toggle="off"
+                            value="C"
+                        />
+                        <input
+                            className="br-round button absent note "
+                            style={{ textAlign: "center" }}
+                            name="attendance"
+                            type="text"
+                            id={i + "-custom-note"}
+                            data-toggle="off"
+                            defaultValue="+"
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
             );
         });
@@ -81,11 +136,12 @@ function StudentsPage(props) {
                 <Modal.Title className="text-white">Add Student</Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-dark">
-                
-                <label htmlFor="create-class text-align-center">Add Student</label>
+                <label htmlFor="create-student text-align-center">
+                    Add Student
+                </label>
                 <div className="input-group mb-3 d-flex justify-content-start">
                     <input
-                        id="create-class"
+                        id="create-student"
                         type="text"
                         value={newStudent}
                         placeholder="Student Name"
@@ -112,8 +168,25 @@ function StudentsPage(props) {
         </Modal>
     );
 
+    function handleDecrement(e) {
+        const pointsId = e.target.id[0] + "-points";
+        let currentPoints = studentPoints[pointsId];
+        if (currentPoints > 0) {
+            --currentPoints;
+        }
+
+        setStudentPoints((prevState) => ({
+            ...prevState,
+            [pointsId]: currentPoints,
+        }));
+    }
+
     function handleChange(e) {
-        setNewStudent(e.target.value);
+        if (e.target.id === "create-student") {
+            setNewStudent(e.target.value);
+        } else if (e.target.id.slice(2) === "custom-note") {
+            console.log("custom note: ", e.target.value);
+        }
     }
 
     function handleSave(e) {
@@ -157,7 +230,7 @@ function StudentsPage(props) {
                 {showModal ? (
                     addStudentModal
                 ) : (
-                    <div className="d-flex justify-content-between w-100">
+                    <div className="d-flex justify-content-between align-items-center w-100">
                         <div id="add-class-button" onClick={toggleModal}>
                             <FontAwesomeIcon
                                 name="add-icon"
@@ -165,6 +238,13 @@ function StudentsPage(props) {
                                 className="plus-icon m-4"
                             />
                         </div>
+
+                        <Button
+                            className="submit-button btn-lg"
+                            id="submit-button"
+                        >
+                            Submit
+                        </Button>
 
                         <div onClick={handleDelete} id="delete-a-class">
                             <FontAwesomeIcon
