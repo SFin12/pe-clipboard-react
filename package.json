@@ -1,4 +1,5 @@
 {
+    "homepage": "https://sfin12.github.io/pe-clipboard-react"
     "name": "pe-clipboard",
     "version": "0.1.0",
     "private": true,
@@ -10,6 +11,7 @@
         "cra-template": "1.1.2",
         "firebase": "^9.5.0",
         "firebase-redux": "^0.0.5",
+        "gh-pages": "^3.2.3",
         "googleapis": "39",
         "node-sass": "^6.0.1",
         "react": "^17.0.2",
@@ -30,7 +32,9 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "predeploy": "npm run build",
+        "deploy":"gh-pages -d build"
     },
     "eslintConfig": {
         "extends": [

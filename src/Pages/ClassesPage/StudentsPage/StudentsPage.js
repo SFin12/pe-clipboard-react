@@ -31,41 +31,14 @@ function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [studentPoints, setStudentPoints] = useState({});
-    const [attendance, setAttendance] = useState({});
 
     const classKey = props.gradebook + "-" + props.class;
 
-    useEffect(() => {
+    useEffect((props) => {
         props.updatePage("Students");
-        const studentsExist = props.studentList[classKey];
-        if (studentsExist) {
-            const totalStudents = props.studentList[classKey].length;
-            console.log("studentList length: :", totalStudents);
-            setStudentPoints(() => {
-                let newState = {};
-                for (let i = 0; i < totalStudents; i++) {
-                    let studentId = i + "-student";
-                    newState = { ...newState, [studentId]: props.dailyPoints };
-                }
-                console.log("newState", newState);
-                return newState;
-            });
-            setAttendance(() => {
-                let newState = {};
-                for (let i = 0; i < totalStudents; i++) {
-                    let studentId = i + "-student";
-                    newState = { ...newState, [studentId]: "P" };
-                }
-                console.log("newState", newState);
-                return newState;
-            });
-        }
     }, []);
 
     const history = useHistory();
-
-   
 
     const addStudentModal = (
         <Modal show={showModal} centered size="sm" onHide={toggleModal}>
@@ -104,8 +77,6 @@ function StudentsPage(props) {
             </Modal.Footer>
         </Modal>
     );
-
-
 
     function handleChange(e) {
         if (e.target.id === "create-student") {
@@ -149,9 +120,7 @@ function StudentsPage(props) {
             <hr />
             <div className="form-container">
                 {props.studentList[classKey] ? (
-                    <ListStudents 
-                        handleDecrement
-                        />
+                    <ListStudents />
                 ) : (
                     addStudentRoster
                 )}

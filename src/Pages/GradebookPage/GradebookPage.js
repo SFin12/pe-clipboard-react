@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { connect } from "react-redux";
 import {
@@ -49,7 +49,6 @@ function GradebookPage(props) {
     }
 
     function ListGradebooks() {
-       
         if (props.gradebookList.length > 0) {
             return (
                 <React.Fragment>
@@ -65,7 +64,6 @@ function GradebookPage(props) {
                             value={choice}
                         >
                             {props.gradebookList.map((gradebook, i) => {
-                    
                                 return (
                                     <option
                                         key={"gb" + i}
@@ -101,7 +99,7 @@ function GradebookPage(props) {
     return (
         <React.Fragment>
             <h1 className="header">Gradebook</h1>
-            <hr/>
+            <hr />
             <div className="form-container">
                 <section>
                     <DropDown

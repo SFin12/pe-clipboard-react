@@ -35,7 +35,16 @@ const mapDispatchToProps = {
 //https://www.quod.ai/post/how-to-integrate-google-api-into-your-react-app
 
 function SignInPage(props) {
-
+    const {
+        isLoggedIn,
+        name,
+        email,
+        imageUrl,
+        updateLogin, 
+        updateUserInfo, 
+        updateGoogleAuth, 
+        updateStore
+        } = props;
     //fetch current user data to update redux store when first loading
     function getUserData(userId) {
         if (!userId) {
@@ -48,12 +57,12 @@ function SignInPage(props) {
             //check if user has any saved data
             if (data) {
                 //updates redux store with user data stored in realtime database from firebase
-                props.updateStore(data);
+                updateStore(data);
             } 
             // else {
             //     writeUserData()
             // }
-            return props.updateLogin(true);
+            return updateLogin(true);
         });
     
     }
@@ -66,12 +75,12 @@ function SignInPage(props) {
         const name = profile.getName();
         const email = profile.getEmail();
         const imageUrl = profile.getImageUrl();
-        props.updateUserInfo(id, name, email, imageUrl);
+        updateUserInfo(id, name, email, imageUrl);
         getUserData(id);
     };
 
     const onFailure = () => {
-        props.updateLogin(false);
+        updateLogin(false);
     };
 
     const renderSigninButton = (_gapi) => {
@@ -102,7 +111,7 @@ function SignInPage(props) {
                         client_id: googleClientId,
                     });
 
-                    props.updateGoogleAuth(_googleAuth, _gapi); //updates redux store for global access
+                    updateGoogleAuth(_googleAuth, _gapi); //updates redux store for global access
                     renderSigninButton(_gapi); // (Ref. 6)
                 })();
             });
@@ -120,20 +129,21 @@ function SignInPage(props) {
                     <div id="main-title">
                         <h2>PE Clipboard</h2>
                     </div>
-                    {!props.isLoggedIn && (
+                    {!isLoggedIn && (
                         <div to="/classes" key="signInKey" id="google-signin" />
                     )}
 
-                    {props.isLoggedIn && (
+                    {isLoggedIn && (
                         <div className="d-flex flex-column align-items-center mb-3">
                             <div>
                                 <img
                                     className="rounded-circle"
-                                    src={props.imageUrl}
+                                    alt="profile"
+                                    src={imageUrl}
                                 />
                             </div>
-                            <div>{props.name}</div>
-                            <div>{props.email}</div>
+                            <div>{name}</div>
+                            <div>{email}</div>
 
                             {/* <button className="btn-primary" onClick={logOut}>
                                 Log Out

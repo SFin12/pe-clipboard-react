@@ -41,7 +41,7 @@ function ClassesPage(props) {
         if (toggleDelete) {
             //highlights classes in red to show they can be deleted.
             setButtonClass("delete-class-button");
-            console.log(buttonClass);
+            
             //removes red highlight, clickon on them will not delete but rather take you to student page.
         } else {
             setButtonClass("class-button");

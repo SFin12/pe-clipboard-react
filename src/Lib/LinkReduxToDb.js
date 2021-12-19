@@ -1,5 +1,5 @@
 import { db } from "./FirebaseConfig";
-import { ref, set, onValue, push, update } from "firebase/database";
+import { ref, onValue, update } from "firebase/database";
 
 export function writeUserData(userId, userObject) {
     if (ref(db, "/users/" + userId)) {

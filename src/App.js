@@ -12,7 +12,7 @@ import NavMenu from "./components/NavMenu/NavMenu";
 import { connect } from "react-redux";
 import { store } from "./Redux/createStore";
 import { updatePage } from "./Redux/actions";
-import { writeUserData, getUserData } from "./Lib/LinkReduxToDb";
+import { writeUserData } from "./Lib/LinkReduxToDb";
 
 
 
