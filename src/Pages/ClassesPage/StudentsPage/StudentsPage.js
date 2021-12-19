@@ -31,32 +31,43 @@ function StudentsPage(props) {
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [studentPoints, setStudentPoints] = useState({});
+    const [attendance, setAttendance] = useState({});
 
     const classKey = props.gradebook + "-" + props.class;
 
     useEffect(() => {
         props.updatePage("Students");
-        const totalStudents = props.studentList[classKey].length;
-        console.log("studentList length: :", totalStudents);
-        setStudentPoints((prevState) => {
-            let newState = {};
-            for (let i = 0; i < totalStudents; i++) {
-                let pointsId = i + "-points";
-                newState = { ...newState, [pointsId]: props.dailyPoints };
-            }
-            console.log("newState", newState);
-            return newState;
-        });
+        const studentsExist = props.studentList[classKey];
+        if (studentsExist) {
+            const totalStudents = props.studentList[classKey].length;
+            console.log("studentList length: :", totalStudents);
+            setStudentPoints(() => {
+                let newState = {};
+                for (let i = 0; i < totalStudents; i++) {
+                    let studentId = i + "-student";
+                    newState = { ...newState, [studentId]: props.dailyPoints };
+                }
+                console.log("newState", newState);
+                return newState;
+            });
+            setAttendance(() => {
+                let newState = {};
+                for (let i = 0; i < totalStudents; i++) {
+                    let studentId = i + "-student";
+                    newState = { ...newState, [studentId]: "P" };
+                }
+                console.log("newState", newState);
+                return newState;
+            });
+        }
     }, []);
 
     const history = useHistory();
 
     function ListStudents() {
-        console.log("studentPoints: ", studentPoints);
         const studentButtons = props.studentList[classKey].map((student, i) => {
-            const studentId = i + "-" + student;
+            const studentId = i + "-student";
             const pointsId = i + "-points";
-            //console.log("studentPoints: ", studentPoints[pointsId]);
 
             return (
                 <div className="student">
@@ -67,7 +78,7 @@ function StudentsPage(props) {
                             type="button"
                             key={student}
                             id={i + "-" + student}
-                            name="student"
+                            name={student}
                             value={student}
                             onClick={handleDecrement}
                         />
@@ -77,17 +88,23 @@ function StudentsPage(props) {
                             name="daily-points"
                             type="button"
                             id={i + "-points"}
-                            value={studentPoints[pointsId]}
+                            value={studentPoints[studentId]}
+                            onClick={handleIncrement}
                         />
                     </div>
                     <div className="flex-space-between notes" data-toggle="off">
                         <input
-                            className="bl-round button absent note"
+                            className={
+                                "bl-round button absent note" +
+                                " " +
+                                attendance[studentId]
+                            }
                             name="attendance"
                             type="button"
-                            id="attendance"
+                            id={i + "-attendance"}
                             data-toggle="off"
-                            value="P"
+                            value={attendance[studentId]}
+                            onClick={handleAttendance}
                         />
                         <input
                             className="button absent note "
@@ -120,7 +137,7 @@ function StudentsPage(props) {
                             type="text"
                             id={i + "-custom-note"}
                             data-toggle="off"
-                            defaultValue="+"
+                            defaultValue="?"
                             onChange={handleChange}
                         />
                     </div>
@@ -169,16 +186,40 @@ function StudentsPage(props) {
     );
 
     function handleDecrement(e) {
-        const pointsId = e.target.id[0] + "-points";
-        let currentPoints = studentPoints[pointsId];
+        //decrease student points by one.
+        const studentId = e.target.id[0] + "-student";
+        let currentPoints = studentPoints[studentId];
         if (currentPoints > 0) {
             --currentPoints;
         }
-
         setStudentPoints((prevState) => ({
             ...prevState,
-            [pointsId]: currentPoints,
+            [studentId]: currentPoints,
         }));
+    }
+
+    function handleIncrement(e) {
+        //increase student points by one.
+        const studentId = e.target.id[0] + "-student";
+        let currentPoints = studentPoints[studentId];
+        ++currentPoints;
+        setStudentPoints((prevState) => ({
+            ...prevState,
+            [studentId]: currentPoints,
+        }));
+    }
+
+    function handleAttendance(e) {
+        const studentId = e.target.id[0] + "-student";
+        let currentAttendance = attendance[studentId];
+        console.log("attendance id: ", e.target.id);
+        if (currentAttendance === "P") {
+            setAttendance({ ...attendance, [studentId]: "A" });
+        } else if (currentAttendance === "A") {
+            setAttendance({ ...attendance, [studentId]: "T" });
+        } else {
+            setAttendance({ ...attendance, [studentId]: "P" });
+        }
     }
 
     function handleChange(e) {

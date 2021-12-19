@@ -86,6 +86,19 @@
     width: 40%;
 }
 
+//present
+.P {
+    background-color: $green;
+}
+//absent
+.A {
+    background-color: red;
+}
+//tardy
+.T {
+    background-color: yellow;
+}
+
 @media (min-width: 1023px) {
     .button {
         font-size: 1.7rem;
