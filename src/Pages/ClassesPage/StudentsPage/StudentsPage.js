@@ -8,8 +8,9 @@ import {
 } from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
-import "./StudentPage.scss";
 import { useHistory } from "react-router";
+import ListStudents from "../../../components/ListStudents";
+import "./StudentPage.scss";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -17,7 +18,7 @@ const mapStateToProps = (state) => ({
     class: state.class,
     student: state.student,
     studentList: state.studentList,
-    dailyPoints: state.dailyPoints,
+    dailyPoints: state.settings.dailyPoints,
 });
 
 const mapDispatchToProps = {
@@ -64,88 +65,7 @@ function StudentsPage(props) {
 
     const history = useHistory();
 
-    function ListStudents() {
-        const studentButtons = props.studentList[classKey].map((student, i) => {
-            const studentId = i + "-student";
-            const pointsId = i + "-points";
-
-            return (
-                <div className="student">
-                    <div className="flex-space-between">
-                        {/* Student Button with their name */}
-                        <input
-                            className="tl-round student-button button"
-                            type="button"
-                            key={student}
-                            id={i + "-" + student}
-                            name={student}
-                            value={student}
-                            onClick={handleDecrement}
-                        />
-                        <input
-                            className="tr-round button daily-points "
-                            key={i + "-points"}
-                            name="daily-points"
-                            type="button"
-                            id={i + "-points"}
-                            value={studentPoints[studentId]}
-                            onClick={handleIncrement}
-                        />
-                    </div>
-                    <div className="flex-space-between notes" data-toggle="off">
-                        <input
-                            className={
-                                "bl-round button absent note" +
-                                " " +
-                                attendance[studentId]
-                            }
-                            name="attendance"
-                            type="button"
-                            id={i + "-attendance"}
-                            data-toggle="off"
-                            value={attendance[studentId]}
-                            onClick={handleAttendance}
-                        />
-                        <input
-                            className="button absent note "
-                            name="note1"
-                            type="button"
-                            id={i + "-note1"}
-                            data-toggle="off"
-                            value="NP"
-                        />
-                        <input
-                            className="button absent note"
-                            name="note2"
-                            type="button"
-                            id={i + "-note2"}
-                            data-toggle="off"
-                            value="ND"
-                        />
-                        <input
-                            className="button absent note "
-                            name="note3"
-                            type="button"
-                            id={i + "-note3"}
-                            data-toggle="off"
-                            value="C"
-                        />
-                        <input
-                            className="br-round button absent note "
-                            style={{ textAlign: "center" }}
-                            name="attendance"
-                            type="text"
-                            id={i + "-custom-note"}
-                            data-toggle="off"
-                            defaultValue="?"
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-            );
-        });
-        return studentButtons;
-    }
+   
 
     const addStudentModal = (
         <Modal show={showModal} centered size="sm" onHide={toggleModal}>
@@ -185,42 +105,7 @@ function StudentsPage(props) {
         </Modal>
     );
 
-    function handleDecrement(e) {
-        //decrease student points by one.
-        const studentId = e.target.id[0] + "-student";
-        let currentPoints = studentPoints[studentId];
-        if (currentPoints > 0) {
-            --currentPoints;
-        }
-        setStudentPoints((prevState) => ({
-            ...prevState,
-            [studentId]: currentPoints,
-        }));
-    }
 
-    function handleIncrement(e) {
-        //increase student points by one.
-        const studentId = e.target.id[0] + "-student";
-        let currentPoints = studentPoints[studentId];
-        ++currentPoints;
-        setStudentPoints((prevState) => ({
-            ...prevState,
-            [studentId]: currentPoints,
-        }));
-    }
-
-    function handleAttendance(e) {
-        const studentId = e.target.id[0] + "-student";
-        let currentAttendance = attendance[studentId];
-        console.log("attendance id: ", e.target.id);
-        if (currentAttendance === "P") {
-            setAttendance({ ...attendance, [studentId]: "A" });
-        } else if (currentAttendance === "A") {
-            setAttendance({ ...attendance, [studentId]: "T" });
-        } else {
-            setAttendance({ ...attendance, [studentId]: "P" });
-        }
-    }
 
     function handleChange(e) {
         if (e.target.id === "create-student") {
@@ -264,7 +149,9 @@ function StudentsPage(props) {
             <hr />
             <div className="form-container">
                 {props.studentList[classKey] ? (
-                    <ListStudents />
+                    <ListStudents 
+                        handleDecrement
+                        />
                 ) : (
                     addStudentRoster
                 )}

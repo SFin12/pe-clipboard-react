@@ -14,9 +14,18 @@ const initialState = {
     gradebookList: [],
     class: "",
     classList: {},
-    student:"",
+    student: "",
     studentList: {},
-    dailyPoints: 10
+    settings: {
+        dailyPoints: 10,
+        note1: "ND",
+        note2: "NP",
+        note3: "P",
+    },
+    todaysPoints: {},
+    totalPoints: {},
+    pointsPossible: {},
+    gradePercentage: {},
 };
 
 export const store = createStore(
