@@ -41,7 +41,7 @@ function ClassesPage(props) {
         if (toggleDelete) {
             //highlights classes in red to show they can be deleted.
             setButtonClass("delete-class-button");
-            
+
             //removes red highlight, clickon on them will not delete but rather take you to student page.
         } else {
             setButtonClass("class-button");
@@ -57,7 +57,11 @@ function ClassesPage(props) {
                             <button
                                 key={c + i}
                                 className={buttonClass}
-                                onClick={toggleDelete ? handleDelete : handleClassClick }
+                                onClick={
+                                    toggleDelete
+                                        ? handleDelete
+                                        : handleClassClick
+                                }
                                 id={c}
                             >
                                 {c}
@@ -120,6 +124,7 @@ function ClassesPage(props) {
         if (e.target.id === "save-class") {
             setToggleAdd(!toggleAdd);
             if (
+                !props.classList[gb] ||
                 !props.classList[gb].some(
                     (existingClass) => existingClass === newClass
                 )
