@@ -80,17 +80,21 @@ export const MainReducer = (state, action) => {
                 classList: { ...state.classList, [currentGb]: currentCl },
             };
 
-        case ActionTypes.CREATE_STUDENT:
+        case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
-            //Check if there is already a student list for the current class and whether there is a student with the same name. If there is a list and the name isn't already in it, add the student to the list.
+            //If one student is being added, check if the name already exists. If so, don't add.
+            console.log("smach length: ", sMatch.length);
             if (
+                sMatch.length === 1 &&
                 state.studentList[currentGb + "-" + currentClass] &&
-                !state.studentList[currentGb + "-" + currentClass].some(
+                state.studentList[currentGb + "-" + currentClass].some(
                     (student) => student === sMatch
                 )
             ) {
-                console.log("adding student: ", action.payload);
+                return { ...state };
+            }
 
+            if (state.studentList[currentGb + "-" + currentClass]) {
                 return {
                     ...state,
                     studentList: {
@@ -99,28 +103,9 @@ export const MainReducer = (state, action) => {
                             ...state.studentList[
                                 currentGb + "-" + currentClass
                             ],
-                            action.payload,
+                            ...action.payload,
                         ],
                     },
-                };
-            } else if (!state.studentList[currentGb + "-" + currentClass]) {
-            } else {
-                console.log("not adding student");
-                return { ...state };
-            }
-
-        case ActionTypes.UPDATE_STUDENTLIST:
-            console.log("current class type: ", typeof state.class);
-            console.log(
-                "type of property: ",
-                typeof state.studentList[currentClass]
-            );
-            if (state.studentList[currentGb + "-" + currentClass]) {
-                return {
-                    ...state,
-                    [state.studentList[currentGb + "-" + currentClass]]: [
-                        ...action.payload,
-                    ],
                 };
             }
 
