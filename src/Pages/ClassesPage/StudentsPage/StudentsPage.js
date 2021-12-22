@@ -34,7 +34,7 @@ function StudentsPage(props) {
 
     const classKey = props.gradebook + "-" + props.class;
 
-    useEffect((props) => {
+    useEffect(() => {
         props.updatePage("Students");
     }, []);
 
@@ -92,7 +92,7 @@ function StudentsPage(props) {
             (newStudent && e.key === "Enter") ||
             (newStudent && e.target.id === "save-student")
         ) {
-            props.createStudent(newStudent);
+            props.updateStudentList([newStudent]);
             setNewStudent("");
         }
     }

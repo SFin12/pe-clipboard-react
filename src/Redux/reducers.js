@@ -82,7 +82,7 @@ export const MainReducer = (state, action) => {
 
         case ActionTypes.CREATE_STUDENT:
             const sMatch = action.payload;
-            //Check if there is alreade a student list for the current class and whether there is a student with the same name.
+            //Check if there is already a student list for the current class and whether there is a student with the same name. If there is a list and the name isn't already in it, add the student to the list.
             if (
                 state.studentList[currentGb + "-" + currentClass] &&
                 !state.studentList[currentGb + "-" + currentClass].some(
@@ -90,18 +90,7 @@ export const MainReducer = (state, action) => {
                 )
             ) {
                 console.log("adding student: ", action.payload);
-                console.log({
-                    ...state,
-                    studentList: {
-                        ...state.studentList,
-                        [currentGb + "-" + currentClass]: [
-                            ...state.studentList[
-                                currentGb + "-" + currentClass
-                            ],
-                            action.payload,
-                        ],
-                    },
-                });
+
                 return {
                     ...state,
                     studentList: {
@@ -114,6 +103,7 @@ export const MainReducer = (state, action) => {
                         ],
                     },
                 };
+            } else if (!state.studentList[currentGb + "-" + currentClass]) {
             } else {
                 console.log("not adding student");
                 return { ...state };
@@ -144,6 +134,7 @@ export const MainReducer = (state, action) => {
                     },
                 };
             }
+            console.log("not able to add student");
             return { ...state };
         default:
             console.log("default action type: ", action);
