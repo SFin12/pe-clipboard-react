@@ -49,7 +49,6 @@ export const updateGradebookList = (gradebookName) => {
 };
 
 export const updateStore = (data) => {
- 
     return {
         type: ActionTypes.UPDATE_STORE,
         payload: data,
@@ -67,7 +66,6 @@ export const deleteGradebook = (gradebookName) => ({
 });
 
 export const createClass = (className) => {
-   
     return {
         type: ActionTypes.CREATE_CLASS,
         payload: className,
@@ -91,16 +89,8 @@ export const deleteClass = (className) => ({
     payload: className,
 });
 
-export const createStudent = (student) => {
-   
-    return {
-        type: ActionTypes.CREATE_STUDENT,
-        payload: student,
-    };
-};
-
 export const updateStudentList = (arrayStudentNames) => {
-    console.log("updating Student List: ", typeof(arrayStudentNames))
+    console.log("updating Student List: ", typeof arrayStudentNames);
     return {
         type: ActionTypes.UPDATE_STUDENTLIST,
         payload: arrayStudentNames,
