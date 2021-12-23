@@ -25,14 +25,11 @@ const mapDispatchToProps = {
 };
 
 export function SettingsPage(props) {
-    console.log('settingsProps: ',props.currentPage)
     return (
         <React.Fragment>
             <h1 className="header">Settings</h1>
-            <hr/>
-            <div className="form-container">
-                
-            </div>
+            <hr />
+            <div className="form-container"></div>
         </React.Fragment>
     );
 }

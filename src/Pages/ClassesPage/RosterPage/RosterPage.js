@@ -25,7 +25,6 @@ function RosterPage(props) {
     function handleChange(e) {
         saveRoster(e, (response) => {
             setRoster(response);
-            console.log("response: ", response )
             props.updateStudentList(response);
         });
         //props.updateStudentList(response);

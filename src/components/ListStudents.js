@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-    updatePage,
-    updateStudentList,
-    createStudent,
-} from "../Redux/actions";
+import { updatePage, updateStudentList } from "../Redux/actions";
 import "./ListStudents.scss";
 
 const mapStateToProps = (state) => ({
@@ -19,27 +15,34 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
-    createStudent,
 };
 
 function ListStudents(props) {
     const [studentPoints, setStudentPoints] = useState({});
     const [attendance, setAttendance] = useState({});
-    const classKey = props.gradebook + "-" + props.class;
+    const uncleanCurrentGb = props.gradebook;
+    const uncleanCurrentClass = props.class;
+    const currentGb = uncleanCurrentGb.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const currentClass = uncleanCurrentClass.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const classKey = currentGb + "-" + currentClass;
 
     useEffect(() => {
         props.updatePage("Students");
         const studentsExist = props.studentList[classKey];
         if (studentsExist) {
             const totalStudents = props.studentList[classKey].length;
-            console.log("studentList length: :", totalStudents);
             setStudentPoints(() => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
                     let studentId = i + "-student";
                     newState = { ...newState, [studentId]: props.dailyPoints };
                 }
-                console.log("newState", newState);
                 return newState;
             });
             setAttendance(() => {
@@ -48,15 +51,13 @@ function ListStudents(props) {
                     let studentId = i + "-student";
                     newState = { ...newState, [studentId]: "P" };
                 }
-                console.log("newState", newState);
                 return newState;
             });
         }
-    }, []);
+    }, [props.studentList]);
 
     function handleChange(e) {
         if (e.target.id.slice(2) === "custom-note") {
-            console.log("custom note: ", e.target.value);
         }
     }
 
@@ -87,7 +88,6 @@ function ListStudents(props) {
     function handleAttendance(e) {
         const studentId = e.target.id[0] + "-student";
         let currentAttendance = attendance[studentId];
-        console.log("attendance id: ", e.target.id);
         if (currentAttendance === "P") {
             setAttendance({ ...attendance, [studentId]: "A" });
         } else if (currentAttendance === "A") {

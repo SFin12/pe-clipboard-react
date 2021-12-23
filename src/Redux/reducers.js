@@ -2,10 +2,17 @@ import * as ActionTypes from "./actionTypes";
 
 export const MainReducer = (state, action) => {
     //currentGb and currentClass are used for multiple cases
-    const currentGb = state.gradebook;
-    const currentClass = state.class;
+    const uncleanCurrentGb = state.gradebook;
+    const currentGb = uncleanCurrentGb.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const uncleanCurrentClass = state.class;
+    const currentClass = uncleanCurrentClass.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
 
-    console.log("type and payload: ", action.type + ", " + action.payload);
     switch (action.type) {
         case ActionTypes.UPDATE_LOGIN:
             return { ...state, signedIn: action.payload };
@@ -83,7 +90,7 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             //If one student is being added, check if the name already exists. If so, don't add.
-            console.log("smach length: ", sMatch.length);
+
             if (
                 sMatch.length === 1 &&
                 state.studentList[currentGb + "-" + currentClass] &&
@@ -110,7 +117,6 @@ export const MainReducer = (state, action) => {
             }
 
             if (!state.studentList[currentGb + "-" + currentClass]) {
-                console.log("duplicate or first time class");
                 return {
                     ...state,
                     studentList: {
@@ -121,8 +127,16 @@ export const MainReducer = (state, action) => {
             }
             console.log("not able to add student");
             return { ...state };
+
+        case ActionTypes.UPDATE_TODAYS_POINTS:
+            return {
+                ...state,
+                todaysPoints: {
+                    [currentGb + "-" + currentClass]: [...action.payload],
+                },
+            };
+
         default:
-            console.log("default action type: ", action);
             return state;
     }
 };

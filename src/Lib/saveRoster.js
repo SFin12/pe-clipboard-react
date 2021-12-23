@@ -2,7 +2,6 @@ export function saveRoster(e, callback) {
     const csvInput = e.target.files[0];
     const reader = new FileReader();
     let formattedArr = [];
-    console.log("1st formattedArr: ", formattedArr);
 
     reader.onload = function () {
         const arr = reader.result.split("\n");
@@ -13,10 +12,8 @@ export function saveRoster(e, callback) {
                 formattedArr = [...formattedArr, cleanedStudent];
             }
         }
-        console.log("2nd formattedArr array?: ", formattedArr[3]);
         return callback(formattedArr);
-        
-    }
+    };
 
     // start reading the file. When it is done, calls the onload event defined above.
     reader.readAsText(csvInput);

@@ -35,7 +35,8 @@ function ClassesPage(props) {
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
     const history = useHistory();
-    const gb = props.gradebook;
+    const uncleanGb = props.gradebook;
+    const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
 
     useEffect(() => {
         if (toggleDelete) {
@@ -104,7 +105,7 @@ function ClassesPage(props) {
     );
 
     function handleChange(e) {
-        setNewClass(e.target.value);
+        if (e.target.value) setNewClass(e.target.value);
     }
 
     function handleClassClick(e) {

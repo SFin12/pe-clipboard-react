@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
-import {
-    updatePage,
-    updateStudentList,
-    createStudent,
-} from "../../../Redux/actions";
+import { updatePage, updateStudentList } from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router";
@@ -24,16 +20,25 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
-    createStudent,
 };
 
 function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const uncleanCurrentGb = props.gradebook;
+    const uncleanCurrentClass = props.class;
+    const currentGb = uncleanCurrentGb.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const currentClass = uncleanCurrentClass.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const classKey = currentGb + "-" + currentClass;
 
-    const classKey = props.gradebook + "-" + props.class;
-
+    console.log("classKey", classKey);
     useEffect(() => {
         props.updatePage("Students");
     }, []);
@@ -87,7 +92,6 @@ function StudentsPage(props) {
     }
 
     function handleSave(e) {
-        console.log("e.key and e.target.id: ", e.key + ", " + e.target.id);
         if (
             (newStudent && e.key === "Enter") ||
             (newStudent && e.target.id === "save-student")
@@ -114,13 +118,17 @@ function StudentsPage(props) {
         }
     }
 
+    function handleSubmit(e) {
+        console.log("handling submit");
+    }
+
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>
             <hr />
             <div className="form-container">
                 {props.studentList[classKey] ? (
-                    <ListStudents />
+                    <ListStudents handleSubmit={handleSubmit} />
                 ) : (
                     addStudentRoster
                 )}
@@ -139,6 +147,7 @@ function StudentsPage(props) {
                         <Button
                             className="submit-button btn-lg"
                             id="submit-button"
+                            onSubmit={handleSubmit}
                         >
                             Submit
                         </Button>

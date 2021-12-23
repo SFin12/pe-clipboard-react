@@ -96,3 +96,15 @@ export const updateStudentList = (arrayStudentNames) => {
         payload: arrayStudentNames,
     };
 };
+
+export const updateTodaysPoints = (nameAndPointsObjectsArr) => {
+    console.log(
+        "%cactions.js line:102 nameAndPointsObjectsArr",
+        "color: white; background-color: #007acc;",
+        nameAndPointsObjectsArr
+    );
+    return {
+        type: ActionTypes.UPDATE_TODAYS_POINTS,
+        payload: nameAndPointsObjectsArr,
+    };
+};
