@@ -63,7 +63,11 @@ function ListStudents(props) {
 
     function handleDecrement(e) {
         //decrease student points by one.
-        const studentId = e.target.id[0] + "-student";
+        let studentId = e.target.id[0];
+        if (e.target.id[2] === "-") {
+            studentId = e.target.id.slice(0, 2);
+        }
+        studentId += "-student";
         let currentPoints = studentPoints[studentId];
         if (currentPoints > 0) {
             --currentPoints;
@@ -76,7 +80,11 @@ function ListStudents(props) {
 
     function handleIncrement(e) {
         //increase student points by one.
-        const studentId = e.target.id[0] + "-student";
+        let studentId = e.target.id[0];
+        if (e.target.id[2] === "-") {
+            studentId = e.target.id.slice(0, 2);
+        }
+        studentId += "-student";
         let currentPoints = studentPoints[studentId];
         ++currentPoints;
         setStudentPoints((prevState) => ({
@@ -86,7 +94,11 @@ function ListStudents(props) {
     }
 
     function handleAttendance(e) {
-        const studentId = e.target.id[0] + "-student";
+        let studentId = e.target.id[0];
+        if (e.target.id[2] === "-") {
+            studentId = e.target.id.slice(0, 2);
+        }
+        studentId += "-student";
         let currentAttendance = attendance[studentId];
         if (currentAttendance === "P") {
             setAttendance({ ...attendance, [studentId]: "A" });
