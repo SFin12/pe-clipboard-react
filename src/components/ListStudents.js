@@ -20,6 +20,7 @@ const mapDispatchToProps = {
 function ListStudents(props) {
     const [studentPoints, setStudentPoints] = useState({});
     const [attendance, setAttendance] = useState({});
+
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
     const currentGb = uncleanCurrentGb.replace(
@@ -32,6 +33,7 @@ function ListStudents(props) {
     );
     const classKey = currentGb + "-" + currentClass;
 
+    //starting values for attendance and daily points
     useEffect(() => {
         props.updatePage("Students");
         const studentsExist = props.studentList[classKey];
@@ -55,6 +57,21 @@ function ListStudents(props) {
             });
         }
     }, [props.studentList]);
+
+    useEffect(() => {
+        if (props.submit) {
+            console.log(
+                "%cListStudents.js line:63 studentPoints",
+                "color: #007acc;",
+                studentPoints
+            );
+            console.log(
+                "%cListStudents.js line:63 attendance",
+                "color: #007acc;",
+                attendance
+            );
+        }
+    }, [props.submit]);
 
     function handleChange(e) {
         if (e.target.id.slice(2) === "custom-note") {
@@ -111,7 +128,6 @@ function ListStudents(props) {
 
     const studentButtons = props.studentList[classKey].map((student, i) => {
         const studentId = i + "-student";
-
         return (
             <div className="student">
                 <div className="flex-space-between">
@@ -121,7 +137,7 @@ function ListStudents(props) {
                         type="button"
                         key={student}
                         id={i + "-" + student}
-                        name={student}
+                        name="name"
                         value={student}
                         onClick={handleDecrement}
                     />

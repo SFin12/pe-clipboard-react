@@ -97,7 +97,11 @@ export const updateStudentList = (arrayStudentNames) => {
     };
 };
 
-export const updateTodaysPoints = (nameAndPointsObjectsArr) => {
+export const updateTodaysPoints = (
+    nameAndPointsObjectsArr,
+    currentGb,
+    currentClass
+) => {
     console.log(
         "%cactions.js line:102 nameAndPointsObjectsArr",
         "color: white; background-color: #007acc;",

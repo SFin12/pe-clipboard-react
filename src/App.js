@@ -14,10 +14,6 @@ import { store } from "./Redux/createStore";
 import { updatePage } from "./Redux/actions";
 import { writeUserData } from "./Lib/LinkReduxToDb";
 
-
-
-
-
 const mapStateToProps = (state) => ({
     signedIn: state.signedIn,
     id: state.id,
@@ -29,7 +25,8 @@ const mapStateToProps = (state) => ({
     classList: state.classList,
     class: state.class,
     student: state.student,
-    studentList: state.studentList
+    studentList: state.studentList,
+    todaysPoints: state.todaysPoints,
 });
 
 const mapDispatchToProps = {
@@ -39,7 +36,6 @@ const mapDispatchToProps = {
 class App extends React.Component {
     componentDidMount() {
         !this.props.gradebook && this.props.updatePage("Gradebook");
-  
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -50,7 +46,8 @@ class App extends React.Component {
             prevProps.gradebook !== this.props.gradebook ||
             prevProps.gradebookList !== this.props.gradebookList ||
             prevProps.classList !== this.props.classList ||
-            prevProps.studentList !== this.props.studentList
+            prevProps.studentList !== this.props.studentList ||
+            prevProps.todaysPoints !== this.props.todaysPoints
         ) {
             const userObject = {
                 id: this.props.id,
@@ -62,19 +59,20 @@ class App extends React.Component {
                 classList: this.props.classList,
                 class: this.props.class,
                 student: this.props.student,
-                studentList: this.props.studentList
+                studentList: this.props.studentList,
+                todaysPoints: this.props.todaysPoints,
             };
 
             if (this.props.id) {
-                console.log("studentList: ", this.props.studentList)
+                console.log("studentList: ", this.props.studentList);
                 writeUserData(this.props.id, userObject);
             }
         }
     }
 
     render() {
-        console.log("store", store.getState());
-      
+        // console.log("store", store.getState());
+
         return (
             //Check if user is signed in, if so, render navbar
             <div className="App">

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
-import { updatePage, updateStudentList } from "../../../Redux/actions";
+import {
+    updatePage,
+    updateStudentList,
+    updateTodaysPoints,
+} from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router";
@@ -20,6 +24,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
+    updateTodaysPoints,
 };
 
 function StudentsPage(props) {
@@ -119,7 +124,30 @@ function StudentsPage(props) {
     }
 
     function handleSubmit(e) {
-        console.log("handling submit");
+        const students = e.target.elements;
+        // console.log(students[0]);
+        const studentObjectsArr = [];
+        e.preventDefault();
+        let studentName = "";
+        let studentPoints = "";
+        for (let i = 0; i < students.length - 1; i++) {
+            if (students[i].name === "name") {
+                studentName = students[i].value;
+            }
+            if (students[i].name === "daily-points") {
+                studentPoints = students[i].value;
+            }
+            // console.log(studentName.length, studentPoints.length);
+            if (studentName.length > 0 && studentPoints.length > 0) {
+                const studentObj = {
+                    [studentName]: studentPoints,
+                };
+                studentObjectsArr.push(studentObj);
+                studentName = "";
+                studentPoints = "";
+            }
+        }
+        props.updateTodaysPoints(studentObjectsArr);
     }
 
     return (
@@ -127,45 +155,47 @@ function StudentsPage(props) {
             <h1 className="header">{props.class}</h1>
             <hr />
             <div className="form-container">
-                {props.studentList[classKey] ? (
-                    <ListStudents handleSubmit={handleSubmit} />
-                ) : (
-                    addStudentRoster
-                )}
-                {showModal ? (
-                    addStudentModal
-                ) : (
-                    <div className="d-flex justify-content-between align-items-center w-100">
-                        <div id="add-class-button" onClick={toggleModal}>
-                            <FontAwesomeIcon
-                                name="add-icon"
-                                icon={faPlusCircle}
-                                className="plus-icon m-4"
-                            />
-                        </div>
+                <form onSubmit={handleSubmit}>
+                    {props.studentList[classKey] ? (
+                        <ListStudents />
+                    ) : (
+                        addStudentRoster
+                    )}
+                    {showModal ? (
+                        addStudentModal
+                    ) : (
+                        <div className="d-flex justify-content-between align-items-center w-100">
+                            <div id="add-class-button" onClick={toggleModal}>
+                                <FontAwesomeIcon
+                                    name="add-icon"
+                                    icon={faPlusCircle}
+                                    className="plus-icon m-4"
+                                />
+                            </div>
 
-                        <Button
-                            className="submit-button btn-lg"
-                            id="submit-button"
-                            onSubmit={handleSubmit}
-                        >
-                            Submit
-                        </Button>
+                            <Button
+                                className="submit-button btn-lg"
+                                id="submit-button"
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
 
-                        <div onClick={handleDelete} id="delete-a-class">
-                            <FontAwesomeIcon
-                                name="delete-icon"
-                                icon={faMinusCircle}
-                                className={
-                                    toggleDelete
-                                        ? "minus-icon m-4 highlight"
-                                        : "minus-icon m-4"
-                                }
-                            />
-                            <br />
+                            <div onClick={handleDelete} id="delete-a-class">
+                                <FontAwesomeIcon
+                                    name="delete-icon"
+                                    icon={faMinusCircle}
+                                    className={
+                                        toggleDelete
+                                            ? "minus-icon m-4 highlight"
+                                            : "minus-icon m-4"
+                                    }
+                                />
+                                <br />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </form>
             </div>
         </React.Fragment>
     );
