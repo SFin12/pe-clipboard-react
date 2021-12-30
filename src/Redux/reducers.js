@@ -14,22 +14,28 @@ export const MainReducer = (state, action) => {
     );
 
     switch (action.type) {
+        //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
             return { ...state, signedIn: action.payload };
         case ActionTypes.UPDATE_USER_INFO:
             return { ...state, ...action.payload };
         case ActionTypes.UPDATE_GOOGLEAUTH:
             return { ...state, googleAuth: action.payload };
+
+        //CURRENT PAGE---------------------------------------------------------------------
         case ActionTypes.UPDATE_PAGE:
             return { ...state, currentPage: action.payload.currentPage };
+
+        //UPDATE REDUX STORE FROM DATABASE--------------------------------------------------
         case ActionTypes.UPDATE_STORE:
             console.log("updating store: ", action.payload);
             return { ...state, ...action.payload };
+
+        //GRADEBOOK-------------------------------------------------------------------------
         case ActionTypes.CREATE_GRADEBOOK:
             return { ...state, gradebook: action.payload };
         case ActionTypes.UPDATE_GRADEBOOKLIST:
             const gbMatch = action.payload;
-
             if (!state.gradebookList.some((obj) => obj === gbMatch)) {
                 return {
                     ...state,
@@ -38,18 +44,15 @@ export const MainReducer = (state, action) => {
             } else {
                 return { ...state };
             }
-        case ActionTypes.GET_GRADEBOOK:
-            return { ...state };
         case ActionTypes.DELETE_GRADEBOOK:
             return { ...state };
 
+        //CLASSES---------------------------------------------------------------------------
         case ActionTypes.CREATE_CLASS:
             console.log("create class payload: ", action.payload);
             return { ...state, class: action.payload };
-
         case ActionTypes.UPDATE_CLASSES:
             const cMatch = action.payload;
-
             if (
                 state.classList[currentGb] &&
                 !state.classList[currentGb].some((obj) => obj === cMatch)
@@ -75,9 +78,6 @@ export const MainReducer = (state, action) => {
                 };
             }
             return { ...state };
-
-        case ActionTypes.GET_CLASSES:
-            return { ...state };
         case ActionTypes.DELETE_CLASS:
             const currentCl = state.classList[currentGb].filter(
                 (item) => item !== action.payload
@@ -87,6 +87,7 @@ export const MainReducer = (state, action) => {
                 classList: { ...state.classList, [currentGb]: currentCl },
             };
 
+        //STUDENTS---------------------------------------------------------------------------
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             //If one student is being added, check if the name already exists. If so, don't add.
@@ -115,7 +116,6 @@ export const MainReducer = (state, action) => {
                     },
                 };
             }
-
             if (!state.studentList[currentGb + "-" + currentClass]) {
                 return {
                     ...state,
@@ -128,6 +128,7 @@ export const MainReducer = (state, action) => {
             console.log("not able to add student");
             return { ...state };
 
+        //GRADES-----------------------------------------------------------------------------
         case ActionTypes.UPDATE_TODAYS_POINTS:
             return {
                 ...state,
@@ -136,6 +137,7 @@ export const MainReducer = (state, action) => {
                 },
             };
 
+        //DEFAULT-----------------------------------------------------------------------------
         default:
             return state;
     }
