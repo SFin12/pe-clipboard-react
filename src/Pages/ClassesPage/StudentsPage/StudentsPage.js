@@ -4,7 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 import {
     updatePage,
     updateStudentList,
-    updateTodaysPoints,
+    updateStudentInfo,
 } from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
-    updateTodaysPoints,
+    updateStudentInfo,
 };
 
 function StudentsPage(props) {
@@ -124,30 +124,57 @@ function StudentsPage(props) {
     }
 
     function handleSubmit(e) {
+        const date = new Date().toLocaleDateString();
+        console.log(date);
         const students = e.target.elements;
         // console.log(students[0]);
-        const studentObjectsArr = [];
+        const studentInfoObj = {};
         e.preventDefault();
         let studentName = "";
         let studentPoints = "";
+        let studentNotes = "";
+        let studentAttendance = "";
+        let finishedOneStudent = false;
         for (let i = 0; i < students.length - 1; i++) {
             if (students[i].name === "name") {
                 studentName = students[i].value;
+                //add student as key
+                studentInfoObj[studentName] = [];
             }
             if (students[i].name === "daily-points") {
                 studentPoints = students[i].value;
             }
-            // console.log(studentName.length, studentPoints.length);
-            if (studentName.length > 0 && studentPoints.length > 0) {
+            if (students[i].name === "attendance") {
+                studentAttendance = students[i].value;
+            }
+            if (students[i].name.slice(0, 4) === "note") {
+                studentNotes += students[i].value + " ";
+                if (students[i].name === "note4") {
+                    finishedOneStudent = true;
+                }
+            }
+            if (
+                studentName &&
+                studentPoints &&
+                studentAttendance &&
+                finishedOneStudent
+            ) {
+                // console.log(studentName.length, studentPoints.length);
                 const studentObj = {
-                    [studentName]: studentPoints,
+                    points: studentPoints,
+                    notes: studentNotes,
+                    attendance: studentAttendance,
+                    date: date,
                 };
-                studentObjectsArr.push(studentObj);
+                studentInfoObj[studentName].push(studentObj);
                 studentName = "";
                 studentPoints = "";
+                studentNotes = "";
+                studentAttendance = "";
+                finishedOneStudent = false;
             }
         }
-        props.updateTodaysPoints(studentObjectsArr);
+        props.updateStudentInfo(studentInfoObj, date);
     }
 
     return (

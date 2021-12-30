@@ -39,24 +39,31 @@ function ListStudents(props) {
         const studentsExist = props.studentList[classKey];
         if (studentsExist) {
             const totalStudents = props.studentList[classKey].length;
-            setStudentPoints(() => {
+            setStudentPoints((studentPoints) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
                     let studentId = i + "-student";
-                    newState = { ...newState, [studentId]: props.dailyPoints };
+                    newState = {
+                        ...newState,
+                        [studentId]:
+                            studentPoints[studentId] || props.dailyPoints,
+                    };
                 }
                 return newState;
             });
-            setAttendance(() => {
+            setAttendance((attendance) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
                     let studentId = i + "-student";
-                    newState = { ...newState, [studentId]: "P" };
+                    newState = {
+                        ...newState,
+                        [studentId]: attendance[studentId] || "P",
+                    };
                 }
                 return newState;
             });
         }
-    }, [props.studentList]);
+    }, [props, classKey]);
 
     useEffect(() => {
         if (props.submit) {
@@ -192,7 +199,7 @@ function ListStudents(props) {
                     <input
                         className="br-round button absent note "
                         style={{ textAlign: "center" }}
-                        name="attendance"
+                        name="note4"
                         type="text"
                         id={i + "-custom-note"}
                         data-toggle="off"

@@ -127,15 +127,85 @@ export const MainReducer = (state, action) => {
             }
             console.log("not able to add student");
             return { ...state };
-
+        case ActionTypes.DELETE_STUDENTLIST:
+            if (state.studentList[currentGb + "-" + currentClass]) {
+                return {
+                    ...state,
+                    studentList: {
+                        ...state.studentList,
+                        [currentGb + "-" + currentClass]: [],
+                    },
+                };
+            }
+            return { ...state };
         //GRADES-----------------------------------------------------------------------------
-        case ActionTypes.UPDATE_TODAYS_POINTS:
+        case ActionTypes.UPDATE_STUDENT_INFO:
+            const date = action.date;
+            if (state.studentInfo[currentGb + "-" + currentClass]) {
+                const thisClass =
+                    state.studentInfo[currentGb + "-" + currentClass];
+                console.log("thisClass: ", thisClass);
+
+                //check of current date already has an entry. If so, write over it.
+
+                let studentInfoArr = thisClass[Object.keys(thisClass)[0]];
+                let lastDateAdded =
+                    studentInfoArr[studentInfoArr.length - 1].date;
+                console.log("last date: ", lastDateAdded);
+                if (date === lastDateAdded) {
+                    Object.keys(action.payload).forEach((key) => {
+                        thisClass[key] = [
+                            ...thisClass[key].slice(0, -1),
+                            ...action.payload[key],
+                        ];
+                    });
+                    return {
+                        ...state,
+                        studentInfo: {
+                            ...state.studentInfo,
+                            [currentGb + "-" + currentClass]: {
+                                ...thisClass,
+                                ...action.payload,
+                            },
+                        },
+                        //     ...thisClass.splice(0, thisClass.length - 1),
+                        //     action.payload,
+                        // ],
+                    };
+                } else {
+                    Object.keys(action.payload).forEach((key) => {
+                        thisClass[key] = [
+                            ...thisClass[key],
+                            ...action.payload[key],
+                        ];
+                    });
+                    return {
+                        ...state,
+                        studentInfo: {
+                            ...state.studentInfo,
+                            [currentGb + "-" + currentClass]: {
+                                ...thisClass,
+                            },
+                        },
+                    };
+                }
+            }
             return {
                 ...state,
-                todaysPoints: {
-                    [currentGb + "-" + currentClass]: [...action.payload],
+                studentInfo: {
+                    ...state.studentInfo,
+                    [currentGb + "-" + currentClass]: action.payload,
                 },
             };
+
+        //ATTENDANCE-------------------------------------------------------------------------
+        // case ActionTypes.UPDATE_ATTENDANCE:
+        //     return {
+        //         ...state,
+        //         todaysPoints: {
+        //             [currentGb + "-" + currentClass]: [...action.payload],
+        //         },
+        //     };
 
         //DEFAULT-----------------------------------------------------------------------------
         default:

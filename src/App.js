@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
     class: state.class,
     student: state.student,
     studentList: state.studentList,
-    todaysPoints: state.todaysPoints,
+    studentInfo: state.studentInfo,
 });
 
 const mapDispatchToProps = {
@@ -47,7 +47,7 @@ class App extends React.Component {
             prevProps.gradebookList !== this.props.gradebookList ||
             prevProps.classList !== this.props.classList ||
             prevProps.studentList !== this.props.studentList ||
-            prevProps.todaysPoints !== this.props.todaysPoints
+            prevProps.studentInfo !== this.props.studentInfo
         ) {
             const userObject = {
                 id: this.props.id,
@@ -60,11 +60,10 @@ class App extends React.Component {
                 class: this.props.class,
                 student: this.props.student,
                 studentList: this.props.studentList,
-                todaysPoints: this.props.todaysPoints,
+                studentInfo: this.props.studentInfo,
             };
 
             if (this.props.id) {
-                console.log("studentList: ", this.props.studentList);
                 writeUserData(this.props.id, userObject);
             }
         }

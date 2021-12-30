@@ -1,22 +1,28 @@
 export function saveRoster(e, callback) {
-    const csvInput = e.target.files[0];
-    const reader = new FileReader();
-    let formattedArr = [];
+    if (e.target.files[0]) {
+        const csvInput = e.target.files[0];
+        const reader = new FileReader();
+        let formattedArr = [];
 
-    reader.onload = function () {
-        const arr = reader.result.split("\n");
+        reader.onload = function () {
+            const arr = reader.result.split("\n");
 
-        for (let student of arr) {
-            const cleanedStudent = cleanText(student);
-            if (cleanedStudent) {
-                formattedArr = [...formattedArr, cleanedStudent];
+            for (let student of arr) {
+                const cleanedStudent = cleanText(student);
+                if (cleanedStudent) {
+                    formattedArr = [...formattedArr, cleanedStudent];
+                }
             }
-        }
-        return callback(formattedArr);
-    };
+            return callback(formattedArr);
+        };
 
-    // start reading the file. When it is done, calls the onload event defined above.
-    reader.readAsText(csvInput);
+        // start reading the file. When it is done, calls the onload event defined above.
+        reader.readAsText(csvInput);
+    } else {
+        alert(
+            "Error when loading csv file.  Make sure there is at least one student and the file type ends with .csv"
+        );
+    }
 }
 
 function cleanText(string) {

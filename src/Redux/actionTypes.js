@@ -23,7 +23,17 @@ export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export const UPDATE_DATABASE = "UPDATE_DATABASE";
 
-export const DELETE_STUDENT = "UPDATE_SETTINGS";
 export const UPDATE_STUDENTLIST = "UPDATE_STUDENTLIST";
+export const DELETE_STUDENT = "DELETE_STUDENT";
+export const DELETE_STUDENTLIST = "DELETE_STUDENTLIST";
 
-export const UPDATE_TODAYS_POINTS = "UPDATE_TODAYS_POINTS";
+export const UPDATE_STUDENT_INFO = "UPDATE_STUDENT_INFO";
+
+//Not supported yet-----------------------------------------
+export const UPDATE_WEEKLY_POINTS = "UPDATE_WEEKLY_POINTS";
+export const UPDATE_TOTAL_POINTS = "UPDATE_TOTAL_POINTS";
+export const UPDATE_POINTS_POSSIBLE = "UPDATE_POINTS_POSSIBLE";
+export const UPDATE_GRADE_PERCENTAGE = "UPDATE_GRADE_PERCENTAGE";
+
+//Not supported yet-----------------------------------------
+export const UPDATE_ATTENDANCE = "UPDATE_ATTENDANCE";

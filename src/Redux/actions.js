@@ -96,19 +96,24 @@ export const updateStudentList = (arrayStudentNames) => {
         payload: arrayStudentNames,
     };
 };
-
-export const updateTodaysPoints = (
-    nameAndPointsObjectsArr,
-    currentGb,
-    currentClass
-) => {
-    console.log(
-        "%cactions.js line:102 nameAndPointsObjectsArr",
-        "color: white; background-color: #007acc;",
-        nameAndPointsObjectsArr
-    );
+export const deleteStudentList = () => {
+    console.log("Deleting Student List");
     return {
-        type: ActionTypes.UPDATE_TODAYS_POINTS,
-        payload: nameAndPointsObjectsArr,
+        type: ActionTypes.DELETE_STUDENTLIST,
+        payload: [],
+    };
+};
+
+export const updateStudentInfo = (studentInfoObj, date) => {
+    return {
+        type: ActionTypes.UPDATE_STUDENT_INFO,
+        date: date,
+        payload: studentInfoObj,
+    };
+};
+export const updateAttendance = (attendanceObj) => {
+    return {
+        type: ActionTypes.UPDATE_ATTENDANCE,
+        payload: attendanceObj,
     };
 };

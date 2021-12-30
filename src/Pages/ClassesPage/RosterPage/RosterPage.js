@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import DropDown from "../../../components/DropDown/DropDown";
-import { updatePage, updateStudentList } from "../../../Redux/actions";
+import {
+    updatePage,
+    updateStudentList,
+    deleteStudentList,
+} from "../../../Redux/actions";
 import { saveRoster } from "../../../Lib/saveRoster";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router";
@@ -16,6 +20,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
+    deleteStudentList,
 };
 
 function RosterPage(props) {
@@ -25,13 +30,14 @@ function RosterPage(props) {
     function handleChange(e) {
         saveRoster(e, (response) => {
             setRoster(response);
+            props.deleteStudentList();
             props.updateStudentList(response);
         });
         //props.updateStudentList(response);
 
         setTimeout(() => {
             history.push("/students");
-        }, 2000);
+        }, 1500);
     }
 
     function ListStudents() {}
