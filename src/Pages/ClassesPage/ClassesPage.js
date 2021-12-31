@@ -156,6 +156,9 @@ function ClassesPage(props) {
                     item={itemToDelete}
                     showModal={showModal}
                     handleModal={handleModal}
+                    warningMessageString={
+                        "You will also lose the student roster associated with the class"
+                    }
                 />
             )}
             <h1 className="header">Classes</h1>

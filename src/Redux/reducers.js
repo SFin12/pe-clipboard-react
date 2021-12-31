@@ -12,7 +12,7 @@ export const MainReducer = (state, action) => {
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
     );
-
+    console.log("reducer", action.payload);
     switch (action.type) {
         //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
@@ -138,7 +138,19 @@ export const MainReducer = (state, action) => {
                 };
             }
             return { ...state };
-        //GRADES-----------------------------------------------------------------------------
+        case ActionTypes.DELETE_STUDENT:
+            return {
+                ...state,
+                studentList: {
+                    ...state.studentList,
+                    [currentGb + "-" + currentClass]: state.studentList[
+                        currentGb + "-" + currentClass
+                    ].filter((student) => {
+                        return student !== action.payload;
+                    }),
+                },
+            };
+        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-----------------------------------------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
             if (state.studentInfo[currentGb + "-" + currentClass]) {
@@ -168,9 +180,6 @@ export const MainReducer = (state, action) => {
                                 ...action.payload,
                             },
                         },
-                        //     ...thisClass.splice(0, thisClass.length - 1),
-                        //     action.payload,
-                        // ],
                     };
                 } else {
                     Object.keys(action.payload).forEach((key) => {
@@ -199,13 +208,6 @@ export const MainReducer = (state, action) => {
             };
 
         //ATTENDANCE-------------------------------------------------------------------------
-        // case ActionTypes.UPDATE_ATTENDANCE:
-        //     return {
-        //         ...state,
-        //         todaysPoints: {
-        //             [currentGb + "-" + currentClass]: [...action.payload],
-        //         },
-        //     };
 
         //DEFAULT-----------------------------------------------------------------------------
         default:

@@ -99,6 +99,12 @@
     background-color: yellow;
 }
 
+.delete {
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: 5px solid red;
+}
+
 @media (min-width: 1023px) {
     .button {
         font-size: 1.7rem;

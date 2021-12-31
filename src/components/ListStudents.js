@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { updatePage, updateStudentList } from "../Redux/actions";
+import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
+import Confirm from "./ConfirmModal";
 import "./ListStudents.scss";
 
 const mapStateToProps = (state) => ({
@@ -13,6 +14,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+    deleteStudent,
     updatePage,
     updateStudentList,
 };
@@ -20,6 +22,9 @@ const mapDispatchToProps = {
 function ListStudents(props) {
     const [studentPoints, setStudentPoints] = useState({});
     const [attendance, setAttendance] = useState({});
+    const [studentToDelete, setStudentToDelete] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    console.log(props.toggleDelete);
 
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
@@ -65,20 +70,20 @@ function ListStudents(props) {
         }
     }, [props, classKey]);
 
-    useEffect(() => {
-        if (props.submit) {
-            console.log(
-                "%cListStudents.js line:63 studentPoints",
-                "color: #007acc;",
-                studentPoints
-            );
-            console.log(
-                "%cListStudents.js line:63 attendance",
-                "color: #007acc;",
-                attendance
-            );
-        }
-    }, [props.submit]);
+    // useEffect(() => {
+    //     if (props.submit) {
+    //         console.log(
+    //             "%cListStudents.js line:63 studentPoints",
+    //             "color: #007acc;",
+    //             studentPoints
+    //         );
+    //         console.log(
+    //             "%cListStudents.js line:63 attendance",
+    //             "color: #007acc;",
+    //             attendance
+    //         );
+    //     }
+    // }, [props.submit]);
 
     function handleChange(e) {
         if (e.target.id.slice(2) === "custom-note") {
@@ -132,82 +137,108 @@ function ListStudents(props) {
             setAttendance({ ...attendance, [studentId]: "P" });
         }
     }
+    function handleDelete(e) {
+        setStudentToDelete(e.currentTarget.id.split("-")[0]);
+        setShowModal(true);
+    }
+
+    function handleModal(e) {
+        setShowModal(false);
+        e.target.name === "delete" && props.deleteStudent(studentToDelete);
+    }
 
     const studentButtons = props.studentList[classKey].map((student, i) => {
         const studentId = i + "-student";
         return (
-            <div className="student">
-                <div className="flex-space-between">
-                    {/* Student Button with their name */}
-                    <input
-                        className="tl-round student-button button"
-                        type="button"
-                        key={student}
-                        id={i + "-" + student}
-                        name="name"
-                        value={student}
-                        onClick={handleDecrement}
+            <React.Fragment>
+                {showModal && (
+                    <Confirm
+                        item={studentToDelete}
+                        showModal={showModal}
+                        handleModal={handleModal}
+                        warningMessageString={`Permanently delete ${studentToDelete}?`}
                     />
-                    <input
-                        className="tr-round button daily-points "
-                        key={i + "-points"}
-                        name="daily-points"
-                        type="button"
-                        id={i + "-points"}
-                        value={studentPoints[studentId]}
-                        onClick={handleIncrement}
-                    />
+                )}
+                <div
+                    className={
+                        props.toggleDelete ? "student delete" : "student"
+                    }
+                    name="student-info"
+                    id={student + "-info"}
+                    onClick={props.toggleDelete ? handleDelete : undefined}
+                >
+                    <div className="flex-space-between">
+                        {/* Student Button with their name */}
+                        <input
+                            className="tl-round student-button button"
+                            type="button"
+                            key={student}
+                            id={i + "-" + student}
+                            name="name"
+                            value={student}
+                            onClick={handleDecrement}
+                        />
+                        <input
+                            className="tr-round button daily-points "
+                            key={i + "-points"}
+                            name="daily-points"
+                            type="button"
+                            id={i + "-points"}
+                            value={studentPoints[studentId]}
+                            onClick={handleIncrement}
+                        />
+                    </div>
+                    <div className="flex-space-between notes" data-toggle="off">
+                        <input
+                            className={
+                                "bl-round button absent note" +
+                                " " +
+                                attendance[studentId]
+                            }
+                            name="attendance"
+                            type="button"
+                            id={i + "-attendance"}
+                            data-toggle="off"
+                            value={attendance[studentId]}
+                            onClick={handleAttendance}
+                        />
+                        <input
+                            className="button absent note "
+                            name="note1"
+                            type="button"
+                            id={i + "-note1"}
+                            data-toggle="off"
+                            value="NP"
+                        />
+                        <input
+                            className="button absent note"
+                            name="note2"
+                            type="button"
+                            id={i + "-note2"}
+                            data-toggle="off"
+                            value="ND"
+                        />
+                        <input
+                            className="button absent note "
+                            name="note3"
+                            type="button"
+                            id={i + "-note3"}
+                            data-toggle="off"
+                            value="C"
+                        />
+                        <input
+                            className="br-round button absent note "
+                            style={{ textAlign: "center" }}
+                            name="note4"
+                            type="text"
+                            id={i + "-custom-note"}
+                            data-toggle="off"
+                            defaultValue="?"
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
-                <div className="flex-space-between notes" data-toggle="off">
-                    <input
-                        className={
-                            "bl-round button absent note" +
-                            " " +
-                            attendance[studentId]
-                        }
-                        name="attendance"
-                        type="button"
-                        id={i + "-attendance"}
-                        data-toggle="off"
-                        value={attendance[studentId]}
-                        onClick={handleAttendance}
-                    />
-                    <input
-                        className="button absent note "
-                        name="note1"
-                        type="button"
-                        id={i + "-note1"}
-                        data-toggle="off"
-                        value="NP"
-                    />
-                    <input
-                        className="button absent note"
-                        name="note2"
-                        type="button"
-                        id={i + "-note2"}
-                        data-toggle="off"
-                        value="ND"
-                    />
-                    <input
-                        className="button absent note "
-                        name="note3"
-                        type="button"
-                        id={i + "-note3"}
-                        data-toggle="off"
-                        value="C"
-                    />
-                    <input
-                        className="br-round button absent note "
-                        style={{ textAlign: "center" }}
-                        name="note4"
-                        type="text"
-                        id={i + "-custom-note"}
-                        data-toggle="off"
-                        defaultValue="?"
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
+            </React.Fragment>
         );
     });
     return studentButtons;

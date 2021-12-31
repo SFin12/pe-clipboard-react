@@ -90,7 +90,7 @@ export const deleteClass = (className) => ({
 });
 
 export const updateStudentList = (arrayStudentNames) => {
-    console.log("updating Student List: ", typeof arrayStudentNames);
+    console.log("updating Student List: ");
     return {
         type: ActionTypes.UPDATE_STUDENTLIST,
         payload: arrayStudentNames,
@@ -101,6 +101,14 @@ export const deleteStudentList = () => {
     return {
         type: ActionTypes.DELETE_STUDENTLIST,
         payload: [],
+    };
+};
+
+export const deleteStudent = (student) => {
+    console.log("Deleting ", student);
+    return {
+        type: ActionTypes.DELETE_STUDENT,
+        payload: student,
     };
 };
 

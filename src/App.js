@@ -7,6 +7,7 @@ import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";
 import RosterPage from "./Pages/ClassesPage/RosterPage/RosterPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
+import gradesPage from "./Pages/ClassesPage/GradesPage/GradesPage";
 import React from "react";
 import NavMenu from "./components/NavMenu/NavMenu";
 import { connect } from "react-redux";
@@ -126,6 +127,11 @@ class App extends React.Component {
                                     exact
                                     path="/roster"
                                     component={RosterPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/grades"
+                                    component={gradesPage}
                                 />
                             </Switch>
                         </main>

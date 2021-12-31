@@ -43,7 +43,6 @@ function StudentsPage(props) {
     );
     const classKey = currentGb + "-" + currentClass;
 
-    console.log("classKey", classKey);
     useEffect(() => {
         props.updatePage("Students");
     }, []);
@@ -184,7 +183,7 @@ function StudentsPage(props) {
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     {props.studentList[classKey] ? (
-                        <ListStudents />
+                        <ListStudents toggleDelete={toggleDelete} />
                     ) : (
                         addStudentRoster
                     )}
