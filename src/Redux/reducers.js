@@ -82,9 +82,28 @@ export const MainReducer = (state, action) => {
             const currentCl = state.classList[currentGb].filter(
                 (item) => item !== action.payload
             );
+            // cleans class name to pair with gradebook to find the key in studenList to delete
+            const classToDelete = action.payload.replace(
+                /[.,/#!$%^&*;:{}=\-_`~()]/g,
+                " "
+            );
+            const classKey = currentGb + "-" + classToDelete;
+            const filterObj = () => {
+                const keys = Object.keys(state.studentList);
+                return keys.filter((key) => key !== classKey);
+            };
+            const filteredArr = filterObj();
+            const filteredObj = {};
+            for (let key of filteredArr) {
+                filteredObj[key] = [state.studentList[key]];
+            }
             return {
                 ...state,
-                classList: { ...state.classList, [currentGb]: currentCl },
+                classList: {
+                    ...state.classList,
+                    [currentGb]: currentCl,
+                },
+                studentList: { ...filteredObj },
             };
 
         //STUDENTS---------------------------------------------------------------------------
@@ -127,7 +146,7 @@ export const MainReducer = (state, action) => {
             }
             console.log("not able to add student");
             return { ...state };
-        case ActionTypes.DELETE_STUDENTLIST:
+        case ActionTypes.DELETE_ROSTER:
             if (state.studentList[currentGb + "-" + currentClass]) {
                 return {
                     ...state,

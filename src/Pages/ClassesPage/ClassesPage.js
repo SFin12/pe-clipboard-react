@@ -146,6 +146,7 @@ function ClassesPage(props) {
     function handleModal(e) {
         setShowModal(false);
         e.target.name === "delete" && props.deleteClass(itemToDelete);
+        //props.deleteStudentList(itemToDelete);
     }
 
     // Main return for ClassPage

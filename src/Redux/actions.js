@@ -96,10 +96,10 @@ export const updateStudentList = (arrayStudentNames) => {
         payload: arrayStudentNames,
     };
 };
-export const deleteStudentList = () => {
+export const deleteRoster = () => {
     console.log("Deleting Student List");
     return {
-        type: ActionTypes.DELETE_STUDENTLIST,
+        type: ActionTypes.DELETE_ROSTER,
         payload: [],
     };
 };

@@ -4,7 +4,7 @@ import DropDown from "../../../components/DropDown/DropDown";
 import {
     updatePage,
     updateStudentList,
-    deleteStudentList,
+    deleteRoster,
 } from "../../../Redux/actions";
 import { saveRoster } from "../../../Lib/saveRoster";
 import { Button } from "react-bootstrap";
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
-    deleteStudentList,
+    deleteRoster,
 };
 
 function RosterPage(props) {
@@ -30,7 +30,7 @@ function RosterPage(props) {
     function handleChange(e) {
         saveRoster(e, (response) => {
             setRoster(response);
-            props.deleteStudentList();
+            props.deleteRoster();
             props.updateStudentList(response);
         });
         //props.updateStudentList(response);
