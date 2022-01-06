@@ -77,6 +77,10 @@
     height: 60px;
 }
 
+.note .clicked {
+    background-color: yellow;
+}
+
 #submit-button {
     background: linear-gradient(rgb(7, 80, 0), $green 20% 80%, rgb(7, 80, 0));
     border: none;

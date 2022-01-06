@@ -6,7 +6,7 @@ import {
     updateGradebookList,
     updatePage,
 } from "../../Redux/actions";
-import DropDown from "../../components/DropDown/DropDown";
+import { DropDownHover } from "../../components/DropDown/DropDown";
 import "./GradebookPage.scss";
 
 const mapStateToProps = (state) => {
@@ -102,7 +102,7 @@ function GradebookPage(props) {
             <hr />
             <div className="form-container">
                 <section>
-                    <DropDown
+                    <DropDownHover
                         buttonTitle="First Gradebook?"
                         content="Creating a gradebook will automatically create a new
                             google sheet in your PE Clipboard folder. Any

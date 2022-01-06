@@ -47,18 +47,24 @@ class NavMenu extends Component {
 
     componentDidUpdate() {
         if (this.props.currentPage === "Students") {
-           
-            if (links.length !== 6) {
-                links.push({ to: "/roster", text: "Roster", key: "link5" });
+            if (links.length === 5) {
+                links.push({
+                    to: "/grades",
+                    text: "Grades",
+                    key: "link6",
+                });
+                links.push({
+                    to: "/uploadRoster",
+                    text: "Upload Roster",
+                    key: "link7",
+                });
                 this.setState({ rosterNav: true });
-              
             }
         } else if (this.props.currentPage !== "Students") {
-         
-            if (links.length === 6) {
+            if (links.length > 5) {
+                links.pop();
                 links.pop();
                 this.setState({ rosterNav: false });
-          
             }
         }
     }
@@ -75,7 +81,6 @@ class NavMenu extends Component {
             this.props.updateLogin(false);
 
             window.location.reload();
-            //renderSigninButton(props.googleAuth.gapi);
         })();
     };
 

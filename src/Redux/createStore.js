@@ -20,7 +20,7 @@ const initialState = {
         dailyPoints: 10,
         note1: "ND",
         note2: "NP",
-        note3: "P",
+        note3: "E",
     },
     studentInfo: {},
     totalPoints: {},

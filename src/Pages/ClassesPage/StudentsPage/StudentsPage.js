@@ -8,7 +8,8 @@ import {
 } from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
+import RosterPage from "../RosterPage/RosterPage";
 import ListStudents from "../../../components/ListStudents";
 import "./StudentPage.scss";
 
@@ -47,12 +48,14 @@ function StudentsPage(props) {
         props.updatePage("Students");
     }, []);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const addStudentModal = (
-        <Modal show={showModal} centered size="sm" onHide={toggleModal}>
-            <Modal.Header closeButton className="bg-primary">
-                <Modal.Title className="text-white">Add Student</Modal.Title>
+        <Modal show={showModal} centered size="m" onHide={toggleModal}>
+            <Modal.Header closeButton className="bg-info">
+                <Modal.Title className="font-weight-bold text-dark">
+                    Add Student
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-dark">
                 <label htmlFor="create-student text-align-center">
@@ -71,18 +74,37 @@ function StudentsPage(props) {
                 </div>
                 <p>Press Enter or click add</p>
             </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    variant="success"
-                    name="cancel"
-                    id="save-student"
-                    onClick={handleSave}
-                >
-                    Add
-                </Button>
-                <Button variant="primary" name="delete" onClick={toggleModal}>
-                    Finished
-                </Button>
+            <Modal.Footer className="d-flex justify-content-between">
+                <div className="">
+                    <Button
+                        className="mr-auto"
+                        variant="info"
+                        name="upload-roster"
+                        id="save-student"
+                        onClick={() => navigate("/uploadRoster")}
+                        style={{}}
+                    >
+                        Upload?
+                    </Button>
+                </div>
+                <div className="justify-content-between">
+                    <Button
+                        className="m-1 green text-dark"
+                        name="cancel"
+                        id="save-student"
+                        onClick={handleSave}
+                    >
+                        Add
+                    </Button>
+                    <Button
+                        className="ml-1 "
+                        variant="info"
+                        name="delete"
+                        onClick={toggleModal}
+                    >
+                        Finished
+                    </Button>
+                </div>
             </Modal.Footer>
         </Modal>
     );
@@ -110,7 +132,7 @@ function StudentsPage(props) {
     }
 
     function addStudentRoster() {
-        history.push("/roster");
+        navigate("/uploadRoster");
     }
 
     function toggleModal(e) {
@@ -146,7 +168,10 @@ function StudentsPage(props) {
             if (students[i].name === "attendance") {
                 studentAttendance = students[i].value;
             }
-            if (students[i].name.slice(0, 4) === "note") {
+            if (
+                students[i].name.slice(0, 4) === "note" &&
+                students[i].dataToggle
+            ) {
                 studentNotes += students[i].value + " ";
                 if (students[i].name === "note4") {
                     finishedOneStudent = true;
@@ -185,7 +210,10 @@ function StudentsPage(props) {
                     {props.studentList[classKey] ? (
                         <ListStudents toggleDelete={toggleDelete} />
                     ) : (
-                        addStudentRoster
+                        <div>
+                            {/* addStudentRoster() */}
+                            <RosterPage hideHeader={true} />
+                        </div>
                     )}
                     {showModal ? (
                         addStudentModal
@@ -198,14 +226,16 @@ function StudentsPage(props) {
                                     className="plus-icon m-4"
                                 />
                             </div>
-
-                            <Button
-                                className="submit-button btn-lg"
-                                id="submit-button"
-                                type="submit"
-                            >
-                                Submit
-                            </Button>
+                            {props.studentList[classKey] &&
+                            props.studentList[classKey].length > 0 ? (
+                                <Button
+                                    className="submit-button btn-lg"
+                                    id="submit-button"
+                                    type="submit"
+                                >
+                                    Submit
+                                </Button>
+                            ) : null}
 
                             <div onClick={handleDelete} id="delete-a-class">
                                 <FontAwesomeIcon

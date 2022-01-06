@@ -1,5 +1,7 @@
 import React from "react";
 
-function GradesPage() {}
+function GradesPage(props) {
+    return;
+}
 
-export default GradesPage();
+export default GradesPage;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import DropDown from "../../../components/DropDown/DropDown";
+import { DropDownHover } from "../../../components/DropDown/DropDown";
 import {
     updatePage,
     updateStudentList,
@@ -8,7 +8,10 @@ import {
 } from "../../../Redux/actions";
 import { saveRoster } from "../../../Lib/saveRoster";
 import { Button } from "react-bootstrap";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -25,7 +28,7 @@ const mapDispatchToProps = {
 
 function RosterPage(props) {
     const [roster, setRoster] = useState("");
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function handleChange(e) {
         saveRoster(e, (response) => {
@@ -36,7 +39,7 @@ function RosterPage(props) {
         //props.updateStudentList(response);
 
         setTimeout(() => {
-            history.push("/students");
+            navigate("/students");
         }, 1500);
     }
 
@@ -47,7 +50,7 @@ function RosterPage(props) {
             <React.Fragment>
                 <div className="form-container">
                     <section>
-                        <DropDown
+                        <DropDownHover
                             buttonTitle="Uploading Rosters"
                             content="To upload a roster, the file should be saved as a csv file (ends with .csv). When creating the file through excel, sheets, numbers or a similar spreadsheet program, place all students in the first column with one student in each row.  If you want names to be alphabatized, place last names first folowed by a comma then first names."
                         />
@@ -84,8 +87,23 @@ function RosterPage(props) {
 
     return (
         <React.Fragment>
-            <h1 className="header">{props.class}</h1>
-            <hr />
+            {props.hideHeader ? (
+                ""
+            ) : (
+                <div>
+                    <div className="d-inline">
+                        <h1 className="header">{props.class}</h1>
+                        <FontAwesomeIcon
+                            name="left-arrow"
+                            icon={faArrowLeft}
+                            color="green"
+                            className="back-arrow"
+                            onClick={() => navigate(-1)}
+                        />
+                    </div>
+                    <hr />
+                </div>
+            )}
             {props.studentsList ? <ListStudents /> : <AddStudents />}
         </React.Fragment>
     );

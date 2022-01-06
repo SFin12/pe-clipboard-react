@@ -78,7 +78,7 @@
 }
 
 #submit-button {
-    background: linear-gradient(rgb(7, 80, 0), $green 20% 80%, rgb(7, 80, 0));
+    background: linear-gradient(rgb(7, 80, 0), $green 15% 85%, rgb(7, 80, 0));
     border: none;
     border-color: none;
     color: black;
@@ -99,7 +99,11 @@
     background-color: yellow;
 }
 
-@media (min-width: 1023px) {
+.green {
+    background-color: $green !important;
+}
+
+@media (min-width: 736px) {
     .button {
         font-size: 1.7rem;
     }

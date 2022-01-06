@@ -1,15 +1,16 @@
 import SignInPage from "./Pages/SignInPage/SignInPage";
 import "./App.scss";
-import { Route, Switch, withRouter, Redirect } from "react-router";
+import { Route, Routes, Navigate, Redirect } from "react-router";
 import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";
 import RosterPage from "./Pages/ClassesPage/RosterPage/RosterPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
-import gradesPage from "./Pages/ClassesPage/GradesPage/GradesPage";
+import GradesPage from "./Pages/ClassesPage/GradesPage/GradesPage";
 import React from "react";
 import NavMenu from "./components/NavMenu/NavMenu";
+import { withRouter } from "./components/withRouter";
 import { connect } from "react-redux";
 import { store } from "./Redux/createStore";
 import { updatePage } from "./Redux/actions";
@@ -37,9 +38,10 @@ const mapDispatchToProps = {
 class App extends React.Component {
     componentDidMount() {
         !this.props.gradebook && this.props.updatePage("Gradebook");
+        console.log("App props: ", this.props);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         // check on previous state
         // only write when it's different with the new state
         if (
@@ -80,60 +82,37 @@ class App extends React.Component {
                     <React.Fragment>
                         <NavMenu />
                         <main className="container">
-                            <Switch>
+                            <Routes>
                                 {/* If no gradebook is found, start on gradebook page otherwise
                                 start on class page. */}
+                                <Route path="/" element={<ClassesPage />} />
                                 <Route
-                                    exact
-                                    path="/"
-                                    render={() => {
-                                        return this.props.gradebook ? (
-                                            <Redirect to="/classes" />
-                                        ) : (
-                                            <Redirect to="/gradebook" />
-                                        );
-                                    }}
-                                />
-                                <Route
-                                    exact
                                     path="/classes"
-                                    component={ClassesPage}
+                                    element={<ClassesPage />}
                                 />
                                 <Route
-                                    exact
                                     path="/gradebook"
-                                    component={GradebookPage}
+                                    element={<GradebookPage />}
                                 />
+                                <Route path="/info" element={<InfoPage />} />
+
                                 <Route
-                                    exact
-                                    path="/info"
-                                    render={() => (
-                                        <InfoPage
-                                            title={this.props.currentPage}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    exact
                                     path="/settings"
-                                    component={SettingsPage}
+                                    element={<SettingsPage />}
                                 />
                                 <Route
-                                    exact
                                     path="/students"
-                                    component={StudentsPage}
+                                    element={<StudentsPage />}
                                 />
                                 <Route
-                                    exact
-                                    path="/roster"
-                                    component={RosterPage}
+                                    path="/uploadRoster"
+                                    element={<RosterPage />}
                                 />
                                 <Route
-                                    exact
                                     path="/grades"
-                                    component={gradesPage}
+                                    element={<GradesPage />}
                                 />
-                            </Switch>
+                            </Routes>
                         </main>
                     </React.Fragment>
                 ) : (

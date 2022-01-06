@@ -6,7 +6,7 @@ import {
     deleteClass,
     updatePage,
 } from "../../Redux/actions";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ClassesPage.scss";
@@ -34,7 +34,7 @@ function ClassesPage(props) {
     const [newClass, setNewClass] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
-    const history = useHistory();
+    const navigate = useNavigate();
     const uncleanGb = props.gradebook;
     const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
 
@@ -114,7 +114,7 @@ function ClassesPage(props) {
             props.createClass(classId);
 
             //redirects to studentsPage
-            history.push("/students");
+            navigate("/students");
         }
     }
 
