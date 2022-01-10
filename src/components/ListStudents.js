@@ -22,6 +22,8 @@ const mapDispatchToProps = {
 function ListStudents(props) {
     const [studentPoints, setStudentPoints] = useState({});
     const [attendance, setAttendance] = useState({});
+    const [note, setNote] = useState({});
+
     const [studentToDelete, setStudentToDelete] = useState("");
     const [showModal, setShowModal] = useState(false);
     console.log(props.toggleDelete);
@@ -67,23 +69,24 @@ function ListStudents(props) {
                 }
                 return newState;
             });
+            setNote((note) => {
+                let newState = {};
+                for (let i = 0; i < totalStudents; i++) {
+                    let note1 = i + "-note1";
+                    let note2 = i + "-note2";
+                    let note3 = i + "-note3";
+                    newState = {
+                        ...newState,
+                        [note1]: note[note1] || false,
+                        [note2]: note[note2] || false,
+                        [note3]: note[note3] || false,
+                    };
+                }
+                console.log("note ", newState);
+                return newState;
+            });
         }
     }, [props, classKey]);
-
-    // useEffect(() => {
-    //     if (props.submit) {
-    //         console.log(
-    //             "%cListStudents.js line:63 studentPoints",
-    //             "color: #007acc;",
-    //             studentPoints
-    //         );
-    //         console.log(
-    //             "%cListStudents.js line:63 attendance",
-    //             "color: #007acc;",
-    //             attendance
-    //         );
-    //     }
-    // }, [props.submit]);
 
     function handleChange(e) {
         if (e.target.id.slice(2) === "custom-note") {
@@ -137,6 +140,17 @@ function ListStudents(props) {
             setAttendance({ ...attendance, [studentId]: "P" });
         }
     }
+
+    function handleNote(e) {
+        let noteId = e.currentTarget.id;
+        console.log(e.currentTarget);
+        // if note is not active, add the active class and set it to true
+        setNote({
+            ...note,
+            [noteId]: !note[noteId],
+        });
+    }
+
     function handleDelete(e) {
         setStudentToDelete(e.currentTarget.id.split("-")[0]);
         setShowModal(true);
@@ -149,6 +163,8 @@ function ListStudents(props) {
 
     const studentButtons = props.studentList[classKey].map((student, i) => {
         const studentId = i + "-student";
+        const n = i < 1 ? console.log("note in buttons ", note) : null;
+
         return (
             <React.Fragment>
                 {showModal && (
@@ -203,11 +219,12 @@ function ListStudents(props) {
                             onClick={handleAttendance}
                         />
                         <input
-                            className="button absent note "
+                            className="button absent note"
                             name="note1"
                             type="button"
                             id={i + "-note1"}
-                            data-toggle="off"
+                            data-toggle={note[i + "-note1"]}
+                            onClick={handleNote}
                             value="NP"
                         />
                         <input
@@ -232,8 +249,9 @@ function ListStudents(props) {
                             name="note4"
                             type="text"
                             id={i + "-custom-note"}
+                            placeholder="?"
                             data-toggle="off"
-                            defaultValue="?"
+                            defaultValue=""
                             onChange={handleChange}
                         />
                     </div>
