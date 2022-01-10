@@ -113,6 +113,7 @@ export const deleteStudent = (student) => {
 };
 
 export const updateStudentInfo = (studentInfoObj, date) => {
+    // console.log("student Info Obj: ", studentInfoObj);
     return {
         type: ActionTypes.UPDATE_STUDENT_INFO,
         date: date,

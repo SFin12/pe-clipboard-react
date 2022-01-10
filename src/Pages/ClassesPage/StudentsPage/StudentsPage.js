@@ -131,10 +131,6 @@ function StudentsPage(props) {
         setToggleDelete(!toggleDelete);
     }
 
-    function addStudentRoster() {
-        navigate("/uploadRoster");
-    }
-
     function toggleModal(e) {
         if (e && e.currentTarget.id === "add-class-button") {
             setShowModal(true);
@@ -148,7 +144,8 @@ function StudentsPage(props) {
         const date = new Date().toLocaleDateString();
         console.log(date);
         const students = e.target.elements;
-        // console.log(students[0]);
+        const dataNote = students[3].dataset.note;
+
         const studentInfoObj = {};
         e.preventDefault();
         let studentName = "";
@@ -170,12 +167,13 @@ function StudentsPage(props) {
             }
             if (
                 students[i].name.slice(0, 4) === "note" &&
-                students[i].dataToggle
+                students[i].dataset.note === "true"
             ) {
                 studentNotes += students[i].value + " ";
-                if (students[i].name === "note4") {
-                    finishedOneStudent = true;
-                }
+            }
+            if (students[i].name === "note4") {
+                finishedOneStudent = true;
+                console.log("finished student ", finishedOneStudent);
             }
             if (
                 studentName &&
@@ -183,7 +181,6 @@ function StudentsPage(props) {
                 studentAttendance &&
                 finishedOneStudent
             ) {
-                // console.log(studentName.length, studentPoints.length);
                 const studentObj = {
                     points: studentPoints,
                     notes: studentNotes,
@@ -198,6 +195,7 @@ function StudentsPage(props) {
                 finishedOneStudent = false;
             }
         }
+        console.log("studentInfoObj ", studentInfoObj);
         props.updateStudentInfo(studentInfoObj, date);
     }
 

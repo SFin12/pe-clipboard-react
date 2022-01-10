@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import Confirm from "./ConfirmModal";
-import "./ListStudents.scss";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -223,7 +222,7 @@ function ListStudents(props) {
                             name="note1"
                             type="button"
                             id={i + "-note1"}
-                            data-toggle={note[i + "-note1"]}
+                            data-note={note[i + "-note1"]}
                             onClick={handleNote}
                             value="NP"
                         />

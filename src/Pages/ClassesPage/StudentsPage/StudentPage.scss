@@ -69,7 +69,7 @@
     margin-top: -5px;
 }
 
-[data-toggle="true"] {
+[data-note="true"] {
     background-color: yellow;
 }
 
@@ -79,6 +79,12 @@
     width: 19.2%;
     margin: 0px;
     height: 60px;
+}
+
+.delete {
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: 5px solid red;
 }
 
 #submit-button {

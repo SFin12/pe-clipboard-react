@@ -177,8 +177,7 @@ export const MainReducer = (state, action) => {
                     state.studentInfo[currentGb + "-" + currentClass];
                 console.log("thisClass: ", thisClass);
 
-                //check of current date already has an entry. If so, write over it.
-
+                //check if current date already has an entry. If so, write over it.
                 let studentInfoArr = thisClass[Object.keys(thisClass)[0]];
                 let lastDateAdded =
                     studentInfoArr[studentInfoArr.length - 1].date;
