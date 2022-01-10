@@ -74,11 +74,13 @@ function ListStudents(props) {
                     let note1 = i + "-note1";
                     let note2 = i + "-note2";
                     let note3 = i + "-note3";
+                    let note4 = i + "-note4";
                     newState = {
                         ...newState,
                         [note1]: note[note1] || false,
                         [note2]: note[note2] || false,
                         [note3]: note[note3] || false,
+                        [note4]: note[note4] || false,
                     };
                 }
                 console.log("note ", newState);
@@ -142,12 +144,25 @@ function ListStudents(props) {
 
     function handleNote(e) {
         let noteId = e.currentTarget.id;
-        console.log(e.currentTarget);
+        let noteName = e.currentTarget.name;
+        console.log(e.currentTarget.value.length);
         // if note is not active, add the active class and set it to true
-        setNote({
-            ...note,
-            [noteId]: !note[noteId],
-        });
+        if (noteName !== "note4") {
+            setNote({
+                ...note,
+                [noteId]: !note[noteId],
+            });
+        } else if (noteName === "note4") {
+            e.currentTarget.value.length > 0
+                ? setNote({
+                      ...note,
+                      [noteId]: true,
+                  })
+                : setNote({
+                      ...note,
+                      [noteId]: false,
+                  });
+        }
     }
 
     function handleDelete(e) {
@@ -231,7 +246,8 @@ function ListStudents(props) {
                             name="note2"
                             type="button"
                             id={i + "-note2"}
-                            data-toggle="off"
+                            data-note={note[i + "-note2"]}
+                            onClick={handleNote}
                             value="ND"
                         />
                         <input
@@ -239,7 +255,8 @@ function ListStudents(props) {
                             name="note3"
                             type="button"
                             id={i + "-note3"}
-                            data-toggle="off"
+                            data-note={note[i + "-note3"]}
+                            onClick={handleNote}
                             value="C"
                         />
                         <input
@@ -247,11 +264,11 @@ function ListStudents(props) {
                             style={{ textAlign: "center" }}
                             name="note4"
                             type="text"
-                            id={i + "-custom-note"}
+                            id={i + "-note4"}
                             placeholder="?"
-                            data-toggle="off"
+                            data-note={note[i + "-note4"]}
                             defaultValue=""
-                            onChange={handleChange}
+                            onChange={handleNote}
                         />
                     </div>
                 </div>

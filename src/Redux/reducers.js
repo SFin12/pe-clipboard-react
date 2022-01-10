@@ -184,10 +184,14 @@ export const MainReducer = (state, action) => {
                 console.log("last date: ", lastDateAdded);
                 if (date === lastDateAdded) {
                     Object.keys(action.payload).forEach((key) => {
-                        thisClass[key] = [
-                            ...thisClass[key].slice(0, -1),
-                            ...action.payload[key],
-                        ];
+                        if (thisClass[key]) {
+                            thisClass[key] = [
+                                ...thisClass[key].slice(0, -1),
+                                ...action.payload[key],
+                            ];
+                        } else {
+                            thisClass[key] = [...action.payload[key]];
+                        }
                     });
                     return {
                         ...state,
