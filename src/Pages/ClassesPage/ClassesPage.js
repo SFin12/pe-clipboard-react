@@ -172,9 +172,9 @@ function ClassesPage(props) {
             </div>
             <div className="form-container">
                 {toggleAdd ? (
-                    inputClass
+                    <div>{inputClass}</div>
                 ) : (
-                    <div>
+                    <div className="add-delete-container">
                         <ListClasses />
                         <div className="d-flex justify-content-around">
                             <div id="add-class-button" onClick={handleAdd}>

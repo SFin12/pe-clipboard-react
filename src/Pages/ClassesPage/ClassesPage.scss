@@ -30,15 +30,22 @@
     height: 60px;
 }
 
+.add-delete-container {
+    display: block;
+    align-items: center;
+    width: 98%;
+    max-width: 600px;
+
+    margin: auto;
+}
 
 .highlight {
-    outline: 4px rgba(255,25,25,.8) solid;
-    color: rgba(150,150,150,.7);
-    border-radius: 50%
+    outline: 4px rgba(255, 25, 25, 0.8) solid;
+    color: rgba(150, 150, 150, 0.7);
+    border-radius: 50%;
 }
 
 .subtitle {
     color: $green;
     margin: auto;
 }
-
