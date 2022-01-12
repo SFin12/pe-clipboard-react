@@ -112,8 +112,6 @@ function StudentsPage(props) {
     function handleChange(e) {
         if (e.target.id === "create-student") {
             setNewStudent(e.target.value);
-        } else if (e.target.id.slice(2) === "custom-note") {
-            console.log("custom note: ", e.target.value);
         }
     }
 
@@ -142,10 +140,7 @@ function StudentsPage(props) {
 
     function handleSubmit(e) {
         const date = new Date().toLocaleDateString();
-        console.log(date);
         const students = e.target.elements;
-        const dataNote = students[3].dataset.note;
-
         const studentInfoObj = {};
         e.preventDefault();
         let studentName = "";

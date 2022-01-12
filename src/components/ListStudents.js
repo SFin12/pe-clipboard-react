@@ -25,7 +25,6 @@ function ListStudents(props) {
 
     const [studentToDelete, setStudentToDelete] = useState("");
     const [showModal, setShowModal] = useState(false);
-    console.log(props.toggleDelete);
 
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
@@ -83,16 +82,11 @@ function ListStudents(props) {
                         [note4]: note[note4] || false,
                     };
                 }
-                console.log("note ", newState);
+
                 return newState;
             });
         }
     }, [props, classKey]);
-
-    function handleChange(e) {
-        if (e.target.id.slice(2) === "custom-note") {
-        }
-    }
 
     function handleDecrement(e) {
         //decrease student points by one.
@@ -145,7 +139,6 @@ function ListStudents(props) {
     function handleNote(e) {
         let noteId = e.currentTarget.id;
         let noteName = e.currentTarget.name;
-        console.log(e.currentTarget.value.length);
         // if note is not active, add the active class and set it to true
         if (noteName !== "note4") {
             setNote({

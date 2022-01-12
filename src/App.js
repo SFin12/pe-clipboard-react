@@ -12,7 +12,6 @@ import React from "react";
 import NavMenu from "./components/NavMenu/NavMenu";
 import { withRouter } from "./components/withRouter";
 import { connect } from "react-redux";
-import { store } from "./Redux/createStore";
 import { updatePage } from "./Redux/actions";
 import { writeUserData } from "./Lib/LinkReduxToDb";
 
@@ -44,7 +43,6 @@ class App extends React.Component {
     }
     componentDidMount() {
         !this.props.gradebook && this.props.updatePage("Gradebook");
-        console.log("App props: ", this.props);
     }
 
     componentDidUpdate(prevProps) {
@@ -71,7 +69,7 @@ class App extends React.Component {
                 studentList: this.props.studentList,
                 studentInfo: this.props.studentInfo,
             };
-
+            // if there is a user write the above props to firebase
             if (this.props.id) {
                 writeUserData(this.props.id, userObject);
             }
@@ -85,8 +83,6 @@ class App extends React.Component {
     }
 
     render() {
-        // console.log("store", store.getState());
-
         return (
             //Check if user is signed in, if so, render navbar
             <div className="App">
@@ -97,30 +93,40 @@ class App extends React.Component {
                             <Routes>
                                 {/* If no gradebook is found, start on gradebook page otherwise
                                 start on class page. */}
-                                <Route path="/" element={<ClassesPage />} />
-                                <Route
+
+                                <Route // Starting page after login. Takes user to their classes unless there is no gradebook created or selected
+                                    path="/"
+                                    element={
+                                        this.props.gradebook ? (
+                                            <GradebookPage />
+                                        ) : (
+                                            <ClassesPage />
+                                        )
+                                    }
+                                />
+                                <Route // This only appears if a gradebook has been chosen and allows users to create and access classes
                                     path="/classes"
                                     element={<ClassesPage />}
                                 />
-                                <Route
+                                <Route // This is where user can create or change gradebooks
                                     path="/gradebook"
                                     element={<GradebookPage />}
                                 />
                                 <Route path="/info" element={<InfoPage />} />
 
-                                <Route
+                                <Route // Allows user to change notes and other settings.
                                     path="/settings"
                                     element={<SettingsPage />}
                                 />
-                                <Route
+                                <Route // Accessed by clicking on a class once a class is created.
                                     path="/students"
                                     element={<StudentsPage />}
                                 />
-                                <Route
+                                <Route // Only appears when a class is selected. Allows user to uploac roster from .csv
                                     path="/uploadRoster"
                                     element={<RosterPage />}
                                 />
-                                <Route
+                                <Route //Not to be confused with Gradebook page. This is to view student grades.
                                     path="/grades"
                                     element={<GradesPage />}
                                 />
@@ -128,6 +134,7 @@ class App extends React.Component {
                         </main>
                     </React.Fragment>
                 ) : (
+                    // First page to render if user is not signed in. Once signed in the page is not used
                     <SignInPage />
                 )}
             </div>

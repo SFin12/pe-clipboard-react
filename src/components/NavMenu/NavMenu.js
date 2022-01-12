@@ -52,7 +52,6 @@ class NavMenu extends Component {
 
     //addes an upload roster and grades tab to list of links above when a studentsPage is open
     componentDidUpdate() {
-        console.log("gradebook? ", this.props.gradebook);
         if (this.props.navOpen === false) {
             this.setState({ isOpen: true });
         }
@@ -63,9 +62,7 @@ class NavMenu extends Component {
                 this.setState({ classesLink: classes });
             }
         } else {
-            console.log("in nav gradebook detected");
             if (links.length < 5 && this.state.classesLink) {
-                console.log("Less than 5");
                 links.unshift(this.state.classesLink);
                 this.setState({ render: !this.state.render });
             }

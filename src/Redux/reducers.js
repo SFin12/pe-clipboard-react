@@ -12,7 +12,7 @@ export const MainReducer = (state, action) => {
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
     );
-    console.log("reducer", action.payload);
+    console.log("reducer payload: ", action.payload);
     switch (action.type) {
         //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
@@ -49,7 +49,6 @@ export const MainReducer = (state, action) => {
 
         //CLASSES---------------------------------------------------------------------------
         case ActionTypes.CREATE_CLASS:
-            console.log("create class payload: ", action.payload);
             return { ...state, class: action.payload };
         case ActionTypes.UPDATE_CLASSES:
             const cMatch = action.payload;
@@ -175,13 +174,12 @@ export const MainReducer = (state, action) => {
             if (state.studentInfo[currentGb + "-" + currentClass]) {
                 const thisClass =
                     state.studentInfo[currentGb + "-" + currentClass];
-                console.log("thisClass: ", thisClass);
 
                 //check if current date already has an entry. If so, write over it.
                 let studentInfoArr = thisClass[Object.keys(thisClass)[0]];
                 let lastDateAdded =
                     studentInfoArr[studentInfoArr.length - 1].date;
-                console.log("last date: ", lastDateAdded);
+
                 if (date === lastDateAdded) {
                     Object.keys(action.payload).forEach((key) => {
                         if (thisClass[key]) {
