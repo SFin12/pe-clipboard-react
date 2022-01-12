@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 import RosterPage from "../RosterPage/RosterPage";
 import ListStudents from "../../../components/ListStudents";
 import "./StudentPage.scss";
+import SuccessAlert from "../../../components/SuccessAlert";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -32,6 +33,7 @@ function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [saved, setSaved] = useState("");
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
     const currentGb = uncleanCurrentGb.replace(
@@ -192,6 +194,10 @@ function StudentsPage(props) {
         }
         console.log("studentInfoObj ", studentInfoObj);
         props.updateStudentInfo(studentInfoObj, date);
+        // setSaved(true);
+        // setTimeout(() => {
+        //     setSaved(false);
+        // }, 2000);
     }
 
     return (
@@ -229,6 +235,7 @@ function StudentsPage(props) {
                                     Submit
                                 </Button>
                             ) : null}
+                            {/* {saved ? <SuccessAlert /> : null} */}
 
                             <div onClick={handleDelete} id="delete-a-class">
                                 <FontAwesomeIcon

@@ -22,7 +22,7 @@ const initialState = {
         note2: "NP",
         note3: "E",
     },
-    studentInfo: {},
+    studentInfo: { lastSubmission: null },
     totalPoints: {},
     pointsPossible: {},
     gradePercentage: {},

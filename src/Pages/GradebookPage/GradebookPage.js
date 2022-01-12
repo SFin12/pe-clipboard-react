@@ -140,12 +140,12 @@ function GradebookPage(props) {
 
                 <ListGradebooks />
                 <span>
-                    <p>
+                    <div>
                         Current Gradebook:
                         <span>
                             <h4 className="inline"> {props.gradebook}</h4>
                         </span>
-                    </p>
+                    </div>
                 </span>
             </div>
         </React.Fragment>

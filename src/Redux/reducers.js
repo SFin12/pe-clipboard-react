@@ -171,19 +171,21 @@ export const MainReducer = (state, action) => {
         //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-----------------------------------------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
+
             if (state.studentInfo[currentGb + "-" + currentClass]) {
                 const thisClass =
                     state.studentInfo[currentGb + "-" + currentClass];
 
                 //check if current date already has an entry. If so, write over it.
-                let studentInfoArr = thisClass[Object.keys(thisClass)[0]];
-                let lastDateAdded =
-                    studentInfoArr[studentInfoArr.length - 1].date;
 
-                if (date === lastDateAdded) {
+                // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
+                if (date === thisClass.dateLastSubmitted) {
+                    // Each key is the name of a student
                     Object.keys(action.payload).forEach((key) => {
+                        // If the student exists...
                         if (thisClass[key]) {
                             thisClass[key] = [
+                                // The slice is removing last submission and adding updated submission
                                 ...thisClass[key].slice(0, -1),
                                 ...action.payload[key],
                             ];
@@ -197,16 +199,20 @@ export const MainReducer = (state, action) => {
                             ...state.studentInfo,
                             [currentGb + "-" + currentClass]: {
                                 ...thisClass,
-                                ...action.payload,
+                                dateLastSubmitted: date,
                             },
                         },
                     };
                 } else {
                     Object.keys(action.payload).forEach((key) => {
-                        thisClass[key] = [
-                            ...thisClass[key],
-                            ...action.payload[key],
-                        ];
+                        if (thisClass[key]) {
+                            thisClass[key] = [
+                                ...thisClass[key],
+                                ...action.payload[key],
+                            ];
+                        } else {
+                            thisClass[key] = [...action.payload[key]];
+                        }
                     });
                     return {
                         ...state,
@@ -214,6 +220,7 @@ export const MainReducer = (state, action) => {
                             ...state.studentInfo,
                             [currentGb + "-" + currentClass]: {
                                 ...thisClass,
+                                dateLastSubmitted: date,
                             },
                         },
                     };
@@ -224,6 +231,7 @@ export const MainReducer = (state, action) => {
                 studentInfo: {
                     ...state.studentInfo,
                     [currentGb + "-" + currentClass]: action.payload,
+                    dateLastSubmitted: date,
                 },
             };
 
