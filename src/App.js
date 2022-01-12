@@ -36,6 +36,12 @@ const mapDispatchToProps = {
 };
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            navOpen: true,
+        };
+    }
     componentDidMount() {
         !this.props.gradebook && this.props.updatePage("Gradebook");
         console.log("App props: ", this.props);
@@ -72,6 +78,12 @@ class App extends React.Component {
         }
     }
 
+    closeNavbar() {
+        this.setState({
+            navOpen: false,
+        });
+    }
+
     render() {
         // console.log("store", store.getState());
 
@@ -80,7 +92,7 @@ class App extends React.Component {
             <div className="App">
                 {this.props.signedIn ? (
                     <React.Fragment>
-                        <NavMenu />
+                        <NavMenu navOpen={this.state.navOpen} />
                         <main className="container">
                             <Routes>
                                 {/* If no gradebook is found, start on gradebook page otherwise

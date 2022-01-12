@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { updateLogin, updatePage } from "../../Redux/actions";
 import { connect } from "react-redux";
 
+//Lings that will be mapped through to form NavLinks at top of page
 const links = [
     { to: "/classes", text: "Classes", key: "link1" },
     { to: "/gradebook", text: "Gradebook", key: "link2" },
@@ -25,6 +26,7 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.signedIn,
         googleAuth: state.googleAuth,
         currentPage: state.currentPage,
+        gradebook: state.gradebook,
     };
 };
 
@@ -39,13 +41,35 @@ class NavMenu extends Component {
         this.state = {
             isOpen: false,
             rosterNav: false,
+            classesLink: null,
+            render: false,
         };
 
         this.toggle = this.toggle.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.closeNavMenu = this.closeNavMenu.bind(this);
     }
 
+    //addes an upload roster and grades tab to list of links above when a studentsPage is open
     componentDidUpdate() {
+        console.log("gradebook? ", this.props.gradebook);
+        if (this.props.navOpen === false) {
+            this.setState({ isOpen: true });
+        }
+
+        if (!this.props.gradebook) {
+            if (links.length > 4) {
+                let classes = links.shift();
+                this.setState({ classesLink: classes });
+            }
+        } else {
+            console.log("in nav gradebook detected");
+            if (links.length < 5 && this.state.classesLink) {
+                console.log("Less than 5");
+                links.unshift(this.state.classesLink);
+                this.setState({ render: !this.state.render });
+            }
+        }
         if (this.props.currentPage === "Students") {
             if (links.length === 5) {
                 links.push({
@@ -89,9 +113,16 @@ class NavMenu extends Component {
             this.logOut();
         }
         this.props.updatePage(e.target.text);
-        this.toggle();
+        this.setState({ isOpen: false });
     }
 
+    closeNavMenu() {
+        if (this.state.isOpen) {
+            this.setState({ isOpen: false });
+        }
+    }
+
+    //maps list of links to form nav menu
     createNavItem = ({ to, text, className, key }) => (
         <NavItem key={"Nav-item" + key}>
             {/* //NavLink below is from react router not reactstrap */}
@@ -118,6 +149,7 @@ class NavMenu extends Component {
                         className="nav-text"
                         id="toggler"
                         onClick={this.toggle}
+                        onBlur={this.closeNavMenu}
                     />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="nav-text ml-auto" navbar>
