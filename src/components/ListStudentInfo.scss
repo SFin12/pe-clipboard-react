@@ -1,0 +1,33 @@
+@import "~bootstrap/scss/bootstrap";
+
+// .app-container {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+//     padding: 1rem;
+// }
+
+table {
+    // border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 32px;
+}
+
+tr {
+    width: 100%;
+}
+
+th {
+}
+
+td {
+    border: 1px solid #ffffff;
+}

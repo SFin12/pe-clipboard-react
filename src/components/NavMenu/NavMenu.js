@@ -70,8 +70,8 @@ class NavMenu extends Component {
         if (this.props.currentPage === "Students") {
             if (links.length === 5) {
                 links.push({
-                    to: "/grades",
-                    text: "Grades",
+                    to: "/studentInfo",
+                    text: "Student Info",
                     key: "link6",
                 });
                 links.push({

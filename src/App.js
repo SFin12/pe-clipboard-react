@@ -7,7 +7,7 @@ import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";
 import RosterPage from "./Pages/ClassesPage/RosterPage/RosterPage";
 import { InfoPage } from "./Pages/InfoPage/InfoPage";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
-import GradesPage from "./Pages/ClassesPage/GradesPage/GradesPage";
+import StudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/StudentInfoPage";
 import React from "react";
 import NavMenu from "./components/NavMenu/NavMenu";
 import { withRouter } from "./components/withRouter";
@@ -127,8 +127,8 @@ class App extends React.Component {
                                     element={<RosterPage />}
                                 />
                                 <Route //Not to be confused with Gradebook page. This is to view student grades.
-                                    path="/grades"
-                                    element={<GradesPage />}
+                                    path="/studentInfo"
+                                    element={<StudentInfoPage />}
                                 />
                             </Routes>
                         </main>

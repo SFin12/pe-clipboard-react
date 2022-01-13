@@ -170,7 +170,6 @@ function ListStudents(props) {
 
     const studentButtons = props.studentList[classKey].map((student, i) => {
         const studentId = i + "-student";
-        const n = i < 1 ? console.log("note in buttons ", note) : null;
 
         return (
             <React.Fragment>
