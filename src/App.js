@@ -97,7 +97,7 @@ class App extends React.Component {
                                 <Route // Starting page after login. Takes user to their classes unless there is no gradebook created or selected
                                     path="/"
                                     element={
-                                        this.props.gradebook ? (
+                                        !this.props.gradebook ? (
                                             <GradebookPage />
                                         ) : (
                                             <ClassesPage />

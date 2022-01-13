@@ -1,0 +1,28 @@
+@import "../App.scss";
+
+.successModal {
+    .modal-content {
+        background-color: transparent;
+    }
+}
+
+.successModalHeader {
+    background-color: rgba($color: #06eb12, $alpha: 0.9);
+    color: black;
+    border-radius: 6px 6px 0 0;
+    text-align: center;
+
+    .successModalTitle {
+        font-size: xx-large;
+        font-weight: bolder;
+    }
+}
+
+.successModalBody {
+    background-color: rgba($color: #272727, $alpha: 0.9);
+    color: whitesmoke;
+    min-height: 50px;
+    font-size: 25px;
+    text-align: center;
+    border-radius: 0 0 6px 6px;
+}

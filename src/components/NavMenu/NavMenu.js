@@ -106,14 +106,16 @@ class NavMenu extends Component {
     };
 
     handleClick(e) {
-        if (e.target.text === "Logout") {
+        console.log(e.currentTarget.text);
+        if (e.currentTarget.text === "Logout") {
             this.logOut();
         }
         this.props.updatePage(e.target.text);
         this.setState({ isOpen: false });
     }
 
-    closeNavMenu() {
+    closeNavMenu(e) {
+        console.log(e.target);
         if (this.state.isOpen) {
             this.setState({ isOpen: false });
         }
@@ -138,7 +140,7 @@ class NavMenu extends Component {
     render() {
         return (
             <div>
-                <Navbar color="dark" light expand="md" fixed="top">
+                <Navbar color="dark" light expand="lg" fixed="top">
                     <NavbarBrand className="nav-text" href="/">
                         PE Clipboard
                     </NavbarBrand>
@@ -146,7 +148,6 @@ class NavMenu extends Component {
                         className="nav-text"
                         id="toggler"
                         onClick={this.toggle}
-                        onBlur={this.closeNavMenu}
                     />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="nav-text ml-auto" navbar>
