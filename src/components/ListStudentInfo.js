@@ -71,11 +71,11 @@ function ListStudentsInfo(props) {
         );
     });
     return (
-        <div className="">
+        <div className="d-flex justify-content-center">
             <table className="app-container">
                 <thead>
                     <tr>
-                        <th>Student</th>
+                        <th className="studentCol">Student</th>
                         <th>Total Points</th>
                         <th>Grade Percentage</th>
                         <th>Notes Summary</th>

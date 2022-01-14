@@ -1,31 +1,33 @@
 @import "~bootstrap/scss/bootstrap";
 
-// .app-container {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 10px;
-//     padding: 1rem;
-// }
-
+// Table layout if screen width is greater than 800px for desktops and regular ipads.
 table {
-    // border-collapse: collapse;
+    border-collapse: collapse;
     table-layout: auto;
     width: 100%;
+    max-width: none;
 }
 
 th,
 td {
-    border: 1px solid #ffffff;
+    // border: 1px solid #ffffff;
     text-align: left;
     padding: 8px 12px;
-    font-size: 32px;
+    font-size: 20px;
 }
 
 tr {
     width: 100%;
 }
+tr:nth-child(even) {
+    background-color: #256400;
+}
+tr:nth-child(odd) {
+    background-color: #2f2f2f;
+}
 
-th {
+th.studentCol {
+    width: 30%;
 }
 
 td {
