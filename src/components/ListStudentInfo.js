@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import { useViewport } from "../utils/utilities";
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => ({
     studentList: state.studentList,
     studentInfo: state.studentInfo,
     dailyPoints: state.settings.dailyPoints,
+    settings: state.settings,
 });
 
 const mapDispatchToProps = {
@@ -38,49 +39,137 @@ function ListStudentsInfo(props) {
     const classKey = currentGb + "-" + currentClass;
 
     //starting values for attendance and daily points
+    // useEffect(() => {
+    //     const students = Object.keys(props.studentInfo[classKey]);
+    //     console.log("StudentInfo Students:", students);
+    // }, []);
 
-    const studentInfo = props.studentList[classKey].map((student, i) => {
-        return (
-            <React.Fragment>
-                {screenWidth < breakpoint ? (
-                    <div
-                        className={"student"}
-                        name="student-info"
-                        key={student + "-info"}
-                    >
-                        <DropDownBs
+    function getTotalPoints(student) {
+        const pointsArray = [];
+        const studentArr = props.studentInfo[classKey][student];
+        if (Array.isArray(studentArr)) {
+            studentArr.forEach((entry) => {
+                pointsArray.push(+entry.points);
+            });
+        }
+
+        return pointsArray.reduce((a, b) => a + b, 0);
+    }
+
+    function getNotes(student) {
+        const [note1, note2, note3] = [
+            props.settings.note1,
+            props.settings.note2,
+            props.settings.note3,
+        ];
+        let n1Count = 0;
+        let n2Count = 0;
+        let n3Count = 0;
+
+        const notesArray = [];
+        const studentArr = props.studentInfo[classKey][student];
+        if (Array.isArray(studentArr)) {
+            studentArr.forEach((entry) => {
+                if (Array.isArray(entry.notes)) {
+                    entry.notes.forEach((note) => {
+                        if (note === note1) {
+                            n1Count++;
+                        } else if (note === note2) {
+                            n2Count++;
+                        } else if (note === note3) {
+                            n3Count++;
+                        } else {
+                            notesArray.push(" " + note);
+                        }
+                    });
+                }
+            });
+        }
+        let notesSummary = "";
+        if (n1Count) {
+            notesSummary += `${note1}:${n1Count} `;
+        }
+        if (n2Count) {
+            notesSummary += `${note2}:${n2Count} `;
+        }
+        if (n3Count) {
+            notesSummary += `${note3}:${n3Count} `;
+        }
+        if (notesArray.length > 0) {
+            notesSummary += "other:" + notesArray;
+        }
+        return notesSummary + notesArray;
+    }
+
+    function getAbsences(student) {
+        let aCount = 0;
+
+        const studentArr = props.studentInfo[classKey][student];
+        if (Array.isArray(studentArr)) {
+            studentArr.forEach((entry) =>
+                entry.attendance === "A" ? aCount++ : null
+            );
+        }
+        return aCount;
+    }
+    function getTardies(student) {
+        let tCount = 0;
+
+        const studentArr = props.studentInfo[classKey][student];
+        if (Array.isArray(studentArr)) {
+            studentArr.forEach((entry) =>
+                entry.attendance === "T" ? tCount++ : null
+            );
+        }
+        return tCount;
+    }
+
+    const studentInfo = Object.keys(props.studentInfo[classKey]).map(
+        (student, i) => {
+            return (
+                <React.Fragment>
+                    {screenWidth < breakpoint ? (
+                        <div
+                            className={"student"}
+                            name="student-info"
+                            key={student + "-info"}
+                        >
+                            <DropDownBs
+                                student={student}
+                                totalPoints={getTotalPoints(student, "points")}
+                                gradePercentage={"90%"}
+                                notes={getNotes(student)}
+                                absences={getAbsences(student)}
+                                tardies={getTardies(student)}
+                            />
+                        </div>
+                    ) : (
+                        <DesktopStudentInfo
                             student={student}
-                            totalPoints={10}
+                            totalPoints={getTotalPoints(student, "points")}
                             gradePercentage={"90%"}
-                            notes={""}
-                            absences={5}
-                            tardies={2}
+                            notes={getNotes(student)}
+                            absences={getAbsences(student)}
+                            tardies={getTardies(student)}
                         />
-                    </div>
-                ) : (
-                    <DesktopStudentInfo
-                        student={student}
-                        totalPoints={10}
-                        gradePercentage={"90%"}
-                        notes={""}
-                        absences={5}
-                        tardies={2}
-                    />
-                )}
-            </React.Fragment>
-        );
-    });
-    return (
+                    )}
+                </React.Fragment>
+            );
+        }
+    );
+    return screenWidth < breakpoint ? (
+        studentInfo
+    ) : (
         <div className="d-flex justify-content-center">
             <table className="app-container">
                 <thead>
                     <tr>
-                        <th className="studentCol">Student</th>
-                        <th>Total Points</th>
-                        <th>Grade Percentage</th>
-                        <th>Notes Summary</th>
-                        <th>Absences</th>
-                        <th>Tardies</th>
+                        <th className="wide">Student</th>
+                        <th className="narrow">Total Points</th>
+                        <th className="narrow">Grade Percentage</th>
+                        <th className="wide">Notes Summary</th>
+                        <th className="narrow">Absences</th>
+                        <th className="narrow">Tardies</th>
                     </tr>
                 </thead>
                 <tbody className>{studentInfo}</tbody>

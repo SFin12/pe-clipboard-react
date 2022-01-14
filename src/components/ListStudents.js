@@ -10,6 +10,7 @@ const mapStateToProps = (state) => ({
     student: state.student,
     studentList: state.studentList,
     dailyPoints: state.settings.dailyPoints,
+    settings: state.settings,
 });
 
 const mapDispatchToProps = {
@@ -231,7 +232,7 @@ function ListStudents(props) {
                             id={i + "-note1"}
                             data-note={note[i + "-note1"]}
                             onClick={handleNote}
-                            value="NP"
+                            value={props.settings.note1}
                         />
                         <input
                             className="button absent note"
@@ -240,7 +241,7 @@ function ListStudents(props) {
                             id={i + "-note2"}
                             data-note={note[i + "-note2"]}
                             onClick={handleNote}
-                            value="ND"
+                            value={props.settings.note2}
                         />
                         <input
                             className="button absent note "
@@ -249,7 +250,7 @@ function ListStudents(props) {
                             id={i + "-note3"}
                             data-note={note[i + "-note3"]}
                             onClick={handleNote}
-                            value="C"
+                            value={props.settings.note3}
                         />
                         <input
                             className="br-round button absent note "

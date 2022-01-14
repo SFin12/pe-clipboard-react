@@ -150,7 +150,7 @@ function StudentsPage(props) {
         e.preventDefault();
         let studentName = "";
         let studentPoints = "";
-        let studentNotes = "";
+        let studentNotes = [];
         let studentAttendance = "";
         let finishedOneStudent = false;
         for (let i = 0; i < students.length - 1; i++) {
@@ -169,7 +169,7 @@ function StudentsPage(props) {
                 students[i].name.slice(0, 4) === "note" &&
                 students[i].dataset.note === "true"
             ) {
-                studentNotes += students[i].value + " ";
+                studentNotes.push(students[i].value);
             }
             if (students[i].name === "note4") {
                 finishedOneStudent = true;
@@ -190,7 +190,7 @@ function StudentsPage(props) {
                 studentInfoObj[studentName].push(studentObj);
                 studentName = "";
                 studentPoints = "";
-                studentNotes = "";
+                studentNotes = [];
                 studentAttendance = "";
                 finishedOneStudent = false;
             }
