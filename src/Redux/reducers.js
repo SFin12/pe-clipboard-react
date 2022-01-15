@@ -184,7 +184,7 @@ export const MainReducer = (state, action) => {
                 //check if current date already has an entry. If so, write over it.
 
                 // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
-                if (date === thisClass.dateLastSubmitted) {
+                if ("cat" === thisClass.dateLastSubmitted) {
                     // Each key is the name of a student
                     Object.keys(action.payload).forEach((key) => {
                         // If the student exists...
@@ -205,9 +205,14 @@ export const MainReducer = (state, action) => {
                             [currentGb + "-" + currentClass]: {
                                 ...thisClass,
                                 dateLastSubmitted: date,
+                                totalPoints:
+                                    state.studentInfo[
+                                        currentGb + "-" + currentClass
+                                    ].totalPoints,
                             },
                         },
                     };
+                    // If it's a new day, creat a new submission
                 } else {
                     Object.keys(action.payload).forEach((key) => {
                         if (thisClass[key]) {
@@ -226,11 +231,16 @@ export const MainReducer = (state, action) => {
                             [currentGb + "-" + currentClass]: {
                                 ...thisClass,
                                 dateLastSubmitted: date,
+                                totalPoints:
+                                    state.studentInfo[
+                                        currentGb + "-" + currentClass
+                                    ].totalPoints + state.settings.dailyPoints,
                             },
                         },
                     };
                 }
             }
+            // If this is the first submission for a class...
             return {
                 ...state,
                 studentInfo: {
@@ -238,6 +248,7 @@ export const MainReducer = (state, action) => {
                     [currentGb + "-" + currentClass]: {
                         ...action.payload,
                         dateLastSubmitted: date,
+                        totalPoints: state.settings.dailyPoints,
                     },
                 },
             };
