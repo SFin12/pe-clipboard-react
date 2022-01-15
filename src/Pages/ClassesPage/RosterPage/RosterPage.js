@@ -11,7 +11,6 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,

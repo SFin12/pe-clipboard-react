@@ -5,6 +5,8 @@ import { updatePage } from "../../../Redux/actions";
 import { useNavigate } from "react-router";
 import "./StudentInfoPage.scss";
 import ListStudentInfo from "../../../components/ListStudentInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -28,6 +30,13 @@ function StudentInfoPage(props) {
     return (
         <React.Fragment>
             <h1 className="header">Student Info</h1>
+            <FontAwesomeIcon
+                name="left-arrow"
+                icon={faArrowLeft}
+                color="green"
+                className="back-arrow"
+                onClick={() => navigate(-1)}
+            />
             <hr />
 
             <div className="d-flex justify-content-center">
