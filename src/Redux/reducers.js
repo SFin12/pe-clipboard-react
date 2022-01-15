@@ -12,7 +12,7 @@ export const MainReducer = (state, action) => {
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
     );
-    console.log("reducer payload: ", action.payload);
+    console.log("reducer payload: ", action.payload + " " + action.type);
     switch (action.type) {
         //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
@@ -22,7 +22,7 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_GOOGLEAUTH:
             return { ...state, googleAuth: action.payload };
 
-        //CURRENT PAGE---------------------------------------------------------------------
+        //CURRENT PAGE----------------------------------------------------------------------
         case ActionTypes.UPDATE_PAGE:
             return { ...state, currentPage: action.payload.currentPage };
 
@@ -30,6 +30,10 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_STORE:
             console.log("updating store: ", action.payload);
             return { ...state, ...action.payload };
+
+        //UPDATE SETTINGS-------------------------------------------------------------------
+        case ActionTypes.UPDATE_SETTINGS:
+            return { ...state, settings: action.payload };
 
         //GRADEBOOK-------------------------------------------------------------------------
         case ActionTypes.CREATE_GRADEBOOK:
@@ -168,7 +172,7 @@ export const MainReducer = (state, action) => {
                     }),
                 },
             };
-        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-----------------------------------------------------------------------------
+        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)---------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
 
@@ -235,10 +239,11 @@ export const MainReducer = (state, action) => {
                 },
             };
 
-        //ATTENDANCE-------------------------------------------------------------------------
+        //ATTENDANCE--------------------------------------------------------------------------
 
         //DEFAULT-----------------------------------------------------------------------------
         default:
+            console.log("default reducer");
             return state;
     }
 };

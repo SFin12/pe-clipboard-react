@@ -79,11 +79,6 @@ export const updateClassList = (className) => {
     };
 };
 
-export const getClasses = () => ({
-    type: ActionTypes.GET_CLASSES,
-    //async fetch to get classes from google api
-});
-
 export const deleteClass = (className) => ({
     type: ActionTypes.DELETE_CLASS,
     payload: className,
@@ -124,5 +119,13 @@ export const updateAttendance = (attendanceObj) => {
     return {
         type: ActionTypes.UPDATE_ATTENDANCE,
         payload: attendanceObj,
+    };
+};
+
+export const updateSettings = (settingsObj) => {
+    console.log("updatingSettings");
+    return {
+        type: ActionTypes.UPDATE_SETTINGS,
+        payload: settingsObj,
     };
 };

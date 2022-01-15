@@ -126,7 +126,7 @@ function ListStudentsInfo(props) {
 
     const studentInfo = Object.keys(props.studentInfo[classKey]).map(
         (student, i) => {
-            if (student !== "dateLastSubmitted") {
+            if (student !== "dateLastSubmitted" || student !== "totalPoints") {
                 return (
                     <React.Fragment>
                         {screenWidth < breakpoint ? (
