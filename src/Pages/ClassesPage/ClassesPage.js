@@ -6,6 +6,7 @@ import {
     deleteClass,
     updatePage,
 } from "../../Redux/actions";
+import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -28,12 +29,12 @@ const mapDispatchToProps = {
 };
 
 function ClassesPage(props) {
-    const [toggleAdd, setToggleAdd] = useState(false);
     const [toggleDelete, setToggleDelete] = useState(false);
     const [buttonClass, setButtonClass] = useState("class-button");
     const [newClass, setNewClass] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
+    const [showAddClassModal, setShowAddClassModal] = useState(false);
     const navigate = useNavigate();
     const uncleanGb = props.gradebook;
     const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
@@ -76,36 +77,78 @@ function ClassesPage(props) {
         }
     }
 
-    const inputClass = (
-        <React.Fragment>
-            <div className="form-container">
-                <label htmlFor="create-class">Create class</label>
-                <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
+    const inputClassModal = (
+        <Modal
+            show={showAddClassModal}
+            centered
+            size="m"
+            onHide={() => setShowAddClassModal(false)}
+        >
+            <Modal.Header closeButton className="bg-info">
+                <Modal.Title className="font-weight-bold text-dark">
+                    Add Student
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="text-dark">
+                <label htmlFor="create-class text-align-center">
+                    Add Class
+                </label>
+                <div className="input-group mb-3 d-flex justify-content-start">
                     <input
                         id="create-class"
                         type="text"
                         value={newClass}
-                        placeholder="class Name"
+                        placeholder="Class Name"
                         className="text-input"
                         onChange={handleChange}
+                        onKeyDown={handleSave}
                     />
-                    <div className="input-group-append">
-                        <label
-                            className="input-group-text"
-                            htmlFor="create-class"
-                            id="save-class"
-                            onClick={handleAdd}
-                        >
-                            save
-                        </label>
-                    </div>
                 </div>
-            </div>
-        </React.Fragment>
+                <p>Press Enter or click add</p>
+            </Modal.Body>
+            <Modal.Footer className="d-flex justify-content-between">
+                <Button
+                    className="m-1 green text-dark"
+                    name="cancel"
+                    id="save-class"
+                    onClick={handleSave}
+                >
+                    Add
+                </Button>
+                <Button
+                    className="ml-1 "
+                    variant="info"
+                    name="finished"
+                    onClick={() => setShowAddClassModal(false)}
+                >
+                    Finished
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 
+    function handleSave(e) {
+        if (
+            (newClass && e.key === "Enter") ||
+            (newClass && e.target.id === "save-class")
+        ) {
+            if (
+                !props.classList[gb] ||
+                !props.classList[gb].some(
+                    (existingClass) => existingClass === newClass
+                )
+            ) {
+                props.createClass(newClass);
+                props.updateClassList(newClass);
+                setNewClass("");
+            }
+        }
+    }
+
     function handleChange(e) {
-        if (e.target.value) setNewClass(e.target.value);
+        if (e.target.id === "create-class") {
+            setNewClass(e.target.value);
+        }
     }
 
     function handleClassClick(e) {
@@ -115,24 +158,6 @@ function ClassesPage(props) {
 
             //redirects to studentsPage
             navigate("/students");
-        }
-    }
-
-    function handleAdd(e) {
-        if (e.currentTarget.id === "add-class-button") {
-            setToggleAdd(!toggleAdd);
-        }
-        if (e.target.id === "save-class") {
-            setToggleAdd(!toggleAdd);
-            if (
-                !props.classList[gb] ||
-                !props.classList[gb].some(
-                    (existingClass) => existingClass === newClass
-                )
-            ) {
-                props.createClass(newClass);
-                props.updateClassList(newClass);
-            }
         }
     }
 
@@ -171,37 +196,37 @@ function ClassesPage(props) {
                 </span>
             </div>
             <div className="form-container">
-                {toggleAdd ? (
-                    <div>{inputClass}</div>
-                ) : (
-                    <div className="add-delete-container">
-                        <ListClasses />
-                        <div className="d-flex justify-content-around">
-                            <div id="add-class-button" onClick={handleAdd}>
-                                <FontAwesomeIcon
-                                    name="add-icon"
-                                    icon={faPlusCircle}
-                                    className="plus-icon mt-4"
-                                />
-                            </div>
+                {showAddClassModal ? <div>{inputClassModal}</div> : null}
+                <div className="add-delete-container">
+                    <ListClasses />
+                    <div className="d-flex justify-content-around">
+                        <div
+                            id="add-class-button"
+                            onClick={() => setShowAddClassModal(true)}
+                        >
+                            <FontAwesomeIcon
+                                name="add-icon"
+                                icon={faPlusCircle}
+                                className="plus-icon mt-4"
+                            />
+                        </div>
 
-                            <div
-                                onClick={() => setToggleDelete(!toggleDelete)}
-                                id="delete-a-class"
-                            >
-                                <FontAwesomeIcon
-                                    name="delete-icon"
-                                    icon={faMinusCircle}
-                                    className={
-                                        toggleDelete
-                                            ? "minus-icon mt-4 highlight"
-                                            : "minus-icon mt-4"
-                                    }
-                                />
-                            </div>
+                        <div
+                            onClick={() => setToggleDelete(!toggleDelete)}
+                            id="delete-a-class"
+                        >
+                            <FontAwesomeIcon
+                                name="delete-icon"
+                                icon={faMinusCircle}
+                                className={
+                                    toggleDelete
+                                        ? "minus-icon mt-4 highlight"
+                                        : "minus-icon mt-4"
+                                }
+                            />
                         </div>
                     </div>
-                )}
+                </div>
             </div>
         </React.Fragment>
     );
