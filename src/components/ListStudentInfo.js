@@ -126,15 +126,29 @@ function ListStudentsInfo(props) {
 
     const studentInfo = Object.keys(props.studentInfo[classKey]).map(
         (student, i) => {
-            return (
-                <React.Fragment>
-                    {screenWidth < breakpoint ? (
-                        <div
-                            className={"student"}
-                            name="student-info"
-                            key={student + "-info"}
-                        >
-                            <DropDownBs
+            if (student !== "dateLastSubmitted") {
+                return (
+                    <React.Fragment>
+                        {screenWidth < breakpoint ? (
+                            <div
+                                className={"student"}
+                                name="student-info"
+                                key={student + "-info"}
+                            >
+                                <DropDownBs
+                                    student={student}
+                                    totalPoints={getTotalPoints(
+                                        student,
+                                        "points"
+                                    )}
+                                    gradePercentage={"90%"}
+                                    notes={getNotes(student)}
+                                    absences={getAbsences(student)}
+                                    tardies={getTardies(student)}
+                                />
+                            </div>
+                        ) : (
+                            <DesktopStudentInfo
                                 student={student}
                                 totalPoints={getTotalPoints(student, "points")}
                                 gradePercentage={"90%"}
@@ -142,19 +156,10 @@ function ListStudentsInfo(props) {
                                 absences={getAbsences(student)}
                                 tardies={getTardies(student)}
                             />
-                        </div>
-                    ) : (
-                        <DesktopStudentInfo
-                            student={student}
-                            totalPoints={getTotalPoints(student, "points")}
-                            gradePercentage={"90%"}
-                            notes={getNotes(student)}
-                            absences={getAbsences(student)}
-                            tardies={getTardies(student)}
-                        />
-                    )}
-                </React.Fragment>
-            );
+                        )}
+                    </React.Fragment>
+                );
+            }
         }
     );
     return screenWidth < breakpoint ? (
