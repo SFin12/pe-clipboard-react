@@ -46,6 +46,7 @@ function ListStudentsInfo(props) {
 
     function getTotalPoints(student) {
         const pointsArray = [];
+        const pointsPossible = props.studentInfo[classKey].totalPoints;
         const studentArr = props.studentInfo[classKey][student];
         if (Array.isArray(studentArr)) {
             studentArr.forEach((entry) => {
@@ -53,7 +54,24 @@ function ListStudentsInfo(props) {
             });
         }
 
-        return pointsArray.reduce((a, b) => a + b, 0);
+        return pointsArray.reduce((a, b) => a + b, 0) + `/${pointsPossible}`;
+    }
+
+    function getGradePercentage(student) {
+        const pointsArray = [];
+        const pointsPossible = props.studentInfo[classKey].totalPoints;
+        const studentArr = props.studentInfo[classKey][student];
+        if (Array.isArray(studentArr)) {
+            studentArr.forEach((entry) => {
+                pointsArray.push(+entry.points);
+            });
+        }
+
+        return (
+            Math.round(
+                (pointsArray.reduce((a, b) => a + b, 0) / pointsPossible) * 100
+            ) + "%"
+        );
     }
 
     function getNotes(student) {
@@ -126,7 +144,6 @@ function ListStudentsInfo(props) {
 
     const studentInfo = Object.keys(props.studentInfo[classKey]).map(
         (student, i) => {
-            console.log(student !== "dateLastSubmitted" ? true : false);
             if (student !== "dateLastSubmitted" && student !== "totalPoints") {
                 return (
                     <React.Fragment>
@@ -142,7 +159,9 @@ function ListStudentsInfo(props) {
                                         student,
                                         "points"
                                     )}
-                                    gradePercentage={"90%"}
+                                    gradePercentage={getGradePercentage(
+                                        student
+                                    )}
                                     notes={getNotes(student)}
                                     absences={getAbsences(student)}
                                     tardies={getTardies(student)}
@@ -152,7 +171,7 @@ function ListStudentsInfo(props) {
                             <DesktopStudentInfo
                                 student={student}
                                 totalPoints={getTotalPoints(student, "points")}
-                                gradePercentage={"90%"}
+                                gradePercentage={getGradePercentage(student)}
                                 notes={getNotes(student)}
                                 absences={getAbsences(student)}
                                 tardies={getTardies(student)}
@@ -161,6 +180,7 @@ function ListStudentsInfo(props) {
                     </React.Fragment>
                 );
             }
+            return null;
         }
     );
     return screenWidth < breakpoint ? (
