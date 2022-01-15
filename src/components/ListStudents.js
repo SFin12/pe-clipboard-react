@@ -109,6 +109,7 @@ function ListStudents(props) {
     function handleIncrement(e) {
         //increase student points by one.
         let studentId = e.target.id[0];
+        //if the number of target id is two digits...
         if (e.target.id[2] === "-") {
             studentId = e.target.id.slice(0, 2);
         }
@@ -139,13 +140,35 @@ function ListStudents(props) {
 
     function handleNote(e) {
         let noteId = e.currentTarget.id;
+        console.log(noteId);
         let noteName = e.currentTarget.name;
-        // if note is not active, add the active class and set it to true
+        // if note is not active, add the active class and set it to true.
         if (noteName !== "note4") {
             setNote({
                 ...note,
                 [noteId]: !note[noteId],
             });
+            //getting the first character of the note id which is a number.
+            let studentId = e.target.id[0];
+            //if the number of target id is two digits...
+            if (e.target.id[2] === "-") {
+                studentId = e.target.id.slice(0, 2);
+            }
+            studentId += "-student";
+            let currentPoints = Number(studentPoints[studentId]);
+            if (note[noteId]) {
+                currentPoints -= Number(props.settings[noteName + "Points"]);
+                setStudentPoints((prevState) => ({
+                    ...prevState,
+                    [studentId]: currentPoints,
+                }));
+            } else {
+                currentPoints += Number(props.settings[noteName + "Points"]);
+                setStudentPoints((prevState) => ({
+                    ...prevState,
+                    [studentId]: currentPoints,
+                }));
+            }
         } else if (noteName === "note4") {
             e.currentTarget.value.length > 0
                 ? setNote({

@@ -28,6 +28,7 @@ const mapStateToProps = (state) => ({
     student: state.student,
     studentList: state.studentList,
     studentInfo: state.studentInfo,
+    settings: state.settings,
 });
 
 const mapDispatchToProps = {
@@ -54,7 +55,8 @@ class App extends React.Component {
             prevProps.gradebookList !== this.props.gradebookList ||
             prevProps.classList !== this.props.classList ||
             prevProps.studentList !== this.props.studentList ||
-            prevProps.studentInfo !== this.props.studentInfo
+            prevProps.studentInfo !== this.props.studentInfo ||
+            prevProps.settings !== this.props.settings
         ) {
             const userObject = {
                 id: this.props.id,
@@ -68,6 +70,7 @@ class App extends React.Component {
                 student: this.props.student,
                 studentList: this.props.studentList,
                 studentInfo: this.props.studentInfo,
+                settings: this.props.settings,
             };
             // if there is a user write the above props to firebase
             if (this.props.id) {

@@ -50,6 +50,20 @@ class NavMenu extends Component {
         this.closeNavMenu = this.closeNavMenu.bind(this);
     }
 
+    componentDidMount() {
+        if (!this.props.gradebook) {
+            if (links.length > 4) {
+                let classes = links.shift();
+                this.setState({ classesLink: classes });
+            }
+        } else {
+            if (links.length < 5 && this.state.classesLink) {
+                links.unshift(this.state.classesLink);
+                this.setState({ render: !this.state.render });
+            }
+        }
+    }
+
     //addes an upload roster and grades tab to list of links above when a studentsPage is open
     componentDidUpdate() {
         if (this.props.navOpen === false) {
@@ -140,9 +154,17 @@ class NavMenu extends Component {
     render() {
         return (
             <div>
-                <Navbar color="dark" light expand="lg" fixed="top">
-                    <NavbarBrand className="nav-text" href="/">
-                        PE Clipboard
+                <Navbar
+                    color="dark"
+                    bsClass="navbar"
+                    light
+                    expand="lg"
+                    fixed="top"
+                >
+                    <NavbarBrand className="nav-text">
+                        <NavLink to="/info" id="PE-clipboard">
+                            PE Clipboard
+                        </NavLink>
                     </NavbarBrand>
                     <NavbarToggler
                         className="nav-text"

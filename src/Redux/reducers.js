@@ -172,6 +172,7 @@ export const MainReducer = (state, action) => {
                     }),
                 },
             };
+
         //STUDENT INFO (GRADES,NOTES,ATTENDANCE)---------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
@@ -234,12 +235,12 @@ export const MainReducer = (state, action) => {
                 ...state,
                 studentInfo: {
                     ...state.studentInfo,
-                    [currentGb + "-" + currentClass]: action.payload,
-                    dateLastSubmitted: date,
+                    [currentGb + "-" + currentClass]: {
+                        ...action.payload,
+                        dateLastSubmitted: date,
+                    },
                 },
             };
-
-        //ATTENDANCE--------------------------------------------------------------------------
 
         //DEFAULT-----------------------------------------------------------------------------
         default:

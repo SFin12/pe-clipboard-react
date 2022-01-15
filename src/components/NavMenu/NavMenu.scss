@@ -1,15 +1,26 @@
 @import "../../App.scss";
 
+.navbar {
+    background-image: linear-gradient(#212529, #212529, #292f33);
+    box-shadow: 0px 1px 3px 0px rgba(255, 0, 0, 0.5);
+}
+
+#PE-clipboard {
+    text-decoration: none;
+    color: $green;
+}
+
 .nav-text,
 .navbar-toggler-icon {
     color: $green !important;
 }
 
 .nav-text {
-    padding: 10px;
+    padding: 15px;
 }
 
 .custom-toggler,
 .navbar-toggler-icon {
+    // Sets the hamburger icon to the $green color
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(42, 245, 42)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
 }

@@ -98,7 +98,7 @@ function ListStudentsInfo(props) {
         if (notesArray.length > 0) {
             notesSummary += "other:" + notesArray;
         }
-        return notesSummary + notesArray;
+        return notesSummary;
     }
 
     function getAbsences(student) {
@@ -126,7 +126,8 @@ function ListStudentsInfo(props) {
 
     const studentInfo = Object.keys(props.studentInfo[classKey]).map(
         (student, i) => {
-            if (student !== "dateLastSubmitted" || student !== "totalPoints") {
+            console.log(student !== "dateLastSubmitted" ? true : false);
+            if (student !== "dateLastSubmitted" && student !== "totalPoints") {
                 return (
                     <React.Fragment>
                         {screenWidth < breakpoint ? (
