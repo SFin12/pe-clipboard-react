@@ -109,8 +109,19 @@
     background-color: yellow;
 }
 
-.green {
+.green-button {
     background-color: $green !important;
+    border: none !important;
+}
+
+.grey-button {
+    background-color: rgb(223, 222, 221) !important;
+    color: black;
+    border: none !important;
+}
+
+.light-header {
+    background-color: rgb(223, 222, 221) !important;
 }
 
 @media (min-width: 736px) {

@@ -163,7 +163,7 @@ class NavMenu extends Component {
                 >
                     <NavbarBrand className="nav-text">
                         <NavLink to="/info" id="PE-clipboard">
-                            PE Clipboard
+                            Coache's Clipboard
                         </NavLink>
                     </NavbarBrand>
                     <NavbarToggler

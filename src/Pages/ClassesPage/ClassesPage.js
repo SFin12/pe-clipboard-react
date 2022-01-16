@@ -81,12 +81,12 @@ function ClassesPage(props) {
         <Modal
             show={showAddClassModal}
             centered
-            size="m"
+            size="sm"
             onHide={() => setShowAddClassModal(false)}
         >
-            <Modal.Header closeButton className="bg-info">
+            <Modal.Header closeButton className="light-header font-weight-bold">
                 <Modal.Title className="font-weight-bold text-dark">
-                    Add Student
+                    Add Classes
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-dark">
@@ -108,7 +108,7 @@ function ClassesPage(props) {
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-between">
                 <Button
-                    className="m-1 green text-dark"
+                    className="m-1 green-button text-dark"
                     name="cancel"
                     id="save-class"
                     onClick={handleSave}
@@ -116,8 +116,7 @@ function ClassesPage(props) {
                     Add
                 </Button>
                 <Button
-                    className="ml-1 "
-                    variant="info"
+                    className="ml-1 grey-button text-dark"
                     name="finished"
                     onClick={() => setShowAddClassModal(false)}
                 >

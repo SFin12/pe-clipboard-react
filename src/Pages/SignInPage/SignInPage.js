@@ -10,7 +10,6 @@ import {
 import { db } from "../../Lib/FirebaseConfig";
 import { ref, onValue } from "firebase/database";
 
-
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const mapStateToProps = (state) => {
@@ -40,11 +39,11 @@ function SignInPage(props) {
         name,
         email,
         imageUrl,
-        updateLogin, 
-        updateUserInfo, 
-        updateGoogleAuth, 
-        updateStore
-        } = props;
+        updateLogin,
+        updateUserInfo,
+        updateGoogleAuth,
+        updateStore,
+    } = props;
     //fetch current user data to update redux store when first loading
     function getUserData(userId) {
         if (!userId) {
@@ -53,18 +52,17 @@ function SignInPage(props) {
         const userRef = ref(db, "/users/" + userId);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-  
+
             //check if user has any saved data
             if (data) {
                 //updates redux store with user data stored in realtime database from firebase
                 updateStore(data);
-            } 
+            }
             // else {
             //     writeUserData()
             // }
             return updateLogin(true);
         });
-    
     }
 
     const onSuccess = (googleUser) => {
@@ -100,7 +98,7 @@ function SignInPage(props) {
         // Window.gapi is available at this point
         window.onGoogleScriptLoad = () => {
             // (Ref. 1)
-      
+
             const _gapi = window.gapi; // (Ref. 2)
 
             _gapi.load("auth2", () => {
@@ -127,7 +125,7 @@ function SignInPage(props) {
                 <div className="clipboard top"></div>
                 <div className="flex-fill">
                     <div id="main-title">
-                        <h2>PE Clipboard</h2>
+                        <h2>Coache's Clipboard</h2>
                     </div>
                     {!isLoggedIn && (
                         <div to="/classes" key="signInKey" id="google-signin" />

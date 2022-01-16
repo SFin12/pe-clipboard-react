@@ -173,7 +173,7 @@ export const MainReducer = (state, action) => {
                 },
             };
 
-        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)---------------------------------------------
+        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-----------------------------------------------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
 

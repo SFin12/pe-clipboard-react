@@ -56,10 +56,10 @@ function StudentsPage(props) {
     const navigate = useNavigate();
 
     const addStudentModal = (
-        <Modal show={showModal} centered size="m" onHide={toggleModal}>
-            <Modal.Header closeButton className="bg-info">
+        <Modal show={showModal} centered size="sm" onHide={toggleModal}>
+            <Modal.Header closeButton className="light-header">
                 <Modal.Title className="font-weight-bold text-dark">
-                    Add Student
+                    Add Students
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-dark">
@@ -79,37 +79,34 @@ function StudentsPage(props) {
                 </div>
                 <p>Press Enter or click add</p>
             </Modal.Body>
-            <Modal.Footer className="d-flex justify-content-between">
-                <div className="">
+            <Modal.Footer className="d-flex justify-content-between mx-0">
+                <div className="mx-0">
                     <Button
-                        className="mr-auto"
-                        variant="info"
-                        name="upload-roster"
-                        id="save-student"
-                        onClick={() => navigate("/uploadRoster")}
-                        style={{}}
-                    >
-                        Upload?
-                    </Button>
-                </div>
-                <div className="justify-content-between">
-                    <Button
-                        className="m-1 green text-dark"
+                        className="m-1 green-button text-dark mx-0"
                         name="cancel"
                         id="save-student"
                         onClick={handleSave}
                     >
                         Add
                     </Button>
-                    <Button
-                        className="ml-1 "
-                        variant="info"
-                        name="delete"
-                        onClick={toggleModal}
-                    >
-                        Finished
-                    </Button>
                 </div>
+
+                <Button
+                    className="mr-auto green-button text-dark mx-0"
+                    name="upload-roster"
+                    id="save-student"
+                    onClick={() => navigate("/uploadRoster")}
+                    style={{}}
+                >
+                    Upload?
+                </Button>
+                <Button
+                    className="ml-1 grey-button text-dark mx-0"
+                    name="delete"
+                    onClick={toggleModal}
+                >
+                    Finished
+                </Button>
             </Modal.Footer>
         </Modal>
     );
