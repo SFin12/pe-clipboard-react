@@ -46,7 +46,7 @@ function ListStudentsInfo(props) {
 
     function getTotalPoints(student) {
         const pointsArray = [];
-        const pointsPossible = props.studentInfo[classKey].totalPoints;
+        const pointsPossible = Number(props.studentInfo[classKey].totalPoints);
         const studentArr = props.studentInfo[classKey][student];
         if (Array.isArray(studentArr)) {
             studentArr.forEach((entry) => {
@@ -59,7 +59,7 @@ function ListStudentsInfo(props) {
 
     function getGradePercentage(student) {
         const pointsArray = [];
-        const pointsPossible = props.studentInfo[classKey].totalPoints;
+        const pointsPossible = Number(props.studentInfo[classKey].totalPoints);
         const studentArr = props.studentInfo[classKey][student];
         if (Array.isArray(studentArr)) {
             studentArr.forEach((entry) => {

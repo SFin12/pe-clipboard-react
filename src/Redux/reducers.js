@@ -12,7 +12,7 @@ export const MainReducer = (state, action) => {
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
     );
-    console.log("reducer payload: ", action.payload + " " + action.type);
+    // console.log("reducer payload: ", action.payload + " " + action.type);
     switch (action.type) {
         //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:

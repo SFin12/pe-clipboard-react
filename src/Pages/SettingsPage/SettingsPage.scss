@@ -1,0 +1,29 @@
+.note-settings {
+    max-width: 50px;
+    margin-bottom: 10px;
+}
+
+.settings-table {
+    margin-bottom: 40px;
+}
+
+#save-settings {
+    display: block;
+    width: 100px;
+}
+
+.settings-form {
+    tr {
+        background-color: #212121 !important;
+    }
+    th {
+        text-align: center;
+    }
+    td {
+        text-align: center;
+    }
+}
+
+.settings-btn-container {
+    width: 100%;
+}
