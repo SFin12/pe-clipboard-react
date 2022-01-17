@@ -1,6 +1,6 @@
 import SignInPage from "./Pages/SignInPage/SignInPage";
 import "./App.scss";
-import { Route, Routes, Navigate, Redirect } from "react-router";
+import { Route, Routes } from "react-router";
 import ClassesPage from "./Pages/ClassesPage/ClassesPage";
 import GradebookPage from "./Pages/GradebookPage/GradebookPage";
 import StudentsPage from "./Pages/ClassesPage/StudentsPage/StudentsPage";

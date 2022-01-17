@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { updatePage } from "../../../Redux/actions";
 import { useNavigate } from "react-router";
-import "./StudentInfoPage.scss";
+
 import ListStudentInfo from "../../../components/ListStudentInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => ({
     class: state.class,
     studentList: state.studentList,
     dailyPoints: state.settings.dailyPoints,
+    studentInfo: state.studentInfo,
 });
 
 const mapDispatchToProps = {
@@ -21,8 +22,28 @@ const mapDispatchToProps = {
 };
 
 function StudentInfoPage(props) {
+    const [infoExists, setInfoExists] = useState(false);
+
+    //Remove punctuation in class & gradebook names to match db key
+    const uncleanCurrentGb = props.gradebook;
+    const uncleanCurrentClass = props.class;
+    const currentGb = uncleanCurrentGb.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    );
+    const currentClass = uncleanCurrentClass.replace(
+        /[.,/#!$%^&*;:{}=\-_`~()]/g,
+        " "
+    ); //key/property used in db for studentLists and studentInfo
+    const classKey = currentGb + "-" + currentClass;
+
+    const { studentInfo } = props;
+
     useEffect(() => {
         props.updatePage("Student Info");
+        if (studentInfo[classKey]) {
+            setInfoExists(true);
+        }
     });
 
     const navigate = useNavigate();
@@ -47,7 +68,11 @@ function StudentInfoPage(props) {
                 </span>
             </div>
             <div className="container">
-                <ListStudentInfo />
+                {!infoExists ? (
+                    <h3>No student information to display</h3>
+                ) : (
+                    <ListStudentInfo />
+                )}
             </div>
         </React.Fragment>
     );

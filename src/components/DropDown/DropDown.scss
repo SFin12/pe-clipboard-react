@@ -18,3 +18,12 @@
     text-decoration: none;
     padding: 4px 20px;
 }
+.info-btn {
+    border-radius: 0 0 8px 8px;
+    background-image: linear-gradient(
+        white,
+        whitesmoke,
+        whitesmoke,
+        rgb(152, 154, 158)
+    ) !important;
+}

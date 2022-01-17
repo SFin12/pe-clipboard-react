@@ -86,9 +86,7 @@ function RosterPage(props) {
 
     return (
         <React.Fragment>
-            {props.hideHeader ? (
-                ""
-            ) : (
+            {props.hideHeader ? null : (
                 <div>
                     <div className="d-inline">
                         <h1 className="header">{props.class}</h1>

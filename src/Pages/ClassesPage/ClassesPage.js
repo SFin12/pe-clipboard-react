@@ -82,6 +82,7 @@ function ClassesPage(props) {
             show={showAddClassModal}
             centered
             size="sm"
+            className="p-4 p-sm-2 p-md-2y"
             onHide={() => setShowAddClassModal(false)}
         >
             <Modal.Header closeButton className="light-header font-weight-bold">

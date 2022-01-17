@@ -155,6 +155,7 @@ function ListStudentsInfo(props) {
                             >
                                 <DropDownBs
                                     student={student}
+                                    className="student-info-button"
                                     totalPoints={getTotalPoints(
                                         student,
                                         "points"

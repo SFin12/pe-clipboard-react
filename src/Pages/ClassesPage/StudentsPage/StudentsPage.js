@@ -37,6 +37,7 @@ function StudentsPage(props) {
     const [showSuccess, setShowSuccess] = useState(false);
     const target = useRef(null);
 
+    //Remove punctuation in class & gradebook names to match db key
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
     const currentGb = uncleanCurrentGb.replace(
@@ -46,7 +47,7 @@ function StudentsPage(props) {
     const currentClass = uncleanCurrentClass.replace(
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
-    );
+    ); //key/property used in db for studentLists and studentInfo
     const classKey = currentGb + "-" + currentClass;
 
     useEffect(() => {
@@ -56,7 +57,13 @@ function StudentsPage(props) {
     const navigate = useNavigate();
 
     const addStudentModal = (
-        <Modal show={showModal} centered size="sm" onHide={toggleModal}>
+        <Modal
+            show={showModal}
+            centered
+            size="sm"
+            dialogClassName="p-4 p-sm-2 p-md-2"
+            onHide={toggleModal}
+        >
             <Modal.Header closeButton className="light-header">
                 <Modal.Title className="font-weight-bold text-dark">
                     Add Students

@@ -154,13 +154,7 @@ class NavMenu extends Component {
     render() {
         return (
             <div>
-                <Navbar
-                    color="dark"
-                    bsClass="navbar"
-                    light
-                    expand="lg"
-                    fixed="top"
-                >
+                <Navbar color="dark" light expand="lg" fixed="top">
                     <NavbarBrand className="nav-text">
                         <NavLink to="/info" id="PE-clipboard">
                             Coache's Clipboard

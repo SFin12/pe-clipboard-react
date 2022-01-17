@@ -1,6 +1,7 @@
 @import "../App.scss";
 
 .successModal {
+    padding: 65px;
     .modal-content {
         background-color: transparent;
     }
@@ -25,4 +26,10 @@
     font-size: 25px;
     text-align: center;
     border-radius: 0 0 6px 6px;
+}
+
+@media (min-width: 756px) {
+    .successModal {
+        padding: 0px;
+    }
 }
