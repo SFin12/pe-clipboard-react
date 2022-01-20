@@ -34,6 +34,7 @@ const mapDispatchToProps = {
 //https://www.quod.ai/post/how-to-integrate-google-api-into-your-react-app
 
 function SignInPage(props) {
+    //destructuring props
     const {
         isLoggedIn,
         name,
@@ -125,7 +126,7 @@ function SignInPage(props) {
                 <div className="clipboard top"></div>
                 <div className="flex-fill">
                     <div id="main-title">
-                        <h2>Coache's Clipboard</h2>
+                        <h2>Coach's Clipboard</h2>
                     </div>
                     {!isLoggedIn && (
                         <div to="/classes" key="signInKey" id="google-signin" />

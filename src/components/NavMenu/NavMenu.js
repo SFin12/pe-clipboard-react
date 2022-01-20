@@ -157,7 +157,7 @@ class NavMenu extends Component {
                 <Navbar color="dark" light expand="lg" fixed="top">
                     <NavbarBrand className="nav-text">
                         <NavLink to="/info" id="PE-clipboard">
-                            Coache's Clipboard
+                            Coach's Clipboard
                         </NavLink>
                     </NavbarBrand>
                     <NavbarToggler

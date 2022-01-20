@@ -31,7 +31,7 @@ export function SettingsPage(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (e.keyCode != 13) {
+        if (e.keyCode !== 13) {
             console.log("submitting");
             const settingsObj = {
                 dailyPoints: Number(dPointsRef.current.value),

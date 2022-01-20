@@ -184,7 +184,7 @@ export const MainReducer = (state, action) => {
                 //check if current date already has an entry. If so, write over it.
 
                 // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
-                if ("cat" === thisClass.dateLastSubmitted) {
+                if (date === thisClass.dateLastSubmitted) {
                     // Each key is the name of a student
                     Object.keys(action.payload).forEach((key) => {
                         // If the student exists...

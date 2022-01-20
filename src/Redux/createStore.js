@@ -19,9 +19,9 @@ const initialState = {
     settings: {
         dailyPoints: 10,
         note1: "ND",
-        note1Points: -4,
+        note1Points: 0,
         note2: "NP",
-        note2Points: -10,
+        note2Points: 0,
         note3: "E",
         note3Points: 0,
     },
