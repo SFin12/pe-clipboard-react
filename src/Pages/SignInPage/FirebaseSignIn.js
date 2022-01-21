@@ -10,7 +10,6 @@ import {
 import { db } from "../../Lib/FirebaseConfig";
 import { ref, onValue } from "firebase/database";
 
-
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const mapStateToProps = (state) => {
@@ -35,7 +34,6 @@ const mapDispatchToProps = {
 //https://www.quod.ai/post/how-to-integrate-google-api-into-your-react-app
 
 function FirebaseSignIn(props) {
-
     //fetch current user data to update redux store when first loading
     function getUserData(userId) {
         if (!userId) {
@@ -44,39 +42,33 @@ function FirebaseSignIn(props) {
         const userRef = ref(db, "/users/" + userId);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-  
+
             //check if user has any saved data
             if (data) {
                 //updates redux store with user data stored in realtime database from firebase
                 props.updateStore(data);
-            } 
+            }
             // else {
             //     writeUserData()
             // }
             return props.updateLogin(true);
         });
-    
 
-    //     const profile = googleUser.getBasicProfile();
-    //     const id = profile.getId();
-    //     const name = profile.getName();
-    //     const email = profile.getEmail();
-    //     const imageUrl = profile.getImageUrl();
-    //     props.updateUserInfo(id, name, email, imageUrl);
-    //     getUserData(id);
-    // };
+        //     const profile = googleUser.getBasicProfile();
+        //     const id = profile.getId();
+        //     const name = profile.getName();
+        //     const email = profile.getEmail();
+        //     const imageUrl = profile.getImageUrl();
+        //     props.updateUserInfo(id, name, email, imageUrl);
+        //     getUserData(id);
+        // };
 
-    // const onFailure = () => {
-    //     props.updateLogin(false);
-    // };
+        // const onFailure = () => {
+        //     props.updateLogin(false);
+        // };
 
-
-  
-    return (
-        <>
-        
-        </>
-    );
+        return <></>;
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FirebaseSignIn);
