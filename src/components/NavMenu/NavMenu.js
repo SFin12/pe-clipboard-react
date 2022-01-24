@@ -18,12 +18,12 @@ const links = [
     { to: "/gradebook", text: "Gradebook", key: "link2" },
     { to: "/info", text: "Info" },
     { to: "/settings", text: "Settings", key: "link3" },
-    { to: "/", text: "Logout", key: "link4" },
+    { to: "/pe-clipboard-react", text: "Logout", key: "link4" },
 ];
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.signedIn,
+        signedIn: state.signedIn,
         googleAuth: state.googleAuth,
         currentPage: state.currentPage,
         gradebook: state.gradebook,
@@ -114,7 +114,6 @@ class NavMenu extends Component {
         (async () => {
             await this.props.googleAuth.googleAuth.signOut();
             this.props.updateLogin(false);
-
             window.location.reload();
         })();
     };
