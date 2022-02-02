@@ -29,6 +29,8 @@ function ListStudents(props) {
 
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
+
+    // removes symbols that can't be used in a javascript property/key name
     const currentGb = uncleanCurrentGb.replace(
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
@@ -39,7 +41,7 @@ function ListStudents(props) {
     );
     const classKey = currentGb + "-" + currentClass;
 
-    //starting values for attendance and daily points
+    //sets starting values for attendance and daily points
     useEffect(() => {
         props.updatePage("Students");
         const studentsExist = props.studentList[classKey];
@@ -68,6 +70,7 @@ function ListStudents(props) {
                 }
                 return newState;
             });
+            // sets all notes to not-clicked / off
             setNote((note) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
@@ -129,12 +132,41 @@ function ListStudents(props) {
         }
         studentId += "-student";
         let currentAttendance = attendance[studentId];
+        let currentPoints = Number(studentPoints[studentId]);
+
+        // Change current attendance to "A" (triggers class change on element)
         if (currentAttendance === "P") {
             setAttendance({ ...attendance, [studentId]: "A" });
+            currentPoints += Number(props.settings.absentPoints);
+            currentPoints =
+                currentPoints < 0 ? (currentPoints = 0) : currentPoints;
+            setStudentPoints((prevState) => ({
+                ...prevState,
+                [studentId]: currentPoints,
+            }));
         } else if (currentAttendance === "A") {
             setAttendance({ ...attendance, [studentId]: "T" });
+            currentPoints = Number(props.settings.dailyPoints);
+            currentPoints += Number(props.settings.tardyPoints);
+            currentPoints =
+                currentPoints < 0 ? (currentPoints = 0) : currentPoints;
+            setStudentPoints((prevState) => ({
+                ...prevState,
+                [studentId]: currentPoints,
+            }));
         } else {
             setAttendance({ ...attendance, [studentId]: "P" });
+            currentPoints = Number(props.settings.dailyPoints);
+            setStudentPoints((prevState) => ({
+                ...prevState,
+                [studentId]: currentPoints,
+            }));
+        }
+        if (studentPoints[studentId] < 0) {
+            setStudentPoints((prevState) => ({
+                ...prevState,
+                [studentId]: 0,
+            }));
         }
     }
 
@@ -155,6 +187,7 @@ function ListStudents(props) {
                 studentId = e.target.id.slice(0, 2);
             }
             studentId += "-student";
+            // reduce daily point value by amount associated with the note clicked
             let currentPoints = Number(studentPoints[studentId]);
             if (note[noteId]) {
                 currentPoints -= Number(props.settings[noteName + "Points"]);
@@ -162,6 +195,7 @@ function ListStudents(props) {
                     ...prevState,
                     [studentId]: currentPoints,
                 }));
+                // if the note is being unclicked, add the points back.
             } else {
                 currentPoints += Number(props.settings[noteName + "Points"]);
                 setStudentPoints((prevState) => ({

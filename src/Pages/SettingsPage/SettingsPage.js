@@ -23,6 +23,8 @@ export function SettingsPage(props) {
     const [showSaved, setShowSaved] = useState(false);
 
     const dPointsRef = useRef();
+    const absentPointsRef = useRef();
+    const tardyPointsRef = useRef();
     const n1Ref = useRef();
     const n2Ref = useRef();
     const n3Ref = useRef();
@@ -38,6 +40,8 @@ export function SettingsPage(props) {
             console.log("submitting");
             const settingsObj = {
                 dailyPoints: Number(dPointsRef.current.value),
+                absentPoints: Number(absentPointsRef.current.value),
+                tardyPoints: Number(tardyPointsRef.current.value),
                 note1: n1Ref.current.value,
                 note1Points: Number(n1PointsRef.current.value),
                 note2: n2Ref.current.value,
@@ -85,6 +89,46 @@ export function SettingsPage(props) {
                                         }
                                         ref={dPointsRef}
                                     ></input>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className="settings-table">
+                        <thead>
+                            <tr>
+                                <th>Attendance</th>
+                                <th className="">Points Affect</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Absent: </td>
+                                <td>
+                                    Number Value:{" "}
+                                    <input
+                                        type="number"
+                                        className="note-settings"
+                                        maxLength={3}
+                                        ref={absentPointsRef}
+                                        defaultValue={
+                                            props.settings.absentPoints
+                                        }
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tardy: </td>
+                                <td>
+                                    Number Value:{" "}
+                                    <input
+                                        type="number"
+                                        className="note-settings"
+                                        maxLength={3}
+                                        ref={tardyPointsRef}
+                                        defaultValue={
+                                            props.settings.tardyPoints
+                                        }
+                                    />
                                 </td>
                             </tr>
                         </tbody>

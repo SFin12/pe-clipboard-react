@@ -18,6 +18,8 @@ const initialState = {
     studentList: {},
     settings: {
         dailyPoints: 10,
+        absentPoints: -10,
+        tardyPoints: 0,
         note1: "ND",
         note1Points: 0,
         note2: "NP",
