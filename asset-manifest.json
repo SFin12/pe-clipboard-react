@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/pe-clipboard-react/static/css/main.76302e56.chunk.css",
-    "main.js": "/pe-clipboard-react/static/js/main.dd44cb01.chunk.js",
-    "main.js.map": "/pe-clipboard-react/static/js/main.dd44cb01.chunk.js.map",
+    "main.css": "/pe-clipboard-react/static/css/main.da0753b7.chunk.css",
+    "main.js": "/pe-clipboard-react/static/js/main.0eb54a02.chunk.js",
+    "main.js.map": "/pe-clipboard-react/static/js/main.0eb54a02.chunk.js.map",
     "runtime-main.js": "/pe-clipboard-react/static/js/runtime-main.d876aa85.js",
     "runtime-main.js.map": "/pe-clipboard-react/static/js/runtime-main.d876aa85.js.map",
     "static/css/2.c216f857.chunk.css": "/pe-clipboard-react/static/css/2.c216f857.chunk.css",
-    "static/js/2.f80ca926.chunk.js": "/pe-clipboard-react/static/js/2.f80ca926.chunk.js",
-    "static/js/2.f80ca926.chunk.js.map": "/pe-clipboard-react/static/js/2.f80ca926.chunk.js.map",
+    "static/js/2.1c5cd21a.chunk.js": "/pe-clipboard-react/static/js/2.1c5cd21a.chunk.js",
+    "static/js/2.1c5cd21a.chunk.js.map": "/pe-clipboard-react/static/js/2.1c5cd21a.chunk.js.map",
     "index.html": "/pe-clipboard-react/index.html",
     "static/css/2.c216f857.chunk.css.map": "/pe-clipboard-react/static/css/2.c216f857.chunk.css.map",
-    "static/css/main.76302e56.chunk.css.map": "/pe-clipboard-react/static/css/main.76302e56.chunk.css.map",
-    "static/js/2.f80ca926.chunk.js.LICENSE.txt": "/pe-clipboard-react/static/js/2.f80ca926.chunk.js.LICENSE.txt"
+    "static/css/main.da0753b7.chunk.css.map": "/pe-clipboard-react/static/css/main.da0753b7.chunk.css.map",
+    "static/js/2.1c5cd21a.chunk.js.LICENSE.txt": "/pe-clipboard-react/static/js/2.1c5cd21a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d876aa85.js",
     "static/css/2.c216f857.chunk.css",
-    "static/js/2.f80ca926.chunk.js",
-    "static/css/main.76302e56.chunk.css",
-    "static/js/main.dd44cb01.chunk.js"
+    "static/js/2.1c5cd21a.chunk.js",
+    "static/css/main.da0753b7.chunk.css",
+    "static/js/main.0eb54a02.chunk.js"
   ]
 }
