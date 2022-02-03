@@ -257,7 +257,7 @@ function StudentsPage(props) {
                                 </Button>
                             ) : null}
 
-                            <div onClick={handleDelete} id="delete-a-class">
+                            <div onClick={handleDelete} id="delete-a-student">
                                 <FontAwesomeIcon
                                     name="delete-icon"
                                     icon={faMinusCircle}

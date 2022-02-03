@@ -56,6 +56,7 @@ function ListStudents(props) {
                         ...newState,
                         [studentId]:
                             studentPoints[studentId] || props.dailyPoints,
+                        [studentId + "changed"]: 0,
                     };
                 }
                 return newState;
@@ -91,7 +92,8 @@ function ListStudents(props) {
                 return newState;
             });
         }
-    }, [props, classKey]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     function handleDecrement(e) {
         //decrease student points by one.
@@ -107,17 +109,17 @@ function ListStudents(props) {
         setStudentPoints((prevState) => ({
             ...prevState,
             [studentId]: currentPoints,
+            [studentId + "changed"]: studentPoints[studentId + "changed"] - 1,
         }));
     }
 
     function handleIncrement(e) {
         //increase student points by one.
         let studentId = e.target.id[0];
-        let studentIdNumber = e.target.id[0];
+
         //if the number of target id is two digits...
         if (e.target.id[2] === "-") {
             studentId = e.target.id.slice(0, 2);
-            studentIdNumber = e.target.id.slice(0, 2);
         }
         studentId += "-student";
         let currentPoints = studentPoints[studentId];
@@ -125,6 +127,7 @@ function ListStudents(props) {
         setStudentPoints((prevState) => ({
             ...prevState,
             [studentId]: currentPoints,
+            [studentId + "changed"]: studentPoints[studentId + "changed"] + 1,
         }));
     }
 
@@ -217,7 +220,8 @@ function ListStudents(props) {
             buttonsClicked.length > 0
                 ? buttonsClicked.reduce((total, current) => total + current)
                 : 0;
-        let currentPoints = props.settings.dailyPoints + pointValues;
+        let pointsChanged = studentPoints[studentId + "changed"]; //add to currentPoints to subtract from customized points rather than base value set from daily points
+        let currentPoints = props.settings.dailyPoints + pointValues; // + pointsChanged;
 
         if (currentPoints < 0) {
             currentPoints = 0;
@@ -256,8 +260,8 @@ function ListStudents(props) {
                         props.toggleDelete ? "student delete" : "student"
                     }
                     name="student-info"
-                    key={i + "-" + student + "-info"}
-                    id={i + "-" + student + "-info"}
+                    key={student + "-info"}
+                    id={student + "-info"}
                     onClick={props.toggleDelete ? handleDelete : undefined}
                 >
                     <div className="flex-space-between">
