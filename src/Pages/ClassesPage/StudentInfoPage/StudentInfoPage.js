@@ -44,7 +44,7 @@ function StudentInfoPage(props) {
         if (studentInfo[classKey]) {
             setInfoExists(true);
         }
-    });
+    }, []);
 
     const navigate = useNavigate();
 

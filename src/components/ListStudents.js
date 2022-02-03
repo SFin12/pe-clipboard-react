@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import Confirm from "./ConfirmModal";
@@ -112,9 +113,11 @@ function ListStudents(props) {
     function handleIncrement(e) {
         //increase student points by one.
         let studentId = e.target.id[0];
+        let studentIdNumber = e.target.id[0];
         //if the number of target id is two digits...
         if (e.target.id[2] === "-") {
             studentId = e.target.id.slice(0, 2);
+            studentIdNumber = e.target.id.slice(0, 2);
         }
         studentId += "-student";
         let currentPoints = studentPoints[studentId];
@@ -126,9 +129,12 @@ function ListStudents(props) {
     }
 
     function handleAttendance(e) {
+        let buttonName = e.currentTarget.name;
         let studentId = e.target.id[0];
+        let studentIdNumber = e.target.id[0];
         if (e.target.id[2] === "-") {
             studentId = e.target.id.slice(0, 2);
+            studentIdNumber = e.target.id.slice(0, 2);
         }
         studentId += "-student";
         let currentAttendance = attendance[studentId];
@@ -137,42 +143,19 @@ function ListStudents(props) {
         // Change current attendance to "A" (triggers class change on element)
         if (currentAttendance === "P") {
             setAttendance({ ...attendance, [studentId]: "A" });
-            currentPoints += Number(props.settings.absentPoints);
-            currentPoints =
-                currentPoints < 0 ? (currentPoints = 0) : currentPoints;
-            setStudentPoints((prevState) => ({
-                ...prevState,
-                [studentId]: currentPoints,
-            }));
         } else if (currentAttendance === "A") {
             setAttendance({ ...attendance, [studentId]: "T" });
-            currentPoints = Number(props.settings.dailyPoints);
-            currentPoints += Number(props.settings.tardyPoints);
-            currentPoints =
-                currentPoints < 0 ? (currentPoints = 0) : currentPoints;
-            setStudentPoints((prevState) => ({
-                ...prevState,
-                [studentId]: currentPoints,
-            }));
         } else {
             setAttendance({ ...attendance, [studentId]: "P" });
-            currentPoints = Number(props.settings.dailyPoints);
-            setStudentPoints((prevState) => ({
-                ...prevState,
-                [studentId]: currentPoints,
-            }));
         }
-        if (studentPoints[studentId] < 0) {
-            setStudentPoints((prevState) => ({
-                ...prevState,
-                [studentId]: 0,
-            }));
-        }
+
+        handlePoints(e, studentIdNumber, buttonName);
     }
 
     function handleNote(e) {
         let noteId = e.currentTarget.id;
-        console.log(noteId);
+        let studentIdNumber;
+        let buttonName = e.currentTarget.name;
         let noteName = e.currentTarget.name;
         // if note is not active, add the active class and set it to true.
         if (noteName !== "note4") {
@@ -181,28 +164,8 @@ function ListStudents(props) {
                 [noteId]: !note[noteId],
             });
             //getting the first character of the note id which is a number.
-            let studentId = e.target.id[0];
-            //if the number of target id is two digits...
-            if (e.target.id[2] === "-") {
-                studentId = e.target.id.slice(0, 2);
-            }
-            studentId += "-student";
-            // reduce daily point value by amount associated with the note clicked
-            let currentPoints = Number(studentPoints[studentId]);
-            if (note[noteId]) {
-                currentPoints -= Number(props.settings[noteName + "Points"]);
-                setStudentPoints((prevState) => ({
-                    ...prevState,
-                    [studentId]: currentPoints,
-                }));
-                // if the note is being unclicked, add the points back.
-            } else {
-                currentPoints += Number(props.settings[noteName + "Points"]);
-                setStudentPoints((prevState) => ({
-                    ...prevState,
-                    [studentId]: currentPoints,
-                }));
-            }
+
+            studentIdNumber = e.target.id[0];
         } else if (noteName === "note4") {
             e.currentTarget.value.length > 0
                 ? setNote({
@@ -214,6 +177,55 @@ function ListStudents(props) {
                       [noteId]: false,
                   });
         }
+        handlePoints(e, studentIdNumber, buttonName);
+    }
+
+    function handlePoints(e, studentIdNumber, buttonName) {
+        const studentId = studentIdNumber + "-student";
+        const buttonElements = Array.from(e.target.parentElement.children);
+        const buttonsClicked = [];
+
+        buttonElements.forEach((button, i) => {
+            if (i === 0) {
+                if (button.value === "A") {
+                    console.log(button.value);
+                    buttonName !== "attendance"
+                        ? buttonsClicked.push(props.settings.absentPoints)
+                        : buttonsClicked.push(props.settings.tardyPoints);
+                } else if (button.value === "T") {
+                    console.log(button.value);
+                    if (buttonName !== "attendance") {
+                        buttonsClicked.push(props.settings.tardyPoints);
+                    }
+                } else if (buttonName === "attendance") {
+                    buttonsClicked.push(props.settings.absentPoints);
+                }
+            }
+            // check to see if the notes are clicked.
+            else if (i > 0 && i < 4) {
+                let buttonClicked = button.getAttribute("data-note");
+                let buttonClickedBool = buttonClicked === "true" ? true : false;
+                if (buttonName === button.name) {
+                    buttonClickedBool = !buttonClickedBool;
+                }
+                if (buttonClickedBool) {
+                    buttonsClicked.push(props.settings[button.name + "Points"]);
+                }
+            }
+        });
+        let pointValues =
+            buttonsClicked.length > 0
+                ? buttonsClicked.reduce((total, current) => total + current)
+                : 0;
+        let currentPoints = props.settings.dailyPoints + pointValues;
+
+        if (currentPoints < 0) {
+            currentPoints = 0;
+        }
+        setStudentPoints((prevState) => ({
+            ...prevState,
+            [studentId]: currentPoints,
+        }));
     }
 
     function handleDelete(e) {
@@ -244,7 +256,8 @@ function ListStudents(props) {
                         props.toggleDelete ? "student delete" : "student"
                     }
                     name="student-info"
-                    id={student + "-info"}
+                    key={i + "-" + student + "-info"}
+                    id={i + "-" + student + "-info"}
                     onClick={props.toggleDelete ? handleDelete : undefined}
                 >
                     <div className="flex-space-between">

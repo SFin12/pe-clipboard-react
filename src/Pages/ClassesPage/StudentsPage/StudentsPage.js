@@ -52,6 +52,7 @@ function StudentsPage(props) {
 
     useEffect(() => {
         props.updatePage("Students");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const navigate = useNavigate();
@@ -147,15 +148,21 @@ function StudentsPage(props) {
         }
     }
 
+    // submits current evaluation for each student to redux and firebase
     function handleSubmit(e) {
+        // date is submitted and used to determine if the submission should overwrite the current day or add to grades.
         const date = new Date().toLocaleDateString();
         const students = e.target.elements;
+
+        // object that will contain all student data
         const studentInfoObj = {};
         e.preventDefault();
         let studentName = "";
         let studentPoints = "";
         let studentNotes = [];
         let studentAttendance = "";
+
+        // is set to true once all notes and data for a student have been iterated, then it's reset to true
         let finishedOneStudent = false;
         for (let i = 0; i < students.length - 1; i++) {
             if (students[i].name === "name") {

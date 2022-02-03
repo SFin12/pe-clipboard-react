@@ -118,6 +118,7 @@ function SignInPage(props) {
 
         // Ensure everything is set before loading the script
         loadGoogleScript(); // (Ref. 9)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
