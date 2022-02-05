@@ -1,0 +1,22 @@
+import "./ToggleSwitch.scss";
+
+function ToggleSwitch({ checked, handleToggle, label }) {
+    return (
+        <div className="d-block">
+            <label htmlFor="checkbox" className="mr-3">
+                {label}
+            </label>
+            <label className="switch">
+                <input
+                    type="checkbox"
+                    checked={checked}
+                    id="checkbox"
+                    onChange={handleToggle}
+                />
+                <span class="slider round"></span>
+            </label>
+        </div>
+    );
+}
+
+export default ToggleSwitch;

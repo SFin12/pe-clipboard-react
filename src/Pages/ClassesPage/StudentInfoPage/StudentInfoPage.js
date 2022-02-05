@@ -7,6 +7,9 @@ import { useNavigate } from "react-router";
 import ListStudentInfo from "../../../components/ListStudentInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import FilterDays from "../../../components/FilterDays";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -44,6 +47,7 @@ function StudentInfoPage(props) {
         if (studentInfo[classKey]) {
             setInfoExists(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const navigate = useNavigate();
@@ -71,7 +75,10 @@ function StudentInfoPage(props) {
                 {!infoExists ? (
                     <h3>No student information to display</h3>
                 ) : (
-                    <ListStudentInfo />
+                    <>
+                        <FilterDays />
+                        <ListStudentInfo />
+                    </>
                 )}
             </div>
         </React.Fragment>

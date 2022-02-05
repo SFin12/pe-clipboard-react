@@ -98,7 +98,7 @@ class App extends React.Component {
                                 start on class page. */}
 
                                 <Route // Starting page after login. Takes user to their classes unless there is no gradebook created or selected
-                                    path="/"
+                                    path="/pe-clipboard-react"
                                     element={
                                         !this.props.gradebook ? (
                                             <GradebookPage />
