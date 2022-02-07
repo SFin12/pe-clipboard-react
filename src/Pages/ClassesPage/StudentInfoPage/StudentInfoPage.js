@@ -26,6 +26,8 @@ const mapDispatchToProps = {
 
 function StudentInfoPage(props) {
     const [infoExists, setInfoExists] = useState(false);
+    const [startDateFilter, setStartDateFilter] = useState("");
+    const [endDateFilter, setEndDateFilter] = useState("");
 
     //Remove punctuation in class & gradebook names to match db key
     const uncleanCurrentGb = props.gradebook;
@@ -52,6 +54,26 @@ function StudentInfoPage(props) {
 
     const navigate = useNavigate();
 
+    function handleDate(startDate, endDate) {
+        const formattedStartDate = startDate.split("-").join("/");
+        const formattedEndDate = endDate.split("-").join("/");
+        const startDateToFind = new Date(
+            formattedStartDate
+        ).toLocaleDateString();
+        const endDateToFind = new Date(formattedEndDate).toLocaleDateString();
+        setStartDateFilter(startDateToFind);
+        setEndDateFilter(endDateToFind);
+        console.log(startDateToFind + " " + endDateToFind);
+    }
+
+    function checkFilter(filter) {
+        if (!filter) {
+            setStartDateFilter(null);
+            setEndDateFilter(null);
+            console.log("filter", filter);
+        }
+    }
+
     return (
         <React.Fragment>
             <h1 className="header">Student Info</h1>
@@ -76,8 +98,14 @@ function StudentInfoPage(props) {
                     <h3>No student information to display</h3>
                 ) : (
                     <>
-                        <FilterDays />
-                        <ListStudentInfo />
+                        <FilterDays
+                            handleDate={handleDate}
+                            checkFilter={checkFilter}
+                        />
+                        <ListStudentInfo
+                            startDate={startDateFilter}
+                            endDate={endDateFilter}
+                        />
                     </>
                 )}
             </div>

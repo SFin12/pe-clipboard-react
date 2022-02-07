@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import Confirm from "./ConfirmModal";
@@ -141,7 +140,6 @@ function ListStudents(props) {
         }
         studentId += "-student";
         let currentAttendance = attendance[studentId];
-        let currentPoints = Number(studentPoints[studentId]);
 
         // Change current attendance to "A" (triggers class change on element)
         if (currentAttendance === "P") {
@@ -220,8 +218,9 @@ function ListStudents(props) {
             buttonsClicked.length > 0
                 ? buttonsClicked.reduce((total, current) => total + current)
                 : 0;
-        let pointsChanged = studentPoints[studentId + "changed"]; //add to currentPoints to subtract from customized points rather than base value set from daily points
-        let currentPoints = props.settings.dailyPoints + pointValues; // + pointsChanged;
+        let pointsChanged = studentPoints[studentId + "changed"]; //add to currentPoints to subtract from customized points rather than base value set from daily points.
+        let currentPoints =
+            props.settings.dailyPoints + pointValues + pointsChanged;
 
         if (currentPoints < 0) {
             currentPoints = 0;
@@ -277,7 +276,7 @@ function ListStudents(props) {
                         />
                         <input
                             className="tr-round button daily-points "
-                            key={i + "-points"}
+                            key={student + "-points"}
                             name="daily-points"
                             type="button"
                             id={i + "-points"}
@@ -294,6 +293,7 @@ function ListStudents(props) {
                             }
                             name="attendance"
                             type="button"
+                            key={student + "-attendance"}
                             id={i + "-attendance"}
                             data-toggle="off"
                             value={attendance[studentId]}
@@ -331,6 +331,7 @@ function ListStudents(props) {
                             style={{ textAlign: "center" }}
                             name="note4"
                             type="text"
+                            key={student + "-note4"}
                             id={i + "-note4"}
                             placeholder="?"
                             data-note={note[i + "-note4"]}

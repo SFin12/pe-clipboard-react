@@ -6,12 +6,12 @@ function DropDownStudentInfo(props) {
     return (
         <DropdownButton
             id="dropdown-basic-button"
+            key={props.id}
             variant="secondary"
             menuVariant="dark"
             title={props.student}
             className="m-auto d-flex justify-content-center w-200"
             bsPrefix="button student-button info-btn "
-            // align='"start"|"end"|{ sm: "start"|"end" }|{ md: "start"|"end" }|{ lg: "start"|"end" }|{ xl: "start"|"end"}|{ xxl: "start"|"end"}'
         >
             <Dropdown.Item bsPrefix="dropdown-items">
                 Total Points: {props.totalPoints}

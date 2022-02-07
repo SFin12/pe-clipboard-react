@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import { useViewport } from "../utils/utilities";
 import DesktopStudentInfo from "./DesktopStudentInfo";
-import DropDownBs from "./DropDown/DropDownBs";
+import DropDownStudentInfo from "./DropDown/DropDownStudentInfo";
 import "./ListStudentInfo.scss";
 
 const mapStateToProps = (state) => ({
@@ -38,17 +38,40 @@ function ListStudentsInfo(props) {
     );
     const classKey = currentGb + "-" + currentClass;
 
-    //starting values for attendance and daily points
-    // useEffect(() => {
-    //     const students = Object.keys(props.studentInfo[classKey]);
-    //     console.log("StudentInfo Students:", students);
-    // }, []);
+    //placed outside of getTotalPoints so only needs to be found once for all students rather than on each call to getTotalPoints
+    let pointsPossible = Number(props.studentInfo[classKey].totalPoints);
+
+    function getFilteredEntries(studentArr) {
+        let startIndex;
+        let endIndex;
+
+        if (Array.isArray(studentArr)) {
+            startIndex = studentArr.findIndex(
+                (student) => new Date(student.date) >= new Date(props.startDate)
+            );
+            endIndex = studentArr.findIndex(
+                (student) => new Date(student.date) > new Date(props.endDate)
+            );
+        }
+        if (startIndex < 0) {
+            return [];
+        }
+        if (endIndex < 0) {
+            return studentArr.slice(startIndex);
+        } else {
+            return studentArr.slice(startIndex, endIndex);
+        }
+    }
 
     function getTotalPoints(student) {
         const pointsArray = [];
-        const pointsPossible = Number(props.studentInfo[classKey].totalPoints);
         const studentArr = props.studentInfo[classKey][student];
-        if (Array.isArray(studentArr)) {
+
+        if (props.startDate) {
+            const filteredEntries = getFilteredEntries(studentArr);
+            filteredEntries.forEach((entry) => pointsArray.push(+entry.points));
+            pointsPossible = filteredEntries.length * props.dailyPoints;
+        } else if (Array.isArray(studentArr)) {
             studentArr.forEach((entry) => {
                 pointsArray.push(+entry.points);
             });
@@ -59,9 +82,13 @@ function ListStudentsInfo(props) {
 
     function getGradePercentage(student) {
         const pointsArray = [];
-        const pointsPossible = Number(props.studentInfo[classKey].totalPoints);
         const studentArr = props.studentInfo[classKey][student];
-        if (Array.isArray(studentArr)) {
+
+        if (props.startDate) {
+            const filteredEntries = getFilteredEntries(studentArr);
+            filteredEntries.forEach((entry) => pointsArray.push(+entry.points));
+            pointsPossible = filteredEntries.length * props.dailyPoints;
+        } else if (Array.isArray(studentArr)) {
             studentArr.forEach((entry) => {
                 pointsArray.push(+entry.points);
             });
@@ -85,8 +112,13 @@ function ListStudentsInfo(props) {
         let n3Count = 0;
 
         const notesArray = [];
-        const studentArr = props.studentInfo[classKey][student];
+        let studentArr = props.studentInfo[classKey][student];
+
         if (Array.isArray(studentArr)) {
+            if (props.startDate) {
+                const filteredEntries = getFilteredEntries(studentArr);
+                studentArr = filteredEntries;
+            }
             studentArr.forEach((entry) => {
                 if (Array.isArray(entry.notes)) {
                     entry.notes.forEach((note) => {
@@ -121,9 +153,13 @@ function ListStudentsInfo(props) {
 
     function getAbsences(student) {
         let aCount = 0;
+        let studentArr = props.studentInfo[classKey][student];
 
-        const studentArr = props.studentInfo[classKey][student];
         if (Array.isArray(studentArr)) {
+            if (props.startDate) {
+                const filteredEntries = getFilteredEntries(studentArr);
+                studentArr = filteredEntries;
+            }
             studentArr.forEach((entry) =>
                 entry.attendance === "A" ? aCount++ : null
             );
@@ -132,9 +168,13 @@ function ListStudentsInfo(props) {
     }
     function getTardies(student) {
         let tCount = 0;
+        let studentArr = props.studentInfo[classKey][student];
 
-        const studentArr = props.studentInfo[classKey][student];
         if (Array.isArray(studentArr)) {
+            if (props.startDate) {
+                const filteredEntries = getFilteredEntries(studentArr);
+                studentArr = filteredEntries;
+            }
             studentArr.forEach((entry) =>
                 entry.attendance === "T" ? tCount++ : null
             );
@@ -153,7 +193,7 @@ function ListStudentsInfo(props) {
                                 name="student-info"
                                 key={student + "-info"}
                             >
-                                <DropDownBs
+                                <DropDownStudentInfo
                                     student={student}
                                     className="student-info-button"
                                     totalPoints={getTotalPoints(
@@ -166,6 +206,8 @@ function ListStudentsInfo(props) {
                                     notes={getNotes(student)}
                                     absences={getAbsences(student)}
                                     tardies={getTardies(student)}
+                                    id={i + student}
+                                    key={i + student + "-key"}
                                 />
                             </div>
                         ) : (
@@ -176,6 +218,7 @@ function ListStudentsInfo(props) {
                                 notes={getNotes(student)}
                                 absences={getAbsences(student)}
                                 tardies={getTardies(student)}
+                                key={i + student + "-dKey"}
                             />
                         )}
                     </React.Fragment>
@@ -184,6 +227,7 @@ function ListStudentsInfo(props) {
             return null;
         }
     );
+    // checks screen size and displays different view.
     return screenWidth < breakpoint ? (
         studentInfo
     ) : (

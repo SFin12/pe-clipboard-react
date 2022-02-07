@@ -154,11 +154,10 @@ class NavMenu extends Component {
         return (
             <div>
                 <Navbar color="dark" light expand="lg" fixed="top">
-                    <NavbarBrand className="nav-text">
-                        <NavLink to="/info" id="PE-clipboard">
-                            Coach's Clipboard
-                        </NavLink>
-                    </NavbarBrand>
+                    <NavLink to="/info" id="PE-clipboard" className="nav-text">
+                        Coach's Clipboard
+                    </NavLink>
+
                     <NavbarToggler
                         className="nav-text"
                         id="toggler"

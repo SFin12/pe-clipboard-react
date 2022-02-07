@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "./DatePicker";
 import ToggleSwitch from "./ToggleSwitch";
 
 function FilterDays(props) {
     const date = new Date();
+    const today = date.toISOString().split("T")[0];
     const defaultStartDate = new Date(
         new Date().setDate(new Date().getDate() - 5)
     );
@@ -16,19 +17,27 @@ function FilterDays(props) {
 
     function handleToggle() {
         setFilter(!filter);
+        //tell student info if the filter is on. If off, filter dates will be set to null.
+        props.checkFilter(!filter);
     }
 
-    function handleDate(e) {
-        const localDate = e.target.value.split("-").join("/");
+    useEffect(() => {
+        //if filter is on, send the date filters to studentInfo to handle them
+        if (filter) {
+            props.handleDate(startDate, endDate);
+        }
+    }, [filter, startDate, endDate]);
+
+    function handleDateChange(e) {
         if (e.target.name === "from") {
             setStartDate(e.target.value); //sets current date to yyyy-mm-dd
 
-            const startDateToFind = new Date(localDate).toLocaleDateString();
+            // props.handleDate(startDateToFind, endDateToFind);
 
             return;
         }
-        const endDateToFind = new Date(localDate).toLocaleDateString();
 
+        // props.handleDate(endDateToFind, endDateToFind);
         return setEndDate(e.target.value);
     }
 
@@ -51,15 +60,15 @@ function FilterDays(props) {
                         name="from"
                         startDate={startDate} // default calendar date. Format = "yyyy/mm/dd"
                         max={endDate}
-                        changeHandler={handleDate}
+                        changeHandler={handleDateChange}
                         label="Start Date"
                     />
                     <DatePicker
                         id="to"
                         name="to"
                         startDate={endDate}
-                        max={endDate}
-                        changeHandler={handleDate}
+                        max={today}
+                        changeHandler={handleDateChange}
                         label="End Date"
                     />
                 </div>
