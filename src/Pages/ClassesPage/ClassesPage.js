@@ -169,9 +169,10 @@ function ClassesPage(props) {
     }
 
     function handleModal(e) {
+        // close delete modal after cancel or delete.
         setShowModal(false);
+        // if user confirms delete, delete selected class from redux and firebase.
         e.target.name === "delete" && props.deleteClass(itemToDelete);
-        //props.deleteStudentList(itemToDelete);
     }
 
     // Main return for ClassPage

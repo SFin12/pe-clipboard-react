@@ -215,6 +215,7 @@ function StudentsPage(props) {
         }, 3000);
     }
 
+    console.log("render count: ");
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>

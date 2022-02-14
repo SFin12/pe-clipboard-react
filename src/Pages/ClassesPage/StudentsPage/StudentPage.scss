@@ -2,9 +2,8 @@
 
 .student {
     display: block;
-    font-size: 40px;
     margin: auto;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     width: 98%;
     max-width: 98%;
 }
@@ -21,16 +20,17 @@
     border: 0px;
     min-width: 15%;
     margin: 0px;
-    max-height: 60px;
+    max-height: 55px;
 }
 
 .button {
     -webkit-appearance: none;
     display: block;
     padding: 10px;
-    font-size: 6vw;
+    font-size: 5.5vw;
     background-color: white;
-    border-radius: none;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
 }
 
 .tl-round {
@@ -56,7 +56,7 @@
     margin: 0px;
     width: 79.8%;
     min-width: 79.8%;
-    max-height: 60px;
+    max-height: 55px;
 }
 
 .absent {
@@ -77,13 +77,13 @@
     position: relative;
     width: 19.2%;
     margin: 0px;
-    height: 60px;
+    height: 55px;
 }
 
 .delete {
     box-sizing: border-box;
     border-radius: 0.5em;
-    border: 5px solid red;
+    outline: 5px solid red;
 }
 
 #submit-button {
@@ -95,10 +95,6 @@
     width: 40%;
 }
 
-//present
-.P {
-    background-color: $green;
-}
 //absent
 .A {
     background-color: red;

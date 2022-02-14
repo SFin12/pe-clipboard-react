@@ -42,11 +42,14 @@ function ListStudents(props) {
     const classKey = currentGb + "-" + currentClass;
 
     //sets starting values for attendance and daily points
+    const { studentList } = props;
+
     useEffect(() => {
+        console.log("setting starting values...");
         props.updatePage("Students");
-        const studentsExist = props.studentList[classKey];
+        const studentsExist = studentList[classKey];
         if (studentsExist) {
-            const totalStudents = props.studentList[classKey].length;
+            const totalStudents = studentList[classKey].length;
             setStudentPoints((studentPoints) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
@@ -92,7 +95,7 @@ function ListStudents(props) {
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [studentList]);
 
     function handleDecrement(e) {
         //decrease student points by one.
@@ -158,15 +161,21 @@ function ListStudents(props) {
         let studentIdNumber;
         let buttonName = e.currentTarget.name;
         let noteName = e.currentTarget.name;
+
         // if note is not active, add the active class and set it to true.
         if (noteName !== "note4") {
             setNote({
                 ...note,
                 [noteId]: !note[noteId],
             });
-            //getting the first character of the note id which is a number.
-
+            // getting the first character of the note id which is a number.
             studentIdNumber = e.target.id[0];
+            // if the note id number is 2 digits...
+            if (e.target.id[2] === "-") {
+                studentIdNumber = e.target.id.slice(0, 2);
+            }
+
+            // check if custom note was clicked, if so, if user entered note, change button to active.
         } else if (noteName === "note4") {
             e.currentTarget.value.length > 0
                 ? setNote({
@@ -246,14 +255,6 @@ function ListStudents(props) {
 
         return (
             <React.Fragment>
-                {showModal && (
-                    <Confirm
-                        item={studentToDelete}
-                        showModal={showModal}
-                        handleModal={handleModal}
-                        warningMessageString={`Permanently delete ${studentToDelete}?`}
-                    />
-                )}
                 <div
                     className={
                         props.toggleDelete ? "student delete" : "student"
@@ -261,7 +262,7 @@ function ListStudents(props) {
                     name="student-info"
                     key={student + "-info"}
                     id={student + "-info"}
-                    onClick={props.toggleDelete ? handleDelete : undefined}
+                    onClick={props.toggleDelete ? handleDelete : null}
                 >
                     <div className="flex-space-between">
                         {/* Student Button with their name */}
@@ -272,7 +273,7 @@ function ListStudents(props) {
                             id={i + "-" + student}
                             name="name"
                             value={student}
-                            onClick={handleDecrement}
+                            onClick={!props.toggleDelete && handleDecrement}
                         />
                         <input
                             className="tr-round button daily-points "
@@ -281,7 +282,7 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-points"}
                             value={studentPoints[studentId]}
-                            onClick={handleIncrement}
+                            onClick={!props.toggleDelete && handleIncrement}
                         />
                     </div>
                     <div className="flex-space-between notes" data-toggle="off">
@@ -297,7 +298,7 @@ function ListStudents(props) {
                             id={i + "-attendance"}
                             data-toggle="off"
                             value={attendance[studentId]}
-                            onClick={handleAttendance}
+                            onClick={!props.toggleDelete && handleAttendance}
                         />
                         <input
                             className="button absent note"
@@ -305,7 +306,7 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note1"}
                             data-note={note[i + "-note1"]}
-                            onClick={handleNote}
+                            onClick={!props.toggleDelete && handleNote}
                             value={props.settings.note1}
                         />
                         <input
@@ -314,7 +315,7 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note2"}
                             data-note={note[i + "-note2"]}
-                            onClick={handleNote}
+                            onClick={!props.toggleDelete && handleNote}
                             value={props.settings.note2}
                         />
                         <input
@@ -323,7 +324,7 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note3"}
                             data-note={note[i + "-note3"]}
-                            onClick={handleNote}
+                            onClick={!props.toggleDelete && handleNote}
                             value={props.settings.note3}
                         />
                         <input
@@ -336,14 +337,26 @@ function ListStudents(props) {
                             placeholder="?"
                             data-note={note[i + "-note4"]}
                             defaultValue=""
-                            onChange={handleNote}
+                            onChange={!props.toggleDelete && handleNote}
                         />
                     </div>
                 </div>
             </React.Fragment>
         );
     });
-    return studentButtons;
+    return (
+        <React.Fragment>
+            {showModal && (
+                <Confirm
+                    item={studentToDelete}
+                    showModal={showModal}
+                    handleModal={handleModal}
+                    warningMessageString={`Permanently delete ${studentToDelete}?`}
+                />
+            )}
+            {studentButtons}
+        </React.Fragment>
+    );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListStudents);
