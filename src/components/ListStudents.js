@@ -273,7 +273,9 @@ function ListStudents(props) {
                             id={i + "-" + student}
                             name="name"
                             value={student}
-                            onClick={!props.toggleDelete && handleDecrement}
+                            onClick={
+                                props.toggleDelete ? undefined : handleDecrement
+                            }
                         />
                         <input
                             className="tr-round button daily-points "
@@ -282,7 +284,9 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-points"}
                             value={studentPoints[studentId]}
-                            onClick={!props.toggleDelete && handleIncrement}
+                            onClick={
+                                props.toggleDelete ? undefined : handleIncrement
+                            }
                         />
                     </div>
                     <div className="flex-space-between notes" data-toggle="off">
@@ -298,7 +302,11 @@ function ListStudents(props) {
                             id={i + "-attendance"}
                             data-toggle="off"
                             value={attendance[studentId]}
-                            onClick={!props.toggleDelete && handleAttendance}
+                            onClick={
+                                props.toggleDelete
+                                    ? undefined
+                                    : handleAttendance
+                            }
                         />
                         <input
                             className="button absent note"
@@ -306,7 +314,9 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note1"}
                             data-note={note[i + "-note1"]}
-                            onClick={!props.toggleDelete && handleNote}
+                            onClick={
+                                props.toggleDelete ? undefined : handleNote
+                            }
                             value={props.settings.note1}
                         />
                         <input
@@ -315,7 +325,9 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note2"}
                             data-note={note[i + "-note2"]}
-                            onClick={!props.toggleDelete && handleNote}
+                            onClick={
+                                props.toggleDelete ? undefined : handleNote
+                            }
                             value={props.settings.note2}
                         />
                         <input
@@ -324,7 +336,9 @@ function ListStudents(props) {
                             type="button"
                             id={i + "-note3"}
                             data-note={note[i + "-note3"]}
-                            onClick={!props.toggleDelete && handleNote}
+                            onClick={
+                                props.toggleDelete ? undefined : handleNote
+                            }
                             value={props.settings.note3}
                         />
                         <input
@@ -337,7 +351,9 @@ function ListStudents(props) {
                             placeholder="?"
                             data-note={note[i + "-note4"]}
                             defaultValue=""
-                            onChange={!props.toggleDelete && handleNote}
+                            onChange={
+                                props.toggleDelete ? undefined : handleNote
+                            }
                         />
                     </div>
                 </div>
