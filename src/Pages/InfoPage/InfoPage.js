@@ -8,7 +8,7 @@ export function InfoPage({ title }) {
             <section>
                 <h2>ABOUT:</h2>
                 <p>
-                    Coache's Clipboard is a daily assessment app for coaches and
+                    Coach's Clipboard is a daily assessment app for coaches and
                     PE teachers. The intent of the app is to replace the
                     cliboard typically used to track and evaluate players and
                     students.
