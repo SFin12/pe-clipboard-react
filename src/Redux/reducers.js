@@ -113,12 +113,12 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             //If one student is being added, check if the name already exists. If so, don't add.
-
+            // console.log(state.studentList[currentGb + "-" + currentClass].some(student => student === ))
             if (
                 sMatch.length === 1 &&
                 state.studentList[currentGb + "-" + currentClass] &&
                 state.studentList[currentGb + "-" + currentClass].some(
-                    (student) => student === sMatch
+                    (student) => student === sMatch[0]
                 )
             ) {
                 return { ...state };
@@ -134,7 +134,7 @@ export const MainReducer = (state, action) => {
                                 currentGb + "-" + currentClass
                             ],
                             ...action.payload,
-                        ],
+                        ].sort(),
                     },
                 };
             }
@@ -143,7 +143,9 @@ export const MainReducer = (state, action) => {
                     ...state,
                     studentList: {
                         ...state.studentList,
-                        [currentGb + "-" + currentClass]: [...action.payload],
+                        [currentGb + "-" + currentClass]: [
+                            ...action.payload,
+                        ].sort(),
                     },
                 };
             }

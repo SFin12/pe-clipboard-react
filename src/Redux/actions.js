@@ -85,10 +85,18 @@ export const deleteClass = (className) => ({
 });
 
 export const updateStudentList = (arrayStudentNames) => {
-    console.log("updating Student List: ");
+    //sorts student names by removing commas then replacing.
+    const sortedStudentNamesArr = arrayStudentNames
+        .map((n) => {
+            const capitalized = n[0].toUpperCase() + n.slice(1);
+            return capitalized.replace(",", "");
+        })
+        .sort()
+        .map((n) => n.replace(" ", ", "));
+    console.log("sorted names: ", sortedStudentNamesArr);
     return {
         type: ActionTypes.UPDATE_STUDENTLIST,
-        payload: arrayStudentNames,
+        payload: sortedStudentNamesArr,
     };
 };
 export const deleteRoster = () => {
