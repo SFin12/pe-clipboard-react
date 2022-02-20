@@ -10,7 +10,7 @@ export function InfoPage({ title }) {
                 <p>
                     Coach's Clipboard is a daily assessment app for coaches and
                     PE teachers. The intent of the app is to replace the
-                    cliboard typically used to track and evaluate players and
+                    clipboard typically used to track and evaluate players and
                     students.
                 </p>
             </section>
@@ -20,9 +20,9 @@ export function InfoPage({ title }) {
 
                 <ul>
                     <li>
-                        From the menu, go to the gradebook page to set-up your
-                        first gradebook. This could be something like "Fall 22"
-                        or "JV Baseball 22".
+                        From the menu, go to the gradebook page to setup your
+                        first gradebook. For example, "Fall 22" or "JV Baseball
+                        22".
                     </li>
                     <li>
                         Once you create a gradebook, you will be redirected to

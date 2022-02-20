@@ -203,7 +203,12 @@ function ClassesPage(props) {
                     <div className="d-flex justify-content-around">
                         <div
                             id="add-class-button"
-                            onClick={() => setShowAddClassModal(true)}
+                            onClick={() => {
+                                if (toggleDelete) {
+                                    setToggleDelete(false);
+                                }
+                                return setShowAddClassModal(true);
+                            }}
                         >
                             <FontAwesomeIcon
                                 name="add-icon"

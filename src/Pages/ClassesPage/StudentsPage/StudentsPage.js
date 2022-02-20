@@ -142,6 +142,7 @@ function StudentsPage(props) {
     function toggleModal(e) {
         if (e && e.currentTarget.id === "add-class-button") {
             setShowModal(true);
+            setToggleDelete(false);
         } else {
             setShowModal(false);
             setNewStudent("");

@@ -58,6 +58,7 @@ export class DropDownClick extends DropDownHover {
 
     toggle(e) {
         this.setState({ showHelp: !this.state.showHelp });
+        this.props.toggleDelete();
     }
 
     render() {

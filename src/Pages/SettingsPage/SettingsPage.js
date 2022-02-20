@@ -97,7 +97,7 @@ export function SettingsPage(props) {
                         <thead>
                             <tr>
                                 <th>Attendance</th>
-                                <th className="">Points Affect</th>
+                                <th className="">Points Effect</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -137,7 +137,7 @@ export function SettingsPage(props) {
                         <thead>
                             <tr>
                                 <th>Notes</th>
-                                <th className="">Points Affect</th>
+                                <th className="">Points Effect</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -49,7 +49,10 @@ export const MainReducer = (state, action) => {
                 return { ...state };
             }
         case ActionTypes.DELETE_GRADEBOOK:
-            return { ...state };
+            const updatedGradebooList = state.gradebookList.filter(
+                (gradebook) => gradebook !== action.payload
+            );
+            return { ...state, gradebookList: updatedGradebooList };
 
         //CLASSES---------------------------------------------------------------------------
         case ActionTypes.CREATE_CLASS:

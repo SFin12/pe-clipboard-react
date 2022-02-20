@@ -5,9 +5,14 @@ import {
     createGradebook,
     updateGradebookList,
     updatePage,
+    deleteGradebook,
 } from "../../Redux/actions";
-import { DropDownHover } from "../../components/DropDown/DropDown";
+import {
+    DropDownClick,
+    DropDownHover,
+} from "../../components/DropDown/DropDown";
 import "./GradebookPage.scss";
+import Confirm from "../../components/ConfirmModal";
 
 const mapStateToProps = (state) => {
     return {
@@ -21,11 +26,14 @@ const mapDispatchToProps = {
     createGradebook,
     updateGradebookList,
     updatePage,
+    deleteGradebook,
 };
 
 function GradebookPage(props) {
     const [input, setInput] = useState("");
-    const [choice, setChoice] = useState("");
+    const [choice, setChoice] = useState(null);
+    const [toggleDelete, setToggleDelete] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     function handleChange(e) {
         // If gradebook is being created
@@ -43,13 +51,34 @@ function GradebookPage(props) {
             props.createGradebook(input);
             props.updateGradebookList(input);
         } /* If gradebook was selected and saved */ else {
-            props.createGradebook(choice);
-            props.updateGradebookList(choice);
+            if (!toggleDelete) {
+                props.createGradebook(choice);
+                props.updateGradebookList(choice);
+            } else {
+                setShowConfirmModal(true);
+            }
         }
+    }
+
+    function handleDelete() {
+        toggleDelete ? setToggleDelete(false) : setToggleDelete(true);
+        setChoice(null);
+    }
+
+    function handleModal(e) {
+        // close delete modal after cancel or delete.
+        setShowConfirmModal(false);
+        // if user confirms delete, delete selected class from redux and firebase.
+        e.target.name === "delete" && props.deleteGradebook(choice);
+        props.createGradebook("");
     }
 
     function ListGradebooks() {
         if (props.gradebookList.length > 0) {
+            let selectClass = "custom-select";
+            toggleDelete
+                ? (selectClass = "custom-select-delete")
+                : (selectClass = "custom-select");
             return (
                 <React.Fragment>
                     <p>or</p>
@@ -58,7 +87,7 @@ function GradebookPage(props) {
                     <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
                         <select
                             // defaultValue={currentSelect.gradebookName}
-                            className="custom-select"
+                            className={selectClass}
                             id="select-gradebook"
                             onChange={handleChange}
                             value={choice}
@@ -104,14 +133,7 @@ function GradebookPage(props) {
                 <section>
                     <DropDownHover
                         buttonTitle="First Gradebook?"
-                        content="Creating a gradebook will automatically create a new
-                            google sheet in your PE Clipboard folder. Any
-                            classes you add will be added as tabs. To customize
-                            daily points and notes change them in settings from
-                            the app. you may change values within the google
-                            sheets in the daily points and weekly points columns
-                            but changing anything else in google sheets may cause problems with the
-                            app."
+                        content='Before adding classes, create a gradebook name such as "First Semester" or "Spring 22". Start a new gradebook for each grading period. To customize daily points and notes change them in settings.'
                     />
                 </section>
                 <br />
@@ -147,6 +169,21 @@ function GradebookPage(props) {
                         </span>
                     </div>
                 </span>
+                <div className="mt-4">
+                    <DropDownClick
+                        toggleDelete={handleDelete}
+                        buttonTitle="Delete gradebook?"
+                        content="You will lose all classes and information associated with a deleted gradebook.  Make sure you no longer need the information."
+                    />
+                </div>
+                <Confirm
+                    item={choice}
+                    showModal={showConfirmModal}
+                    handleModal={handleModal}
+                    warningMessageString={
+                        "are you sure you want to delete " + choice + "?"
+                    }
+                />
             </div>
         </React.Fragment>
     );

@@ -1,10 +1,15 @@
-@import '../../App.scss';
-
+@import "../../App.scss";
 
 .custom-select {
     min-width: 250px;
 }
 
+.custom-select-delete {
+    min-width: 250px;
+    box-sizing: border-box;
+    background-color: red;
+    color: white;
+}
 
 .flex {
     display: flex;
@@ -14,13 +19,11 @@
     }
 }
 
-
 .inline {
     text-align: center;
 }
 
 @media screen and (min-width: 768px) {
-
     .inline {
         display: inline;
     }
