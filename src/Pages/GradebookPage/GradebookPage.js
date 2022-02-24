@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { connect } from "react-redux";
 import {
@@ -13,6 +13,7 @@ import {
 } from "../../components/DropDown/DropDown";
 import "./GradebookPage.scss";
 import Confirm from "../../components/ConfirmModal";
+import { useNavigate } from "react-router-dom";
 
 const mapStateToProps = (state) => {
     return {
@@ -31,9 +32,20 @@ const mapDispatchToProps = {
 
 function GradebookPage(props) {
     const [input, setInput] = useState("");
-    const [choice, setChoice] = useState(null);
+    const [choice, setChoice] = useState("");
     const [toggleDelete, setToggleDelete] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+    const selectRef = useRef(choice);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const select = document.getElementById("select-gradebook");
+        if (select) {
+            setChoice(select.value);
+        }
+    }, [choice]);
 
     function handleChange(e) {
         // If gradebook is being created
@@ -50,10 +62,13 @@ function GradebookPage(props) {
         if (e.target.id === "save-gradebook") {
             props.createGradebook(input);
             props.updateGradebookList(input);
-        } /* If gradebook was selected and saved */ else {
+            navigate("/classes");
+        } else {
+            /* If gradebook was selected and saved */
             if (!toggleDelete) {
                 props.createGradebook(choice);
                 props.updateGradebookList(choice);
+                navigate("/classes");
             } else {
                 setShowConfirmModal(true);
             }
@@ -62,7 +77,8 @@ function GradebookPage(props) {
 
     function handleDelete() {
         toggleDelete ? setToggleDelete(false) : setToggleDelete(true);
-        setChoice(null);
+        const selectValue = document.getElementById("select-gradebook").value;
+        setChoice("");
     }
 
     function handleModal(e) {
@@ -71,6 +87,9 @@ function GradebookPage(props) {
         // if user confirms delete, delete selected class from redux and firebase.
         e.target.name === "delete" && props.deleteGradebook(choice);
         props.createGradebook("");
+        const selectValue = document.getElementById("select-gradebook").value;
+        setChoice("");
+        console.log("post modal ", choice);
     }
 
     function ListGradebooks() {
@@ -86,11 +105,11 @@ function GradebookPage(props) {
 
                     <div className="input-group mb-3 d-flex justify-content-center justify-content-md-start">
                         <select
-                            // defaultValue={currentSelect.gradebookName}
                             className={selectClass}
                             id="select-gradebook"
                             onChange={handleChange}
                             value={choice}
+                            ref={selectRef}
                         >
                             {props.gradebookList.map((gradebook, i) => {
                                 return (
@@ -169,13 +188,15 @@ function GradebookPage(props) {
                         </span>
                     </div>
                 </span>
-                <div className="mt-4">
-                    <DropDownClick
-                        toggleDelete={handleDelete}
-                        buttonTitle="Delete gradebook?"
-                        content="You will lose all classes and information associated with a deleted gradebook.  Make sure you no longer need the information."
-                    />
-                </div>
+                {props.gradebookList.length ? (
+                    <div className="mt-4">
+                        <DropDownClick
+                            toggleDelete={handleDelete}
+                            buttonTitle="Delete gradebook?"
+                            content="You will lose all classes and information associated with a deleted gradebook.  Make sure you no longer need the information."
+                        />
+                    </div>
+                ) : null}
                 <Confirm
                     item={choice}
                     showModal={showConfirmModal}
