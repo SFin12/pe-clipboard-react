@@ -57,10 +57,14 @@ function ListStudents(props) {
                     newState = {
                         ...newState,
                         [studentId]:
-                            studentPoints[studentId] || props.dailyPoints,
+                            //if student points already exists, use that value, otherwise create it with starting daily points.
+                            studentPoints[studentId] !== undefined
+                                ? studentPoints[studentId]
+                                : props.dailyPoints,
                         [studentId + "changed"]: 0,
                     };
                 }
+
                 return newState;
             });
             setAttendance((attendance) => {
@@ -72,6 +76,7 @@ function ListStudents(props) {
                         [studentId]: attendance[studentId] || "P",
                     };
                 }
+
                 return newState;
             });
             // sets all notes to not-clicked / off
@@ -198,12 +203,10 @@ function ListStudents(props) {
         buttonElements.forEach((button, i) => {
             if (i === 0) {
                 if (button.value === "A") {
-                    console.log(button.value);
                     buttonName !== "attendance"
                         ? buttonsClicked.push(props.settings.absentPoints)
                         : buttonsClicked.push(props.settings.tardyPoints);
                 } else if (button.value === "T") {
-                    console.log(button.value);
                     if (buttonName !== "attendance") {
                         buttonsClicked.push(props.settings.tardyPoints);
                     }
