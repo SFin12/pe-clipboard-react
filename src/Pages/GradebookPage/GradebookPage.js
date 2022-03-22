@@ -77,7 +77,6 @@ function GradebookPage(props) {
 
     function handleDelete() {
         toggleDelete ? setToggleDelete(false) : setToggleDelete(true);
-        const selectValue = document.getElementById("select-gradebook").value;
         setChoice("");
     }
 
@@ -87,7 +86,6 @@ function GradebookPage(props) {
         // if user confirms delete, delete selected class from redux and firebase.
         e.target.name === "delete" && props.deleteGradebook(choice);
         props.createGradebook("");
-        const selectValue = document.getElementById("select-gradebook").value;
         setChoice("");
         console.log("post modal ", choice);
     }

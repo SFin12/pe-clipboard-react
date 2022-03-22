@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import "./NavMenu.scss";
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-} from "reactstrap";
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { updateLogin, updatePage } from "../../Redux/actions";
 import { connect } from "react-redux";

@@ -12,7 +12,6 @@ export const MainReducer = (state, action) => {
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "
     );
-    // console.log("reducer payload: ", action.payload + " " + action.type);
     switch (action.type) {
         //USER INFO------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
@@ -70,7 +69,7 @@ export const MainReducer = (state, action) => {
                         [currentGb]: [
                             ...state.classList[currentGb],
                             action.payload,
-                        ],
+                        ].sort(),
                     },
                 };
             } else if (!state.classList.currentGb) {
@@ -178,7 +177,7 @@ export const MainReducer = (state, action) => {
                 },
             };
 
-        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-----------------------------------------------------------------------------------
+        //STUDENT INFO (GRADES,NOTES,ATTENDANCE)-------------------------------------------------------------------------------------
         case ActionTypes.UPDATE_STUDENT_INFO:
             const date = action.date;
 

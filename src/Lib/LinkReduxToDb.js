@@ -5,14 +5,10 @@ export function writeUserData(userId, userObject) {
     if (ref(db, "/users/" + userId)) {
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-           
             update(userRef, userObject);
-     
         }
     }
 }
-
-export function getAllData() {}
 
 export function getUserData(userId) {
     if (!userId) {
@@ -24,5 +20,4 @@ export function getUserData(userId) {
 
         return data;
     });
- 
 }
