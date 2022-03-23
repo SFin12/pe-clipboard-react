@@ -100,11 +100,13 @@ export const MainReducer = (state, action) => {
             const filteredArr = filterObj();
             const filteredObj = {};
             for (let key of filteredArr) {
-                filteredObj[key] = [state.studentList[key]];
+                filteredObj[key] = state.studentList[key];
             }
+            console.log(filteredObj);
             return {
                 ...state,
                 classList: {
+                    // Creates array of classes left after deletion
                     ...state.classList,
                     [currentGb]: currentCl,
                 },
