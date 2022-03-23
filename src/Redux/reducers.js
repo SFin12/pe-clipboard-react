@@ -102,7 +102,7 @@ export const MainReducer = (state, action) => {
             for (let key of filteredArr) {
                 filteredObj[key] = state.studentList[key];
             }
-            console.log(filteredObj);
+
             return {
                 ...state,
                 classList: {
