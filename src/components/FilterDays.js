@@ -20,13 +20,14 @@ function FilterDays(props) {
         //tell student info if the filter is on. If off, filter dates will be set to null.
         props.checkFilter(!filter);
     }
-    const { handleDate } = props.handleDate;
+
     useEffect(() => {
         //if filter is on, send the date filters to studentInfo to handle them
         if (filter) {
-            handleDate(startDate, endDate);
+            props.handleDate(startDate, endDate);
         }
-    }, [handleDate, filter, startDate, endDate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filter, startDate, endDate]);
 
     function handleDateChange(e) {
         if (e.target.name === "from") {
