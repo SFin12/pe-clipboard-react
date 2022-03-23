@@ -98,6 +98,7 @@ export const MainReducer = (state, action) => {
                 return keys.filter((key) => key !== classKey);
             };
             const filteredArr = filterObj();
+            // creates gradebook-class keys and values (students) without deleted class.
             const filteredObj = {};
             for (let key of filteredArr) {
                 filteredObj[key] = state.studentList[key];
@@ -106,10 +107,11 @@ export const MainReducer = (state, action) => {
             return {
                 ...state,
                 classList: {
-                    // Creates array of classes left after deletion
+                    // Creates array of classes left after deletion.
                     ...state.classList,
                     [currentGb]: currentCl,
                 },
+                // Replaces old classes and rosters with new classes / rosters without deleted class.
                 studentList: { ...filteredObj },
             };
 
