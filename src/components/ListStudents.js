@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
     studentList: state.studentList,
     dailyPoints: state.settings.dailyPoints,
     settings: state.settings,
+    studentInfo: state.studentInfo,
 });
 
 const mapDispatchToProps = {
@@ -42,17 +43,50 @@ function ListStudents(props) {
     const classKey = currentGb + "-" + currentClass;
 
     //sets starting values for attendance and daily points
-    const { studentList } = props;
+    const { studentList, studentInfo } = props;
 
     useEffect(() => {
         console.log("setting starting values...");
         props.updatePage("Students");
+        let todaysStudentInfoArr;
+        const classInfo = studentInfo[classKey];
+        const dateLastSubmitted = classInfo
+            ? classInfo.dateLastSubmitted
+            : null;
+        const todaysDate = new Date().toLocaleDateString();
+        const alreadySubmitted =
+            dateLastSubmitted === todaysDate ? true : false;
+        if (alreadySubmitted) {
+            let currentStudentInfo = Object.values(classInfo);
+
+            // contains student info for todays date if info has been submitted.
+            todaysStudentInfoArr = [];
+            currentStudentInfo.forEach((student) => {
+                // make sure it is a student object not date or string.
+                if (Array.isArray(student)) {
+                    todaysStudentInfoArr.push(
+                        student.filter(
+                            (todaysStudentInfo) =>
+                                todaysStudentInfo.date === todaysDate
+                        )
+                    );
+                }
+            });
+        }
         const studentsExist = studentList[classKey];
+
         if (studentsExist) {
             const totalStudents = studentList[classKey].length;
             setStudentPoints((studentPoints) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
+                    let studentName = studentList[classKey][i];
+                    let studentInfo = null;
+                    if (alreadySubmitted) {
+                        studentInfo = todaysStudentInfoArr.filter(
+                            (studentInfo) => studentInfo[0].name === studentName
+                        )[0];
+                    }
                     let studentId = i + "-student";
                     newState = {
                         ...newState,
@@ -60,6 +94,8 @@ function ListStudents(props) {
                             //if student points already exists, use that value, otherwise create it with starting daily points.
                             studentPoints[studentId] !== undefined
                                 ? studentPoints[studentId]
+                                : studentInfo !== null
+                                ? studentInfo[0].points
                                 : props.dailyPoints,
                         [studentId + "changed"]: 0,
                     };

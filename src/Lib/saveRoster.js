@@ -1,3 +1,4 @@
+// Save roster loaded from csv file.
 export function saveRoster(e, callback) {
     if (e.target.files[0]) {
         const csvInput = e.target.files[0];

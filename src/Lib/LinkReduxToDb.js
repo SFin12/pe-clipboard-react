@@ -5,7 +5,13 @@ export function writeUserData(userId, userObject) {
     if (ref(db, "/users/" + userId)) {
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-            update(userRef, userObject);
+            update(userRef, userObject)
+                .then(() => {
+                    console.log("database updated");
+                })
+                .catch((err) => {
+                    alert(err);
+                });
         }
     }
 }
