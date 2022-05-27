@@ -5,6 +5,7 @@ function DesktopStudentInfo(props) {
         <tr>
             <td>{props.student}</td>
             <td>{props.totalPoints}</td>
+            <td>{props.pointsPossible}</td>
             <td>{props.gradePercentage}</td>
             <td>{props.notes}</td>
             <td>{props.absences}</td>

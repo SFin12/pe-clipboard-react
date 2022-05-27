@@ -14,7 +14,7 @@ function DropDownStudentInfo(props) {
             bsPrefix="button student-button info-btn "
         >
             <Dropdown.Item bsPrefix="dropdown-items">
-                Total Points: {props.totalPoints}
+                Total Points: {props.totalPoints}/{props.pointsPossible}
             </Dropdown.Item>
             <Dropdown.Item bsPrefix="dropdown-items">
                 Grade Percentage: {props.gradePercentage}

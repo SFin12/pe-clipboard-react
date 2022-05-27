@@ -77,7 +77,7 @@ function ListStudentsInfo(props) {
             });
         }
 
-        return pointsArray.reduce((a, b) => a + b, 0) + `/${pointsPossible}`;
+        return pointsArray.reduce((a, b) => a + b, 0);
     }
 
     function getGradePercentage(student) {
@@ -200,6 +200,7 @@ function ListStudentsInfo(props) {
                                         student,
                                         "points"
                                     )}
+                                    pointsPossible={pointsPossible}
                                     gradePercentage={getGradePercentage(
                                         student
                                     )}
@@ -214,6 +215,7 @@ function ListStudentsInfo(props) {
                             <DesktopStudentInfo
                                 student={student}
                                 totalPoints={getTotalPoints(student, "points")}
+                                pointsPossible={pointsPossible}
                                 gradePercentage={getGradePercentage(student)}
                                 notes={getNotes(student)}
                                 absences={getAbsences(student)}
@@ -237,6 +239,7 @@ function ListStudentsInfo(props) {
                     <tr>
                         <th className="wide">Student</th>
                         <th className="narrow">Total Points</th>
+                        <th className="narrow">Points Possible</th>
                         <th className="narrow">Grade Percentage</th>
                         <th className="wide">Notes Summary</th>
                         <th className="narrow">Absences</th>
