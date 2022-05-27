@@ -46,11 +46,10 @@ function ListStudents(props) {
     const { studentList, studentInfo } = props;
 
     useEffect(() => {
-        console.log("setting starting values...");
         props.updatePage("Students");
         let todaysStudentInfoArr;
-        const classInfo = studentInfo[classKey];
-        const dateLastSubmitted = classInfo
+        const classInfo = studentInfo[classKey]; //check if any grades info have been saved for this class
+        const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
             ? classInfo.dateLastSubmitted
             : null;
         const todaysDate = new Date().toLocaleDateString();
@@ -73,6 +72,7 @@ function ListStudents(props) {
                 }
             });
         }
+
         const studentsExist = studentList[classKey];
 
         if (studentsExist) {
@@ -106,10 +106,22 @@ function ListStudents(props) {
             setAttendance((attendance) => {
                 let newState = {};
                 for (let i = 0; i < totalStudents; i++) {
+                    let studentName = studentList[classKey][i];
+                    let studentInfo = null;
+                    if (alreadySubmitted) {
+                        studentInfo = todaysStudentInfoArr.filter(
+                            (studentInfo) => studentInfo[0].name === studentName
+                        )[0];
+                    }
                     let studentId = i + "-student";
                     newState = {
                         ...newState,
-                        [studentId]: attendance[studentId] || "P",
+                        [studentId]:
+                            attendance[studentId] !== undefined
+                                ? attendance[studentId]
+                                : studentInfo !== null
+                                ? studentInfo[0].attendance
+                                : "P",
                     };
                 }
 
@@ -130,6 +142,41 @@ function ListStudents(props) {
                         [note3]: note[note3] || false,
                         [note4]: note[note4] || false,
                     };
+                    let studentName = studentList[classKey][i];
+                    let studentInfo = null;
+                    if (alreadySubmitted) {
+                        studentInfo = todaysStudentInfoArr.filter(
+                            (studentInfo) => studentInfo[0].name === studentName
+                        )[0];
+                        if (studentInfo[0].notes) {
+                            for (let i in studentInfo[0].notes) {
+                                console.log(props.settings.note1);
+                                switch (studentInfo[0].notes[i]) {
+                                    case props.settings.note1:
+                                        newState = {
+                                            ...newState,
+                                            [note1]: true,
+                                        };
+                                        break;
+                                    case props.settings.note2:
+                                        newState = {
+                                            ...newState,
+                                            [note2]: true,
+                                        };
+                                        break;
+                                    case props.settings.note3:
+                                        newState = {
+                                            ...newState,
+                                            [note3]: true,
+                                        };
+                                        break;
+                                    default:
+                                        console.log("note: ", note);
+                                        break;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 return newState;

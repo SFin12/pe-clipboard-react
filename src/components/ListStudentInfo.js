@@ -243,7 +243,7 @@ function ListStudentsInfo(props) {
                         <th className="narrow">Tardies</th>
                     </tr>
                 </thead>
-                <tbody className>{studentInfo}</tbody>
+                <tbody>{studentInfo}</tbody>
             </table>
         </div>
     );
