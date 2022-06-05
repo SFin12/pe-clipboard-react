@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/pe-clipboard-react/static/css/main.685a1ce8.chunk.css",
+    "main.js": "/pe-clipboard-react/static/js/main.c1648e60.chunk.js",
+    "main.js.map": "/pe-clipboard-react/static/js/main.c1648e60.chunk.js.map",
+    "runtime-main.js": "/pe-clipboard-react/static/js/runtime-main.d876aa85.js",
+    "runtime-main.js.map": "/pe-clipboard-react/static/js/runtime-main.d876aa85.js.map",
+    "static/css/2.b13bd2e2.chunk.css": "/pe-clipboard-react/static/css/2.b13bd2e2.chunk.css",
+    "static/js/2.0b6d772c.chunk.js": "/pe-clipboard-react/static/js/2.0b6d772c.chunk.js",
+    "static/js/2.0b6d772c.chunk.js.map": "/pe-clipboard-react/static/js/2.0b6d772c.chunk.js.map",
+    "index.html": "/pe-clipboard-react/index.html",
+    "static/css/2.b13bd2e2.chunk.css.map": "/pe-clipboard-react/static/css/2.b13bd2e2.chunk.css.map",
+    "static/css/main.685a1ce8.chunk.css.map": "/pe-clipboard-react/static/css/main.685a1ce8.chunk.css.map",
+    "static/js/2.0b6d772c.chunk.js.LICENSE.txt": "/pe-clipboard-react/static/js/2.0b6d772c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d876aa85.js",
+    "static/css/2.b13bd2e2.chunk.css",
+    "static/js/2.0b6d772c.chunk.js",
+    "static/css/main.685a1ce8.chunk.css",
+    "static/js/main.c1648e60.chunk.js"
+  ]
+}

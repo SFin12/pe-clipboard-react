@@ -84,17 +84,25 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => studentInfo[0].name === studentName
+                            (studentInfo) => {
+                                let flag = false;
+                                if (studentInfo.length > 0) {
+                                    flag = studentInfo[0].name === studentName;
+                                }
+                                return flag;
+                            }
                         )[0];
                     }
                     let studentId = i + "-student";
+                    console.log("sp", studentPoints);
                     newState = {
                         ...newState,
                         [studentId]:
                             //if student points already exists, use that value, otherwise create it with starting daily points.
+
                             studentPoints[studentId] !== undefined
                                 ? studentPoints[studentId]
-                                : studentInfo !== null
+                                : studentInfo && studentInfo[0]
                                 ? studentInfo[0].points
                                 : props.dailyPoints,
                         [studentId + "changed"]: 0,
@@ -110,10 +118,24 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => studentInfo[0].name === studentName
+                            (studentInfo) => {
+                                let flag = false;
+                                if (studentInfo.length > 0) {
+                                    flag = studentInfo[0].name === studentName;
+                                }
+                                return flag;
+                            }
                         )[0];
                     }
                     let studentId = i + "-student";
+                    console.log({
+                        ...newState,
+                        [studentId]: attendance[studentId]
+                            ? attendance[studentId]
+                            : studentInfo !== null
+                            ? studentInfo[0].attendance
+                            : "P",
+                    });
                     newState = {
                         ...newState,
                         [studentId]:
@@ -146,9 +168,15 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => studentInfo[0].name === studentName
+                            (studentInfo) => {
+                                let flag = false;
+                                if (studentInfo.length > 0) {
+                                    flag = studentInfo[0].name === studentName;
+                                }
+                                return flag;
+                            }
                         )[0];
-                        if (studentInfo[0].notes) {
+                        if (studentInfo.length > 0 && studentInfo[0].notes) {
                             for (let i in studentInfo[0].notes) {
                                 console.log(props.settings.note1);
                                 switch (studentInfo[0].notes[i]) {
