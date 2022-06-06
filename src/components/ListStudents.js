@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import Confirm from "./ConfirmModal";
@@ -47,31 +47,24 @@ function ListStudents(props) {
 
     useEffect(() => {
         props.updatePage("Students");
-        let todaysStudentInfoArr;
+        let todaysStudentInfoArr = [];
         const classInfo = studentInfo[classKey]; //check if any grades info have been saved for this class
         const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
             ? classInfo.dateLastSubmitted
             : null;
         const todaysDate = new Date().toLocaleDateString();
-        const alreadySubmitted =
-            dateLastSubmitted === todaysDate ? true : false;
+        const alreadySubmitted = dateLastSubmitted === todaysDate;
         if (alreadySubmitted) {
-            let currentStudentInfo = Object.values(classInfo);
-
-            // contains student info for todays date if info has been submitted.
-            todaysStudentInfoArr = [];
-            currentStudentInfo.forEach((student) => {
-                // make sure it is a student object not date or string.
-                if (Array.isArray(student)) {
-                    todaysStudentInfoArr.push(
-                        student.filter(
-                            (todaysStudentInfo) =>
-                                todaysStudentInfo.date === todaysDate
-                        )
-                    );
-                }
-            });
+            let todaysStudentInfo = Object.values(classInfo)
+                .filter(
+                    (value) =>
+                        Array.isArray(value) &&
+                        value.slice(-1)[0].date === todaysDate
+                )
+                .map((arr) => arr.slice(-1));
+            todaysStudentInfoArr = todaysStudentInfo;
         }
+        console.log(todaysStudentInfoArr);
 
         const studentsExist = studentList[classKey];
 
@@ -84,27 +77,25 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => {
-                                let flag = false;
-                                if (studentInfo.length > 0) {
-                                    flag = studentInfo[0].name === studentName;
-                                }
-                                return flag;
-                            }
-                        )[0];
+                            (arr) => arr[0].name === studentName
+                        );
+                        //if the name doesn't match, studenent info should be null, else it is today's studentInfo object for that student
+                        studentInfo =
+                            studentInfo.length < 1 ? null : studentInfo[0][0];
                     }
+
                     let studentId = i + "-student";
-                    console.log("sp", studentPoints);
+
                     newState = {
                         ...newState,
                         [studentId]:
                             //if student points already exists, use that value, otherwise create it with starting daily points.
-
-                            studentPoints[studentId] !== undefined
+                            studentPoints[studentId]
                                 ? studentPoints[studentId]
-                                : studentInfo && studentInfo[0]
-                                ? studentInfo[0].points
+                                : studentInfo
+                                ? studentInfo.points
                                 : props.dailyPoints,
+                        //track how much the points have changed (i.e., clicking on and off notes)
                         [studentId + "changed"]: 0,
                     };
                 }
@@ -118,32 +109,21 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => {
-                                let flag = false;
-                                if (studentInfo.length > 0) {
-                                    flag = studentInfo[0].name === studentName;
-                                }
-                                return flag;
-                            }
-                        )[0];
+                            (arr) => arr[0].name === studentName
+                        );
+                        //if the name doesn't match, studenent info should be null, else it is today's studentInfo object for that student
+                        studentInfo =
+                            studentInfo.length < 1 ? null : studentInfo[0][0];
                     }
                     let studentId = i + "-student";
-                    console.log({
+
+                    newState = {
                         ...newState,
                         [studentId]: attendance[studentId]
                             ? attendance[studentId]
-                            : studentInfo !== null
-                            ? studentInfo[0].attendance
+                            : studentInfo
+                            ? studentInfo.attendance
                             : "P",
-                    });
-                    newState = {
-                        ...newState,
-                        [studentId]:
-                            attendance[studentId] !== undefined
-                                ? attendance[studentId]
-                                : studentInfo !== null
-                                ? studentInfo[0].attendance
-                                : "P",
                     };
                 }
 
@@ -168,18 +148,17 @@ function ListStudents(props) {
                     let studentInfo = null;
                     if (alreadySubmitted) {
                         studentInfo = todaysStudentInfoArr.filter(
-                            (studentInfo) => {
-                                let flag = false;
-                                if (studentInfo.length > 0) {
-                                    flag = studentInfo[0].name === studentName;
-                                }
-                                return flag;
-                            }
-                        )[0];
-                        if (studentInfo.length > 0 && studentInfo[0].notes) {
-                            for (let i in studentInfo[0].notes) {
-                                console.log(props.settings.note1);
-                                switch (studentInfo[0].notes[i]) {
+                            (arr) => arr[0].name === studentName
+                        );
+
+                        studentInfo =
+                            studentInfo.length < 1 ? null : studentInfo[0][0];
+
+                        if (studentInfo && studentInfo.notes) {
+                            for (let i in studentInfo.notes) {
+                                switch (studentInfo.notes[i]) {
+                                    // turn on any notest that match notes in settings.
+
                                     case props.settings.note1:
                                         newState = {
                                             ...newState,
@@ -199,7 +178,11 @@ function ListStudents(props) {
                                         };
                                         break;
                                     default:
-                                        console.log("note: ", note);
+                                        newState = {
+                                            ...newState,
+                                            [note4]: true,
+                                        };
+
                                         break;
                                 }
                             }
