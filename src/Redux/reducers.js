@@ -13,7 +13,10 @@ export const MainReducer = (state, action) => {
         " "
     );
     switch (action.type) {
-        //USER INFO------------------------------------------------------------------------
+      //DATABASE RESPONSE FLAG------------------------------------------------------------  
+        case ActionTypes.UPDATE_DB_RESPONSE:
+          return { ...state, dbResponse: action.payload};
+      //USER INFO-------------------------------------------------------------------------
         case ActionTypes.UPDATE_LOGIN:
             return { ...state, signedIn: action.payload };
         case ActionTypes.UPDATE_USER_INFO:

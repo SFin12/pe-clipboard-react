@@ -137,3 +137,11 @@ export const updateSettings = (settingsObj) => {
         payload: settingsObj,
     };
 };
+
+export const updateDbResponse = (response) => {
+  console.log("updating response", response);
+  return {
+    type: ActionTypes.UPDATE_DB_RESPONSE,
+    payload: response, // response should be a string with "success" or "failure"
+  }
+};

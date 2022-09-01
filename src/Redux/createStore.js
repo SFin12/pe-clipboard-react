@@ -31,6 +31,7 @@ const initialState = {
     totalPoints: {},
     pointsPossible: {},
     gradePercentage: {},
+    dbResponse: "",
 };
 
 export const store = createStore(

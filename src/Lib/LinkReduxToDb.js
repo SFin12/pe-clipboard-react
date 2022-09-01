@@ -1,18 +1,24 @@
 import { db } from "./FirebaseConfig";
 import { ref, onValue, update } from "firebase/database";
 
-export function writeUserData(userId, userObject) {
+export async function writeUserData (userId, userObject) {
     if (ref(db, "/users/" + userId)) {
+      
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-            update(userRef, userObject)
+          console.log("in write")
+            return update(userRef, userObject)
                 .then(() => {
                     console.log("database updated");
+                    return ('success')
                 })
                 .catch((err) => {
                     alert(err);
+                    return ('failure')
                 });
+            
         }
+        else return 'No userObject'
     }
 }
 

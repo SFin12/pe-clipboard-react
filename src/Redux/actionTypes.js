@@ -28,6 +28,7 @@ export const DELETE_STUDENT = "DELETE_STUDENT";
 export const DELETE_ROSTER = "DELETE_ROSTER";
 
 export const UPDATE_STUDENT_INFO = "UPDATE_STUDENT_INFO";
+export const UPDATE_DB_RESPONSE = "UPDATE_DB_RESPONSE";
 
 //Not supported yet-----------------------------------------
 export const UPDATE_WEEKLY_POINTS = "UPDATE_WEEKLY_POINTS";

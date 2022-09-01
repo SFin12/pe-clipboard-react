@@ -5,6 +5,7 @@ import {
     updatePage,
     updateStudentList,
     updateStudentInfo,
+    updateDbResponse
 } from "../../../Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -21,12 +22,14 @@ const mapStateToProps = (state) => ({
     student: state.student,
     studentList: state.studentList,
     dailyPoints: state.settings.dailyPoints,
+    dbResponse: state.dbResponse
 });
 
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
     updateStudentInfo,
+    updateDbResponse,
 };
 
 function StudentsPage(props) {
@@ -52,6 +55,7 @@ function StudentsPage(props) {
 
     useEffect(() => {
         props.updatePage("Students");
+        props.updateDbResponse("")
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -132,6 +136,7 @@ function StudentsPage(props) {
         ) {
             props.updateStudentList([newStudent]);
             setNewStudent("");
+            
         }
     }
 
@@ -210,11 +215,11 @@ function StudentsPage(props) {
         }
         console.log("studentInfoObj ", studentInfoObj);
         props.updateStudentInfo(studentInfoObj, date);
-        setShowSuccess(true);
+        // setShowSuccess(true);
 
-        setTimeout(() => {
-            setShowSuccess(false);
-        }, 3000);
+        // setTimeout(() => {
+        //     setShowSuccess(false);
+        // }, 3000);
     }
 
     return (
