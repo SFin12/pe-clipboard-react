@@ -36,8 +36,6 @@ function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
-
-    const [showSuccess, setShowSuccess] = useState(false);
     const target = useRef(null);
 
     //Remove punctuation in class & gradebook names to match db key
@@ -215,11 +213,7 @@ function StudentsPage(props) {
         }
         console.log("studentInfoObj ", studentInfoObj);
         props.updateStudentInfo(studentInfoObj, date);
-        // setShowSuccess(true);
-
-        // setTimeout(() => {
-        //     setShowSuccess(false);
-        // }, 3000);
+     
     }
 
     return (
@@ -247,11 +241,7 @@ function StudentsPage(props) {
                                     className="plus-icon m-4"
                                 />
                             </div>
-                            <SuccessModal
-                                showSuccess={showSuccess}
-                                title="Saving"
-                                messageString="Information has been submitted."
-                            />
+                           
                             {props.studentList[classKey] &&
                             props.studentList[classKey].length > 0 ? (
                                 <Button
