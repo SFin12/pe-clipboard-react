@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 import RosterPage from "../RosterPage/RosterPage";
 import ListStudents from "../../../components/ListStudents";
 import "./StudentPage.scss";
-import SuccessModal from "../../../components/SuccessModal";
+
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -36,6 +36,7 @@ function StudentsPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [newStudent, setNewStudent] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [studentRowDepth, setStudentRowDepth] = useState(7)
     const target = useRef(null);
 
     //Remove punctuation in class & gradebook names to match db key
@@ -219,11 +220,15 @@ function StudentsPage(props) {
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>
+            <div>
+            <label htmlFor="range" className={'d-block'}>Row Depth = {studentRowDepth}</label>
+            <input type={'range'} value={studentRowDepth} min="1" max="10" id="range" onChange={(e) => setStudentRowDepth(e.target.value)}></input>
+            </div>
             <hr />
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     {props.studentList[classKey] ? (
-                        <ListStudents toggleDelete={toggleDelete} />
+                        <ListStudents toggleDelete={toggleDelete} studentRowDepth={studentRowDepth}/>
                     ) : (
                         <div>
                             {/* addStudentRoster() */}

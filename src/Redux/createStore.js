@@ -15,6 +15,7 @@ const initialState = {
     class: "",
     classList: {},
     student: "",
+    students: [],
     studentList: {},
     settings: {
         dailyPoints: 10,

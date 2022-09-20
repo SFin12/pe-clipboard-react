@@ -7,7 +7,7 @@ export function saveRoster(e, callback) {
 
         reader.onload = function () {
             const arr = reader.result.split("\n");
-
+            console.log(arr)
             for (let student of arr) {
                 const cleanedStudent = cleanText(student);
                 if (cleanedStudent) {

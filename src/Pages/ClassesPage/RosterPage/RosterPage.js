@@ -4,6 +4,7 @@ import { DropDownHover } from "../../../components/DropDown/DropDown";
 import {
     updatePage,
     updateStudentList,
+    createStudent,
     deleteRoster,
 } from "../../../Redux/actions";
 import { saveRoster } from "../../../Lib/saveRoster";
@@ -11,6 +12,7 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import ListStudents from "../../../components/ListStudents"
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -22,6 +24,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
+    createStudent,
     deleteRoster,
 };
 
@@ -42,7 +45,7 @@ function RosterPage(props) {
         }, 1500);
     }
 
-    function ListStudents() {}
+    
 
     function AddStudents() {
         return (

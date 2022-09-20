@@ -119,6 +119,21 @@
     background-color: rgb(223, 222, 221) !important;
 }
 
+.row-divide {
+  display: flex;
+  position: relative;
+  top: -10px;
+  justify-content: space-between;
+  align-items: center;
+
+  hr {
+    width: 42%;
+    height: 3px;
+    background-color: white;
+  }
+
+}
+
 @media (min-width: 736px) {
     .button {
         font-size: 1.7rem;

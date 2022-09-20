@@ -119,6 +119,11 @@ export const MainReducer = (state, action) => {
             };
 
         //STUDENTS---------------------------------------------------------------------------
+        case ActionTypes.CREATE_STUDENT:
+          return {
+            ...state,
+            students: [...state.students, action.payload]
+          }
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             //If one student is being added, check if the name already exists. If so, don't add.

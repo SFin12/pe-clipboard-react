@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
 import Confirm from "./ConfirmModal";
@@ -24,6 +24,7 @@ function ListStudents(props) {
     const [studentPoints, setStudentPoints] = useState({});
     const [attendance, setAttendance] = useState({});
     const [note, setNote] = useState({});
+    
 
     const [studentToDelete, setStudentToDelete] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -43,7 +44,8 @@ function ListStudents(props) {
     const classKey = currentGb + "-" + currentClass;
 
     //sets starting values for attendance and daily points
-    const { studentList, studentInfo } = props;
+    const { studentList, studentInfo, studentRowDepth } = props;
+    console.log(studentRowDepth % 7)
 
     useEffect(() => {
         props.updatePage("Students");
@@ -352,6 +354,7 @@ function ListStudents(props) {
 
         return (
             <React.Fragment>
+               {(i + 1) % studentRowDepth -1 === 0 ? <div className="row-divide"><hr></hr><span>{i / studentRowDepth +1}</span><hr></hr></div> : null}
                 <div
                     className={
                         props.toggleDelete ? "student delete" : "student"
@@ -454,6 +457,7 @@ function ListStudents(props) {
                         />
                     </div>
                 </div>
+               
             </React.Fragment>
         );
     });

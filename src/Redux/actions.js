@@ -84,6 +84,14 @@ export const deleteClass = (className) => ({
     payload: className,
 });
 
+
+export const createStudent = (studentObj) => {
+  return {
+  type: ActionTypes.CREATE_STUDENT,
+  payload: studentObj
+  }
+}
+
 export const updateStudentList = (arrayStudentNames) => {
     //sorts student names by removing commas then replacing.
     const sortedStudentNamesArr = arrayStudentNames
