@@ -87,7 +87,7 @@ function GradebookPage(props) {
         e.target.name === "delete" && props.deleteGradebook(choice);
         props.createGradebook("");
         setChoice("");
-        console.log("post modal ", choice);
+       
     }
 
     function ListGradebooks() {

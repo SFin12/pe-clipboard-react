@@ -57,10 +57,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     // check on previous state
     // only write when it's different with the new state
-    console.log(!isEqual(prevProps.studentInfo, this.props.studentInfo))
-    console.log(prevProps.studentInfo)
-    console.log(this.props.studentInfo)
-    
+    console.log("isEqual?", !isEqual(prevProps.studentInfo, this.props.studentInfo))
     if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||
@@ -97,9 +94,9 @@ class App extends React.Component {
               }, 3000)
         }, 7000)
         writeUserData(this.props.id, userObject).then((response) => {
-          console.log("db response", response)
+     
           clearTimeout(timeout)
-          console.log(isEqual(prevProps.studentInfo, this.props.studentInfo))
+         
           if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
             if (response === "success") {
               this.setState({ showSuccessModal: true })

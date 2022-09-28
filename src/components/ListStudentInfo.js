@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions";
+import { updatePage, updateStudentList } from "../Redux/actions";
 import { useViewport } from "../utils/utilities";
 import DesktopStudentInfo from "./DesktopStudentInfo";
 import DropDownStudentInfo from "./DropDown/DropDownStudentInfo";
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    deleteStudent,
+    
     updatePage,
     updateStudentList,
 };
@@ -186,12 +186,12 @@ function ListStudentsInfo(props) {
         (student, i) => {
             if (student !== "dateLastSubmitted" && student !== "totalPoints") {
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={student + "-info"}>
                         {screenWidth < breakpoint ? (
                             <div
                                 className={"student"}
                                 name="student-info"
-                                key={student + "-info"}
+                                
                             >
                                 <DropDownStudentInfo
                                     student={student}

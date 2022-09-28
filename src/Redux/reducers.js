@@ -127,12 +127,12 @@ export const MainReducer = (state, action) => {
         case ActionTypes.UPDATE_STUDENTLIST:
             const sMatch = action.payload;
             //If one student is being added, check if the name already exists. If so, don't add.
-            // console.log(state.studentList[currentGb + "-" + currentClass].some(student => student === ))
+            console.log(state.studentList[currentGb + "-" + currentClass]?.some( student => student.name === sMatch[0].name ))
             if (
                 sMatch.length === 1 &&
                 state.studentList[currentGb + "-" + currentClass] &&
                 state.studentList[currentGb + "-" + currentClass].some(
-                    (student) => student === sMatch[0]
+                    (student) => student.name === sMatch[0].name
                 )
             ) {
                 return { ...state };
@@ -184,7 +184,7 @@ export const MainReducer = (state, action) => {
                     [currentGb + "-" + currentClass]: state.studentList[
                         currentGb + "-" + currentClass
                     ].filter((student) => {
-                        return student !== action.payload;
+                        return student.name !== action.payload;
                     }),
                 },
             };

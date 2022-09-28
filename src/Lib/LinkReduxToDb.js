@@ -6,7 +6,7 @@ export async function writeUserData (userId, userObject) {
       
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-          console.log("in write")
+          
             return update(userRef, userObject)
                 .then(() => {
                     console.log("database updated");

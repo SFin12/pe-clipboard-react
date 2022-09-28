@@ -99,14 +99,17 @@ export const updateStudentList = (arrayStudentNames) => {
             const capitalized = n[0].toUpperCase() + n.slice(1);
             return capitalized.replace(",", "");
         })
-        .sort()
-        .map((n) => n.replace(" ", ", "));
-    console.log("sorted names: ", sortedStudentNamesArr);
+        .map((n) => {
+          n.replace(" ", ", ")
+          return {name: n, number: 0}
+        });
+   
     return {
         type: ActionTypes.UPDATE_STUDENTLIST,
         payload: sortedStudentNamesArr,
     };
 };
+
 export const deleteRoster = () => {
     console.log("Deleting Student List");
     return {
@@ -144,7 +147,8 @@ export const updateSettings = (settingsObj) => {
         type: ActionTypes.UPDATE_SETTINGS,
         payload: settingsObj,
     };
-};
+
+  };
 
 export const updateDbResponse = (response) => {
   console.log("updating response", response);
@@ -153,3 +157,4 @@ export const updateDbResponse = (response) => {
     payload: response, // response should be a string with "success" or "failure"
   }
 };
+

@@ -63,14 +63,14 @@ function StudentInfoPage(props) {
         const endDateToFind = new Date(formattedEndDate).toLocaleDateString();
         setStartDateFilter(startDateToFind);
         setEndDateFilter(endDateToFind);
-        console.log(startDateToFind + " " + endDateToFind);
+        
     }
 
     function checkFilter(filter) {
         if (!filter) {
             setStartDateFilter(null);
             setEndDateFilter(null);
-            console.log("filter", filter);
+           
         }
     }
 

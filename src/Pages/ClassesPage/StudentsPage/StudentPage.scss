@@ -119,6 +119,12 @@
     background-color: rgb(223, 222, 221) !important;
 }
 
+input[type='range'] {
+  color: rgb(50, 255, 50);
+  background-color: rgb(50, 255, 50);
+  overflow: hidden;
+}
+
 .row-divide {
   display: flex;
   position: relative;

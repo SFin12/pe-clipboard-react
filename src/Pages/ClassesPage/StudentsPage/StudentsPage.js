@@ -222,7 +222,7 @@ function StudentsPage(props) {
             <h1 className="header">{props.class}</h1>
             <div>
             <label htmlFor="range" className={'d-block'}>Row Depth = {studentRowDepth}</label>
-            <input type={'range'} value={studentRowDepth} min="1" max="10" id="range" onChange={(e) => setStudentRowDepth(e.target.value)}></input>
+            <input type={'range'}  className="row-depth-slider" value={studentRowDepth} min="1" max="10" id="range" onChange={(e) => setStudentRowDepth(e.target.value)}></input>
             </div>
             <hr />
             <div className="form-container">

@@ -112,7 +112,7 @@ class NavMenu extends Component {
     };
 
     handleClick(e) {
-        console.log(e.currentTarget.text);
+      
         if (e.currentTarget.text === "Logout") {
             this.logOut();
         }
@@ -121,7 +121,7 @@ class NavMenu extends Component {
     }
 
     closeNavMenu(e) {
-        console.log(e.target);
+  
         if (this.state.isOpen) {
             this.setState({ isOpen: false });
         }

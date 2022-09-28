@@ -18,6 +18,7 @@ const initialState = {
     students: [],
     studentList: {},
     settings: {
+        alphabetize: false,
         dailyPoints: 10,
         absentPoints: -10,
         tardyPoints: 0,
