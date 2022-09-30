@@ -25,8 +25,6 @@ function ListStudents(props) {
   const [studentPoints, setStudentPoints] = useState({})
   const [attendance, setAttendance] = useState({})
   const [note, setNote] = useState({})
-  const [customNote, setCustomNote] = useState({})
-
   const [studentToDelete, setStudentToDelete] = useState("")
   const [showModal, setShowModal] = useState(false)
 
@@ -171,7 +169,7 @@ function ListStudents(props) {
         setNote(notesState)
       // })
     }
-   
+   console.log('useEffect')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentList])
 
@@ -257,7 +255,8 @@ function ListStudents(props) {
       // check if custom note was clicked, if so, if user entered note, change button to active.
     } else if (noteName === "note4") {
       let noteValue = e.currentTarget.value
-      let customNote = noteId[0] + "-customNote"
+      let customNote = noteId.split('-')[0] + "-customNote"
+      console.log(noteValue)
       noteValue.length > 0
         ? setNote({
             ...note,
@@ -267,6 +266,7 @@ function ListStudents(props) {
         : setNote({
             ...note,
             [noteId]: false,
+            [customNote]: noteValue
           })
     }
     handlePoints(e, studentIdNumber, buttonName)

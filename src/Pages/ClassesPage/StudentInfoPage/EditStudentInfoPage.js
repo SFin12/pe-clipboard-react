@@ -28,7 +28,7 @@ function EditStudentInfoPage() {
   const [notes, setNotes] = useState()
   const [objIndex, setObjIndex] = useState()
   const [submissionObj, setSubmissionObj] = useState()
-  const currentStudentInfo = useLocation().state
+  let currentStudentInfo = useLocation().state
   
 
   useEffect(() => {
@@ -36,11 +36,7 @@ function EditStudentInfoPage() {
       const index = currentStudentInfo[student].findIndex((submission) => submission.date === startDate )
       console.log(index)
       console.log(currentStudentInfo[student][index])
-      // if(index){
-      //   const findObj = currentStudentInfo[student][index]((submission) => {
-      //     return submission.date === startDate
-      //   })
-      // }
+    
       
       if(index > 0){
         setObjIndex(index)
@@ -56,7 +52,7 @@ function EditStudentInfoPage() {
         setPoints(Number(submissionObj[0].points))
       }
     }
-  }, [ startDate, student])
+  }, [startDate, student])
 
   function handleDateChange(e) {
     const date = e.target.value
@@ -79,7 +75,13 @@ function EditStudentInfoPage() {
   }
 
   function handleSave(){
+    if(student && objIndex){
 
+      currentStudentInfo[student][objIndex].attendance = attendance
+      currentStudentInfo[student][objIndex].points = points
+      currentStudentInfo[student][objIndex].notes = notes
+      console.log(currentStudentInfo)
+    }
   }
 
   return (
