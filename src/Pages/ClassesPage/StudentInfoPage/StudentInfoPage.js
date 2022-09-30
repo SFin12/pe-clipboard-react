@@ -10,6 +10,8 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import FilterDays from "../../../components/FilterDays";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { Button } from "reactstrap"
+import { Link } from "react-router-dom"
 
 const mapStateToProps = (state) => ({
     currentPage: state.currentPage,
@@ -28,6 +30,7 @@ function StudentInfoPage(props) {
     const [infoExists, setInfoExists] = useState(false);
     const [startDateFilter, setStartDateFilter] = useState("");
     const [endDateFilter, setEndDateFilter] = useState("");
+    
 
     //Remove punctuation in class & gradebook names to match db key
     const uncleanCurrentGb = props.gradebook;
@@ -55,14 +58,9 @@ function StudentInfoPage(props) {
     const navigate = useNavigate();
 
     function handleDate(startDate, endDate) {
-        const formattedStartDate = startDate.split("-").join("/");
-        const formattedEndDate = endDate.split("-").join("/");
-        const startDateToFind = new Date(
-            formattedStartDate
-        ).toLocaleDateString();
-        const endDateToFind = new Date(formattedEndDate).toLocaleDateString();
-        setStartDateFilter(startDateToFind);
-        setEndDateFilter(endDateToFind);
+        
+        setStartDateFilter(startDate);
+        setEndDateFilter(endDate);
         
     }
 
@@ -91,6 +89,7 @@ function StudentInfoPage(props) {
                     <h2 className="subtitle mb-4">
                         {props.gradebook} - {props.class}
                     </h2>
+                    {infoExists && <span><Link to={'/editStudentInfo'} state={studentInfo[classKey]}><Button>Edit</Button></Link></span>}
                 </span>
             </div>
             <div className="container">

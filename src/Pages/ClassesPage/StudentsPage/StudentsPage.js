@@ -156,7 +156,7 @@ function StudentsPage(props) {
     // submits current evaluation for each student to redux and firebase
     function handleSubmit(e) {
         // date is submitted and used to determine if the submission should overwrite the current day or add to grades.
-        const date = new Date().toLocaleDateString();
+        const date = new Date().toISOString().split('T')[0];
         const students = e.target.elements;
 
         // object that will contain all student data

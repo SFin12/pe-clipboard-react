@@ -11,7 +11,7 @@ const links = [
     { to: "/gradebook", text: "Gradebook", key: "link2" },
     { to: "/info", text: "Info" },
     { to: "/settings", text: "Settings", key: "link3" },
-    { to: "/pe-clipboard-react", text: "Logout", key: "link4" },
+    { to: "/", text: "Logout", key: "link4" },
 ];
 
 const mapStateToProps = (state) => {

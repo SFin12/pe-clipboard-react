@@ -12,3 +12,9 @@ export function useViewport() {
     // Return the width so we can use it in our components
     return { screenWidth };
 }
+
+
+export function formatDate (date) {
+  
+  return new Date(date).toISOString().split("T")[0]
+}

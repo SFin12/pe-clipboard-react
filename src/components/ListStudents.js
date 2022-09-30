@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions"
+import { formatDate } from "../utils/utilities"
 import Confirm from "./ConfirmModal"
 
 const mapStateToProps = (state) => ({
@@ -24,6 +25,7 @@ function ListStudents(props) {
   const [studentPoints, setStudentPoints] = useState({})
   const [attendance, setAttendance] = useState({})
   const [note, setNote] = useState({})
+  const [customNote, setCustomNote] = useState({})
 
   const [studentToDelete, setStudentToDelete] = useState("")
   const [showModal, setShowModal] = useState(false)
@@ -46,7 +48,7 @@ function ListStudents(props) {
     const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
       ? classInfo.dateLastSubmitted
       : null
-    const todaysDate = new Date().toLocaleDateString()
+    const todaysDate = formatDate(new Date())
     const alreadySubmitted = dateLastSubmitted === todaysDate
     if (alreadySubmitted) {
       let todaysStudentInfo = Object.values(classInfo)
@@ -85,7 +87,7 @@ function ListStudents(props) {
         return newState
       })
       setAttendance((attendance) => {
-        let newState = {}
+        let attendanceState = {}
         for (let i = 0; i < totalStudents; i++) {
           let studentName = studentList[classKey][i].name
           let studentInfo = null
@@ -96,28 +98,31 @@ function ListStudents(props) {
           }
           let studentId = i + "-student"
 
-          newState = {
-            ...newState,
+          attendanceState = {
+            ...attendanceState,
             [studentId]: attendance[studentId] ? attendance[studentId] : studentInfo ? studentInfo.attendance : "P",
           }
         }
 
-        return newState
+        return attendanceState
       })
       // sets all notes to not-clicked / off
-      setNote((note) => {
-        let newState = {}
+      // setNote((note) => {
+        let notesState = {}
         for (let i = 0; i < totalStudents; i++) {
           let note1 = i + "-note1"
           let note2 = i + "-note2"
           let note3 = i + "-note3"
           let note4 = i + "-note4"
-          newState = {
-            ...newState,
+          let customNote = i + "-customNote"
+          notesState = {
+            ...notesState,
             [note1]: note[note1] || false,
             [note2]: note[note2] || false,
             [note3]: note[note3] || false,
             [note4]: note[note4] || false,
+            [customNote]: note[customNote] || ''
+
           }
           let studentName = studentList[classKey][i].name
           let studentInfo = null
@@ -132,29 +137,30 @@ function ListStudents(props) {
                   // turn on any notest that match notes in settings.
 
                   case props.settings.note1:
-                    newState = {
-                      ...newState,
+                    notesState = {
+                      ...notesState,
                       [note1]: true,
                     }
                     break
                   case props.settings.note2:
-                    newState = {
-                      ...newState,
+                    notesState = {
+                      ...notesState,
                       [note2]: true,
                     }
                     break
                   case props.settings.note3:
-                    newState = {
-                      ...newState,
+                    notesState = {
+                      ...notesState,
                       [note3]: true,
                     }
                     break
                   default:
-                    newState = {
-                      ...newState,
+                    console.log(notesState[customNote])
+                    notesState = {
+                      ...notesState,
                       [note4]: true,
+                      [customNote]: studentInfo.notes[i]
                     }
-
                     break
                 }
               }
@@ -162,9 +168,10 @@ function ListStudents(props) {
           }
         }
 
-        return newState
-      })
+        setNote(notesState)
+      // })
     }
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentList])
 
@@ -229,6 +236,7 @@ function ListStudents(props) {
 
   function handleNote(e) {
     let noteId = e.currentTarget.id
+    
     let studentIdNumber
     let buttonName = e.currentTarget.name
     let noteName = e.currentTarget.name
@@ -248,10 +256,13 @@ function ListStudents(props) {
 
       // check if custom note was clicked, if so, if user entered note, change button to active.
     } else if (noteName === "note4") {
-      e.currentTarget.value.length > 0
+      let noteValue = e.currentTarget.value
+      let customNote = noteId[0] + "-customNote"
+      noteValue.length > 0
         ? setNote({
             ...note,
             [noteId]: true,
+            [customNote]: noteValue
           })
         : setNote({
             ...note,
@@ -314,7 +325,7 @@ function ListStudents(props) {
     e.target.name === "delete" && props.deleteStudent(studentToDelete)
   }
 
-  console.log(settings.alphabetize)
+
   if(settings.alphabetize) props.studentList[classKey].sort((a, b) => (a.name > b.name) ? 1 : -1)
   const studentButtons = props.studentList[classKey].map((student, i) => {
     const studentId = i + "-student"
@@ -339,7 +350,7 @@ function ListStudents(props) {
             <input className="button absent note" name="note1" type="button" id={i + "-note1"} data-note={note[i + "-note1"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note1} />
             <input className="button absent note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
             <input className="button absent note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
-            <input className="br-round button absent note " style={{ textAlign: "center" }} name="note4" type="text" key={student + "-note4"} id={i + "-note4"} placeholder="?" data-note={note[i + "-note4"]} defaultValue="" onChange={props.toggleDelete ? undefined : handleNote} />
+            <input className="br-round button absent note " style={{ textAlign: "center" }} name="note4" type="text" key={student + "-note4"} id={i + "-note4"} placeholder="?" data-note={note[i + "-note4"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
           </div>
         </div>
       </React.Fragment>

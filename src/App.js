@@ -17,6 +17,7 @@ import { writeUserData } from "./Lib/LinkReduxToDb"
 import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
+import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
 
 const mapStateToProps = (state) => ({
   signedIn: state.signedIn,
@@ -69,7 +70,6 @@ class App extends React.Component {
     ) 
     
     {
-  
       const userObject = {
         id: this.props.id,
         name: this.props.name,
@@ -142,8 +142,8 @@ class App extends React.Component {
                                 start on class page. */}
 
                 <Route // Starting page after login. Takes user to their classes unless there is no gradebook created or selected
-                  path="/pe-clipboard-react"
-                  element={!this.props.gradebook ? <GradebookPage /> : <ClassesPage />}
+                  path="/"
+                  element={!this.props.gradebook ? <InfoPage /> : <ClassesPage />}
                 />
                 <Route // This only appears if a gradebook has been chosen and allows users to create and access classes
                   path="/classes"
@@ -170,6 +170,10 @@ class App extends React.Component {
                 <Route //Not to be confused with Gradebook page. This is to view student grades.
                   path="/studentInfo"
                   element={<StudentInfoPage />}
+                />
+                <Route //Edit student information for individual days.
+                  path="/editStudentInfo"
+                  element={<EditStudentInfoPage />}
                 />
               </Routes>
             </main>

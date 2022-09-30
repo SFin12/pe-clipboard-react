@@ -126,6 +126,15 @@ export const deleteStudent = (student) => {
     };
 };
 
+export const updateSpecificStudentInfo = (SingleSubmissionObject, date, student) => {
+  return {
+      type: ActionTypes.UPDATE_STUDENT_INFO,
+      date: date,
+      student:student,
+      payload: SingleSubmissionObject,
+  };
+};
+
 export const updateStudentInfo = (studentInfoObj, date) => {
     return {
         type: ActionTypes.UPDATE_STUDENT_INFO,

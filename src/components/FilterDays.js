@@ -13,6 +13,7 @@ function FilterDays(props) {
     const [startDate, setStartDate] = useState(
         defaultStartDate.toISOString().split("T")[0]
     );
+    
     const [filter, setFilter] = useState(false);
 
     function handleToggle() {
