@@ -143,6 +143,13 @@ export const updateStudentInfo = (studentInfoObj, date) => {
     };
 };
 
+export const updateOldStudentInfo = (studentInfoObj) => {
+  return {
+    type: ActionTypes.UPDATE_OLD_STUDENT_INFO,
+    payload: studentInfoObj,
+};
+}
+
 export const updateAttendance = (attendanceObj) => {
     return {
         type: ActionTypes.UPDATE_ATTENDANCE,

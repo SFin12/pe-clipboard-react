@@ -30,6 +30,7 @@ export const DELETE_ROSTER = "DELETE_ROSTER";
 
 export const UPDATE_SPECIFIC_STUDENT_INFO = "UPDATE_SPECIFIC_STUDENT_INFO";
 export const UPDATE_STUDENT_INFO = "UPDATE_STUDENT_INFO";
+export const UPDATE_OLD_STUDENT_INFO = "UPDATE_OLD_STUDENT_INFO";
 export const UPDATE_DB_RESPONSE = "UPDATE_DB_RESPONSE";
 
 //Not supported yet-----------------------------------------

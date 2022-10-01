@@ -84,7 +84,7 @@ class App extends React.Component {
         studentInfo: this.props.studentInfo,
         settings: this.props.settings,
       }
-
+      console.log('db update')
       // if there is a user write the above props to firebase
       if (this.props.id) {
         const timeout = setTimeout(() => {

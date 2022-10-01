@@ -6,6 +6,7 @@ import { connect } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { formatDate } from "../../../utils/utilities"
 import { Button } from "react-bootstrap"
+import { updateOldStudentInfo } from "../../../Redux/actions"
 
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
@@ -16,9 +17,11 @@ const mapStateToProps = (state) => ({
   studentInfo: state.studentInfo,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  updateOldStudentInfo
+}
 
-function EditStudentInfoPage() {
+function EditStudentInfoPage(props) {
   const defaultStartDate = new Date(new Date().setDate(new Date().getDate() - 1))
 
   const [startDate, setStartDate] = useState(formatDate(defaultStartDate))
@@ -68,10 +71,12 @@ function EditStudentInfoPage() {
   }
 
   function handleAttendanceChange (e) {
-    console.log(e.target.value)
+    setAttendance(e.target.value)
   }
   function handleNotesChange (e) {
-    console.log(e.target.value)
+    setNotes(e.target.value.split(','))
+
+  
   }
 
   function handleSave(){
@@ -80,7 +85,7 @@ function EditStudentInfoPage() {
       currentStudentInfo[student][objIndex].attendance = attendance
       currentStudentInfo[student][objIndex].points = points
       currentStudentInfo[student][objIndex].notes = notes
-      console.log(currentStudentInfo)
+      props.updateOldStudentInfo(currentStudentInfo)
     }
   }
 
@@ -96,7 +101,7 @@ function EditStudentInfoPage() {
         <input value={attendance} type={"text"} onChange={handleAttendanceChange} />
         <input value={points} type={"number"} onChange={handlePointsChange} />
         <input value={notes} type={"text"} onChange={handleNotesChange} />
-        {console.log(notes)}
+        {console.log(attendance)}
       <Button onClick={handleSave}>Save</Button></div>}
     </div>
   )
