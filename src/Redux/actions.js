@@ -97,7 +97,8 @@ export const updateStudentList = (arrayStudentNames) => {
     const sortedStudentNamesArr = arrayStudentNames
         .map((n) => {
             const capitalized = n[0].toUpperCase() + n.slice(1);
-            return capitalized.replace(",", "");
+            return capitalized.replace(/[,.]/g, "");
+            
         })
         .map((n) => {
           n.replace(" ", ", ")

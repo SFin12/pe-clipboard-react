@@ -18,7 +18,11 @@ export async function writeUserData (userId, userObject) {
                 });
             
         }
-        else return 'No userObject'
+        
+        else {
+          console.log("No userObject")
+          return 'No userObject'
+        }
     }
 }
 

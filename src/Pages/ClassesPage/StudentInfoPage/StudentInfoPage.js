@@ -89,7 +89,7 @@ function StudentInfoPage(props) {
                     <h2 className="subtitle mb-4">
                         {props.gradebook} - {props.class}
                     </h2>
-                    {infoExists && <span><Link to={'/editStudentInfo'} state={studentInfo[classKey]}><Button>Edit</Button></Link></span>}
+                    {infoExists && <span className="edit-studentInfo-button"><Link to={'/editStudentInfo'} state={studentInfo[classKey]}><Button>Edit</Button></Link></span>}
                 </span>
             </div>
             <div className="container">

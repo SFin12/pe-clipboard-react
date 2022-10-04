@@ -4,7 +4,7 @@ import { DropDownHover } from "../../../components/DropDown/DropDown";
 import {
     updatePage,
     updateStudentList,
-    createStudent,
+  
     deleteRoster,
 } from "../../../Redux/actions";
 import { saveRoster } from "../../../Lib/saveRoster";
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     updatePage,
     updateStudentList,
-    createStudent,
+ 
     deleteRoster,
 };
 

@@ -87,16 +87,18 @@ class App extends React.Component {
       console.log('db update')
       // if there is a user write the above props to firebase
       if (this.props.id) {
-        const timeout = setTimeout(() => {
-          this.setState({ showFailureModal: true })
-              setTimeout(() => {
-                this.setState({ showFailureModal: false })
-              }, 3000)
-        }, 7000)
+        
+        // console.log('this.props.id' ,this.props.id)
+        // const timeout = setTimeout(() => {
+        //   this.setState({ showFailureModal: true })
+        //       setTimeout(() => {
+        //         this.setState({ showFailureModal: false })
+        //       }, 3000)
+        // }, 7000)
         writeUserData(this.props.id, userObject).then((response) => {
      
-          clearTimeout(timeout)
-         
+          // clearTimeout(timeout)
+          console.log(response)
           if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
             if (response === "success") {
               this.setState({ showSuccessModal: true })
@@ -111,6 +113,7 @@ class App extends React.Component {
               }, 3000)
             }
         }).catch(err => {
+          alert(err)
           this.setState({ showFailureModal: true })
               setTimeout(() => {
                 this.setState({ showFailureModal: false })
