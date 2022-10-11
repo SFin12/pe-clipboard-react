@@ -203,6 +203,7 @@ function StudentsPage(props) {
                     notes: studentNotes,
                     attendance: studentAttendance,
                     date: date,
+                    // date: (new Date(new Date(date) - (1000*60*60*24)).toISOString().split('T')[0]),
                 };
                 studentInfoObj[studentName].push(studentObj);
                 studentName = "";

@@ -45,7 +45,7 @@ function FilterDays(props) {
 
     return (
         <div
-            className="d-inline-flex flex-column flex-lg-row align-items-center justify-content-between w-100 mb-4"
+            className="d-inline-flex flex-column flex-lg-row align-items-center justify-content-between mb-4"
             style={{ minHeight: 65 }}
         >
             <div className="">

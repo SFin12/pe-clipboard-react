@@ -58,7 +58,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     // check on previous state
     // only write when it's different with the new state
-    console.log("isEqual?", !isEqual(prevProps.studentInfo, this.props.studentInfo))
+    console.log("isEqual?", isEqual(prevProps.studentInfo, this.props.studentInfo))
     if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||

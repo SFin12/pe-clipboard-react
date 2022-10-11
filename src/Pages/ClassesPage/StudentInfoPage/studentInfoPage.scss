@@ -1,0 +1,19 @@
+@import "../../../App.scss";
+
+button .edit-button {
+  background-color: $green;
+  margin-bottom: 1.5rem;
+}
+
+#select-student, #select-attendance, #edit-points, #edit-notes {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#edit-points {
+  width: 70px;
+}
+
+#edit-notes {
+  max-width: min-content;
+}
