@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap"
 import { connect } from "react-redux";
 import { updatePage, updateStudentList } from "../Redux/actions";
 import { useViewport } from "../utils/utilities";
@@ -26,6 +27,7 @@ const mapDispatchToProps = {
 function ListStudentsInfo(props) {
     const uncleanCurrentGb = props.gradebook;
     const uncleanCurrentClass = props.class;
+    let studentInfoArr = [];
     const { screenWidth } = useViewport();
     const breakpoint = 800;
     const currentGb = uncleanCurrentGb.replace(
@@ -181,10 +183,40 @@ function ListStudentsInfo(props) {
         }
         return tCount;
     }
+    function handleCopy() {
+      navigator.permissions.query({name: "clipboard-write"}).then((result) => {
+        if (result.state === "granted" || result.state === "prompt") {
+          /* write to the clipboard now */
+          async function writeToClipboard(){
+            try {
+              const grades = JSON.stringify(studentInfoArr);
+              console.log(grades)
+              await navigator.clipboard.writeText(grades);
+            } catch (error) {
+              alert(error)
+            }
+          }
+          writeToClipboard()
+        } else {
+          console.log('not permitted')
+        }
+      });
+    }
 
+    
+    
     const studentInfo = Object.keys(props.studentInfo[classKey]).map(
         (student, i) => {
             if (student !== "dateLastSubmitted" && student !== "totalPoints") {
+                studentInfoArr.push({
+                  student:student,
+                  totalPoints: getTotalPoints(student, "points"),
+                  pointsPossible: pointsPossible,
+                  gradePercentage: getGradePercentage(student),
+                  notes: getNotes(student),
+                  absences: getAbsences(student),
+                  tardies: getTardies(student),
+                })
                 return (
                     <React.Fragment key={student + "-info"}>
                         {screenWidth < breakpoint ? (
@@ -233,11 +265,16 @@ function ListStudentsInfo(props) {
     return screenWidth < breakpoint ? (
         studentInfo
     ) : (
+      <>
+       <div className="d-flex justify-content-end">
+          
+
+       </div>
         <div className="d-flex justify-content-center">
             <table className="app-container">
                 <thead>
                     <tr>
-                        <th className="wide">Student</th>
+                        <th className="wide"><div><Button size="sm" variant="secondary" onClick={handleCopy}>Copy Grades</Button></div>Student</th>
                         <th className="narrow">Total Points</th>
                         <th className="narrow">Points Possible</th>
                         <th className="narrow">Grade Percentage</th>
@@ -249,6 +286,7 @@ function ListStudentsInfo(props) {
                 <tbody>{studentInfo}</tbody>
             </table>
         </div>
+        </>
     );
 }
 

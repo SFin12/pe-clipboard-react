@@ -10,6 +10,7 @@ import {
 import { db } from "../../Lib/FirebaseConfig";
 import { ref, onValue } from "firebase/database";
 
+
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const mapStateToProps = (state) => {
@@ -45,7 +46,7 @@ function SignInPage(props) {
         updateGoogleAuth,
         updateStore,
     } = props;
-    //fetch current user data to update redux store when first loading
+    // fetch current user data to update redux store when first loading
     function getUserData(userId) {
         if (!userId) {
             return console.log("No user Id");

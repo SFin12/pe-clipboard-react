@@ -1,6 +1,7 @@
 import "./ListStudentInfo.scss";
 
 function DesktopStudentInfo(props) {
+  
     return (
         <tr>
             <td>{props.student}</td>
