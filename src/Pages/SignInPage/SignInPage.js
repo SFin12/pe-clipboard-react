@@ -9,6 +9,7 @@ import {
 } from "../../Redux/actions";
 import { db } from "../../Lib/FirebaseConfig";
 import { ref, onValue } from "firebase/database";
+import { writeUserData } from "../../Lib/LinkReduxToDb"
 
 
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -76,7 +77,7 @@ function SignInPage(props) {
         const email = profile.getEmail();
         const imageUrl = profile.getImageUrl();
         updateUserInfo(id, name, email, imageUrl);
-        getUserData(id);
+        getUserData(id)
     };
 
     const onFailure = () => {

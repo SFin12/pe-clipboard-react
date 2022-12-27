@@ -18,6 +18,8 @@ import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
+import ClassDetails from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
+import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 
 const mapStateToProps = (state) => ({
   signedIn: state.signedIn,
@@ -84,10 +86,10 @@ class App extends React.Component {
         studentInfo: this.props.studentInfo,
         settings: this.props.settings,
       }
-      console.log('db update')
+      
       // if there is a user write the above props to firebase
       if (this.props.id) {
-        
+        console.log('db update')
         // console.log('this.props.id' ,this.props.id)
         // const timeout = setTimeout(() => {
         //   this.setState({ showFailureModal: true })
@@ -177,6 +179,10 @@ class App extends React.Component {
                 <Route //Edit student information for individual days.
                   path="/editStudentInfo"
                   element={<EditStudentInfoPage />}
+                />
+                <Route //Edit student information for individual days.
+                  path="/classDetails"
+                  element={<ClassDetailsPage />}
                 />
               </Routes>
             </main>
