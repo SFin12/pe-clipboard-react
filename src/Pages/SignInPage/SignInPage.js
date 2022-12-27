@@ -54,15 +54,11 @@ function SignInPage(props) {
         const userRef = ref(db, "/users/" + userId);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-
             //check if user has any saved data
             if (data) {
                 //updates redux store with user data stored in realtime database from firebase
                 updateStore(data);
             }
-            // else {
-            //     writeUserData()
-            // }
             return updateLogin(true);
         });
     }
