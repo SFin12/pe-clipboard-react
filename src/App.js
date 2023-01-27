@@ -18,7 +18,6 @@ import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
-import ClassDetails from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 
 const mapStateToProps = (state) => ({
@@ -60,6 +59,9 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     // check on previous state
     // only write when it's different with the new state
+    if(!window.navigator.onLine){
+      console.log("Not online")
+    }
     console.log("isEqual?", isEqual(prevProps.studentInfo, this.props.studentInfo))
     if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
@@ -100,7 +102,7 @@ class App extends React.Component {
         writeUserData(this.props.id, userObject).then((response) => {
      
           // clearTimeout(timeout)
-          console.log(response)
+          console.log("response from write.",response)
           if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
             if (response === "success") {
               this.setState({ showSuccessModal: true })
