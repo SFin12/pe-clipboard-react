@@ -1,5 +1,6 @@
 // Save roster loaded from csv file.
 export function saveRoster(e, callback) {
+    
     if (e.target.files[0]) {
         const csvInput = e.target.files[0];
         const reader = new FileReader();
@@ -7,7 +8,7 @@ export function saveRoster(e, callback) {
 
         reader.onload = function () {
             const arr = reader.result.split("\n");
-    
+            console.log(arr)
             for (let student of arr) {
                 const cleanedStudent = cleanText(student);
                 if (cleanedStudent) {
@@ -29,10 +30,12 @@ export function saveRoster(e, callback) {
 function cleanText(string) {
     let cleanString = string;
     const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    // if a string is present and the first part of the string is a number, cut it out and take the rest
     if (cleanString && !isNaN(Number(cleanString[0]))) {
         cleanString = cleanString.slice(1);
         return cleanText(cleanString);
     }
+    // if the first character is something other than a letter, cut it out and take the rest
     if (
         cleanString &&
         cleanString[0].toUpperCase() === cleanString[0].toLowerCase() &&
@@ -41,6 +44,7 @@ function cleanText(string) {
         cleanString = cleanString.slice(1);
         return cleanText(cleanString);
     }
+    // if the last character is something other than a letter, cuat it out and take everthing before it
     if (
         cleanString &&
         cleanString[string.length - 1].toUpperCase() ===

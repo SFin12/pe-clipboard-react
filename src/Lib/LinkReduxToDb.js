@@ -1,12 +1,11 @@
 import { db } from "./FirebaseConfig";
-import { ref, onValue, update } from "firebase/database";
+import { ref, onValue, update, get } from "firebase/database";
 
 export async function writeUserData (userId, userObject) {
+    console.log("online?", window.navigator.onLine)
     if (ref(db, "/users/" + userId)) {
-      
         const userRef = ref(db, "/users/" + userId);
         if (userObject) {
-          
             return update(userRef, userObject)
                 .then(() => {
                     console.log("database updated");
@@ -16,7 +15,6 @@ export async function writeUserData (userId, userObject) {
                     alert(err);
                     return ('failure')
                 });
-            
         }
         
         else {
@@ -26,14 +24,30 @@ export async function writeUserData (userId, userObject) {
     }
 }
 
-export function getUserData(userId) {
+export async function getUserData(userId) {
+  console.log("in getUserData", userId)
     if (!userId) {
         return console.log("No user Id");
     }
+    // getCurrentGradeBook(userId).then(results => console.log(results)) 
     const userRef = ref(db, "/users/" + userId);
-    onValue(userRef, (snapshot) => {
-        const data = snapshot.val();
+    const snapshot = await get(userRef)
+    
+    console.log("getting user data.", snapshot.val())
+    return snapshot.val()
+    
+}
 
-        return data;
-    });
+
+export async function getCurrentGradeBook(userId) {
+  console.log("getting current gb")
+  if (!userId) {
+      return console.log("No user Id");
+  }
+  const userRef = ref(db, "/users/" + userId + "/gradebook");
+  onValue(userRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log("getting current gb", data)
+      return data;
+  });
 }

@@ -218,6 +218,10 @@ function StudentsPage(props) {
      
     }
 
+    function openClassDetails(){
+      navigate("/classDetails")
+    }
+
     return (
         <React.Fragment>
             <h1 className="header">{props.class}</h1>
@@ -225,6 +229,7 @@ function StudentsPage(props) {
             <label htmlFor="range" className={'d-block'}>Row Depth = {studentRowDepth}</label>
             <input type={'range'}  className="row-depth-slider" value={studentRowDepth} min="1" max="10" id="range" onChange={(e) => setStudentRowDepth(e.target.value)}></input>
             </div>
+            <button onClick={openClassDetails}>Class Details</button>
             <hr />
             <div className="form-container">
                 <form onSubmit={handleSubmit}>

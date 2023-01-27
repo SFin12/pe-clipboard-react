@@ -72,7 +72,7 @@ function SignInPage(props) {
         const email = profile.getEmail();
         const imageUrl = profile.getImageUrl();
         updateUserInfo(id, name, email, imageUrl);
-        getUserData(id);
+        getUserData(id)
     };
 
     const onFailure = () => {
