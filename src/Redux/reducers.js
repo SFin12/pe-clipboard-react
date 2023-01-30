@@ -58,7 +58,11 @@ export const MainReducer = (state, action) => {
           ...state,
           classList: {
             ...state.classList,
-            [currentGb]: [...state.classList[currentGb], action.payload].sort(),
+            [currentGb]: [...state.classList[currentGb], action.payload].sort((a,b) => {
+              if(a.name > b.name) return 1
+              if(a.name < b.name) return -1
+              return 0
+            }),
           },
         }
       } else if (!state.classList.currentGb) {

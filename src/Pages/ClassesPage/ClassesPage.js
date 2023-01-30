@@ -31,7 +31,7 @@ const mapDispatchToProps = {
 function ClassesPage(props) {
     const [toggleDelete, setToggleDelete] = useState(false);
     const [buttonClass, setButtonClass] = useState("class-button");
-    const [newClass, setNewClass] = useState("");
+    const [newClass, setNewClass] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState("");
     const [showAddClassModal, setShowAddClassModal] = useState(false);
@@ -57,16 +57,16 @@ function ClassesPage(props) {
                     <div className="d-flex flex-column align-items-center">
                         {props.classList[gb].map((c, i) => (
                             <button
-                                key={c + i}
+                                key={c.name + i}
                                 className={buttonClass}
                                 onClick={
                                     toggleDelete
                                         ? handleDelete
                                         : handleClassClick
                                 }
-                                id={c}
+                                id={c.name}
                             >
-                                {c}
+                                {c.name}
                             </button>
                         ))}
                     </div>
@@ -98,7 +98,7 @@ function ClassesPage(props) {
                     <input
                         id="create-class"
                         type="text"
-                        value={newClass}
+                        value={newClass.name}
                         placeholder="Class Name"
                         className="text-input"
                         onChange={handleChange}
@@ -129,25 +129,25 @@ function ClassesPage(props) {
 
     function handleSave(e) {
         if (
-            (newClass && e.key === "Enter") ||
-            (newClass && e.target.id === "save-class")
+            (newClass?.name && e.key === "Enter") ||
+            (newClass?.name && e.target.id === "save-class")
         ) {
             if (
                 !props.classList[gb] ||
                 !props.classList[gb].some(
-                    (existingClass) => existingClass === newClass
+                    (existingClass) => existingClass.name === newClass.name
                 )
             ) {
-                props.createClass(newClass);
+                props.createClass(newClass.name);
                 props.updateClassList(newClass);
-                setNewClass("");
+                setNewClass({});
             }
         }
     }
 
     function handleChange(e) {
         if (e.target.id === "create-class") {
-            setNewClass(e.target.value);
+            setNewClass({name: e.target.value, start: 0, end: 0, rows: 7});
         }
     }
 
