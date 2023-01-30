@@ -13,8 +13,13 @@ export function useViewport() {
     return { screenWidth };
 }
 
-
+/**
+ * 
+ * @param {new Date} date 
+ * @returns 
+ */
 export function formatDate (date) {
-  
-  return new Date(date).toISOString().split("T")[0]
+  // Convert date to local date and format it to 'yyyy-mm-dd'
+  const formattedLocalDate = new Date(new Date(date) - (333*60*60*24)).toISOString().split('T')[0]
+  return formattedLocalDate
 }

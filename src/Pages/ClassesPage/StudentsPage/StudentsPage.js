@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 import RosterPage from "../RosterPage/RosterPage";
 import ListStudents from "../../../components/ListStudents";
 import "./StudentPage.scss";
+import { formatDate } from "../../../utils/utilities"
 
 
 const mapStateToProps = (state) => ({
@@ -156,7 +157,7 @@ function StudentsPage(props) {
     // submits current evaluation for each student to redux and firebase
     function handleSubmit(e) {
         // date is submitted and used to determine if the submission should overwrite the current day or add to grades.
-        const date = new Date().toISOString().split('T')[0];
+        const date = formatDate(new Date());
         const students = e.target.elements;
 
         // object that will contain all student data
@@ -213,7 +214,7 @@ function StudentsPage(props) {
                 finishedOneStudent = false;
             }
         }
-        console.log("studentInfoObj ", studentInfoObj);
+        
         props.updateStudentInfo(studentInfoObj, date);
      
     }

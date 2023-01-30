@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { formatDate } from "../utils/utilities"
 import DatePicker from "./DatePicker";
 import ToggleSwitch from "./ToggleSwitch";
 
 function FilterDays(props) {
     const date = new Date();
-    const today = date.toISOString().split("T")[0];
+    const today = formatDate(date);
     const defaultStartDate = new Date(
         new Date().setDate(new Date().getDate() - 5)
     );
 
-    const [endDate, setEndDate] = useState(date.toISOString().split("T")[0]);
+    const [endDate, setEndDate] = useState(today);
     const [startDate, setStartDate] = useState(
-        defaultStartDate.toISOString().split("T")[0]
+        formatDate(defaultStartDate)
     );
     
     const [filter, setFilter] = useState(false);

@@ -190,7 +190,6 @@ function ListStudentsInfo(props) {
           async function writeToClipboard(){
             try {
               const grades = JSON.stringify(studentInfoArr);
-              console.log(grades)
               await navigator.clipboard.writeText(grades);
             } catch (error) {
               alert(error)

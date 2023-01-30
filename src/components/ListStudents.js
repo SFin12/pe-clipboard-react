@@ -153,7 +153,6 @@ function ListStudents(props) {
                     }
                     break
                   default:
-                    console.log(notesState[customNote])
                     notesState = {
                       ...notesState,
                       [note4]: true,
@@ -255,7 +254,7 @@ function ListStudents(props) {
     } else if (noteName === "note4") {
       let noteValue = e.currentTarget.value
       let customNote = noteId.split('-')[0] + "-customNote"
-      console.log(noteValue)
+      
       noteValue.length > 0
         ? setNote({
             ...note,
@@ -314,7 +313,7 @@ function ListStudents(props) {
   }
 
   function handleDelete(e) {
-    console.log(e.currentTarget.id.split("-")[0])
+    
     setStudentToDelete(e.currentTarget.id.split("-")[0])
     setShowModal(true)
   }

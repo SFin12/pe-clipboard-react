@@ -104,11 +104,10 @@ class NavMenu extends Component {
     }
 
     logOut = () => {
-        (async () => {
-            await this.props.googleAuth.googleAuth.signOut();
+       
             this.props.updateLogin(false);
             window.location.reload();
-        })();
+     
     };
 
     handleClick(e) {

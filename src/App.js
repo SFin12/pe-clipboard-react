@@ -1,4 +1,3 @@
-import SignInPage from "./Pages/SignInPage/SignInPage"
 import "./App.scss"
 import { Route, Routes } from "react-router"
 import ClassesPage from "./Pages/ClassesPage/ClassesPage"
@@ -19,6 +18,7 @@ import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
 import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
+import LoginPage from "./Pages/LoginPage/LoginPage"
 
 const mapStateToProps = (state) => ({
   signedIn: state.signedIn,
@@ -62,7 +62,7 @@ class App extends React.Component {
     if(!window.navigator.onLine){
       console.log("Not online")
     }
-    console.log("isEqual?", isEqual(prevProps.studentInfo, this.props.studentInfo))
+    
     if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||
@@ -91,14 +91,8 @@ class App extends React.Component {
       
       // if there is a user write the above props to firebase
       if (this.props.id) {
-        console.log('db update')
-        // console.log('this.props.id' ,this.props.id)
-        // const timeout = setTimeout(() => {
-        //   this.setState({ showFailureModal: true })
-        //       setTimeout(() => {
-        //         this.setState({ showFailureModal: false })
-        //       }, 3000)
-        // }, 7000)
+       
+    
         writeUserData(this.props.id, userObject).then((response) => {
      
           // clearTimeout(timeout)
@@ -142,7 +136,7 @@ class App extends React.Component {
           <React.Fragment>
             <NavMenu navOpen={this.state.navOpen} />
             <main className="container">
-              <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Student information has been updated." />
+              <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Information updated." />
               <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString="Please try again later." />
               <Routes>
                 {/* If no gradebook is found, start on gradebook page otherwise
@@ -170,7 +164,7 @@ class App extends React.Component {
                   path="/students"
                   element={<StudentsPage />}
                 />
-                <Route // Only appears when a class is selected. Allows user to uploac roster from .csv
+                <Route // Only appears when a class is selected. Allows user to upload roster from .csv
                   path="/uploadRoster"
                   element={<RosterPage />}
                 />
@@ -191,7 +185,7 @@ class App extends React.Component {
           </React.Fragment>
         ) : (
           // First page to render if user is not signed in. Once signed in the page is not used
-          <SignInPage />
+          <LoginPage />
         )}
       </div>
     )

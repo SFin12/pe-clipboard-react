@@ -73,10 +73,10 @@ function EditStudentInfoPage(props) {
 
     } else if(value === ""){
       setPoints(0)
-      console.log(value)
+     
 
     }
-    console.log(value)
+
   }
 
   function handleAttendanceChange(e) {
@@ -84,7 +84,7 @@ function EditStudentInfoPage(props) {
   }
     
   function handleNotesChange(e) {
-    let notesArray = e.target.value.split(",").map((note => note.trim()))
+    let notesArray = e.target.value.split(",").map(note => note.trim())
     console.log(notesArray)
     setNotes(e.target.value.split(","))
   }
@@ -109,7 +109,7 @@ function EditStudentInfoPage(props) {
           {Object.keys(currentStudentInfo).map((name, i) => {
             if (name !== "dateLastSubmitted" && name !== "totalPoints") {
               return <option key={i + name}>{name}</option>
-            }
+            } return null
           })}
         </select>
         <DatePicker label={"Choose a date to modify:"} name={"date"} id={"date"} startDate={startDate} changeHandler={handleDateChange} />
