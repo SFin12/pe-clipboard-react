@@ -17,8 +17,9 @@ import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
-import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 import LoginPage from "./Pages/LoginPage/LoginPage"
+import ClassDetailsPageCopy from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
+import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 
 const mapStateToProps = (state) => ({
   signedIn: state.signedIn,
@@ -27,6 +28,7 @@ const mapStateToProps = (state) => ({
   name: state.name,
   userImg: state.userImg,
   gradebook: state.gradebook,
+  cleanGradebook: state.gradebook,
   gradebookList: state.gradebookList,
   classList: state.classList,
   class: state.class,
@@ -68,6 +70,7 @@ class App extends React.Component {
       prevProps.gradebook !== this.props.gradebook ||
       prevProps.gradebookList !== this.props.gradebookList ||
       prevProps.classList !== this.props.classList ||
+      prevProps.cleanGradebook !== this.props.cleanGradebook ||
       prevProps.studentList !== this.props.studentList ||
       prevProps.studentInfo !== this.props.studentInfo ||
       prevProps.settings !== this.props.settings
@@ -80,6 +83,7 @@ class App extends React.Component {
         email: this.props.email,
         userImg: this.props.userImg,
         gradebook: this.props.gradebook,
+        cleanGradebook: this.props.cleanGradebook,
         gradebookList: this.props.gradebookList,
         classList: this.props.classList,
         class: this.props.class,

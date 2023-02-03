@@ -34,6 +34,8 @@ export const MainReducer = (state, action) => {
     //GRADEBOOK-------------------------------------------------------------------------
     case ActionTypes.CREATE_GRADEBOOK:
       return { ...state, gradebook: action.payload }
+    case ActionTypes.UPDATE_CLEAN_GRADEBOOK:
+      return { ...state, cleanGradebook: action.payload}
     case ActionTypes.UPDATE_GRADEBOOKLIST:
       const gbMatch = action.payload
       if (!state.gradebookList.some((obj) => obj === gbMatch)) {
@@ -53,7 +55,8 @@ export const MainReducer = (state, action) => {
       return { ...state, class: action.payload }
     case ActionTypes.UPDATE_CLASSES:
       const cMatch = action.payload
-      if (state.classList[currentGb] && !state.classList[currentGb].some((obj) => obj === cMatch)) {
+      console.log("Matching Class?", state.classList[currentGb].some((obj) => obj.name === cMatch.name))
+      if (state.classList[currentGb] && !state.classList[currentGb].some((obj) => obj.name === cMatch.name)) {
         return {
           ...state,
           classList: {
@@ -77,7 +80,7 @@ export const MainReducer = (state, action) => {
       }
       return { ...state }
     case ActionTypes.DELETE_CLASS:
-      const currentCl = state.classList[currentGb].filter((item) => item !== action.payload)
+      const currentCl = state.classList[currentGb].filter((item) => item.name !== action.payload)
       // cleans class name to pair with gradebook to find the key in studenList to delete
       const classToDelete = action.payload.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
       const classKey = currentGb + "-" + classToDelete

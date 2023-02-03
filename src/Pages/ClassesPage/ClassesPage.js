@@ -5,6 +5,7 @@ import {
     updateClassList,
     deleteClass,
     updatePage,
+    updateCleanGradebook
 } from "../../Redux/actions";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
@@ -26,6 +27,7 @@ const mapDispatchToProps = {
     updateClassList,
     deleteClass,
     updatePage,
+    updateCleanGradebook,
 };
 
 function ClassesPage(props) {
@@ -38,6 +40,7 @@ function ClassesPage(props) {
     const navigate = useNavigate();
     const uncleanGb = props.gradebook;
     const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
+    props.updateCleanGradebook(gb)
 
     useEffect(() => {
         if (toggleDelete) {
@@ -55,20 +58,25 @@ function ClassesPage(props) {
             return (
                 <React.Fragment>
                     <div className="d-flex flex-column align-items-center">
-                        {props.classList[gb].map((c, i) => (
+                        {props.classList[gb].map((c, i) => {
+                          
+                          return (
                             <button
                                 key={c.name + i}
                                 className={buttonClass}
                                 onClick={
                                     toggleDelete
                                         ? handleDelete
-                                        : handleClassClick
+                                        : () => handleClassClick(c)
                                 }
                                 id={c.name}
+                                
+                                
                             >
                                 {c.name}
                             </button>
-                        ))}
+                          )
+        })}
                     </div>
                 </React.Fragment>
             );
@@ -151,13 +159,13 @@ function ClassesPage(props) {
         }
     }
 
-    function handleClassClick(e) {
-        const classId = e.target.id;
+    function handleClassClick(thisClass) {
+        console.log(thisClass)
         if (buttonClass !== "delete-class-button") {
-            props.createClass(classId);
+            props.createClass(thisClass.name);
 
             //redirects to studentsPage
-            navigate("/students");
+            navigate("/students", {state: [gb, thisClass]} );
         }
     }
 

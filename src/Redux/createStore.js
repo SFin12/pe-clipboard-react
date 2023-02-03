@@ -11,6 +11,7 @@ const initialState = {
     googleAuth: {},
     currentPage: "Classes",
     gradebook: "",
+    cleanedGradebook: "",
     gradebookList: [],
     class: "",
     classList: {},

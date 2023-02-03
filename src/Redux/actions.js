@@ -40,6 +40,12 @@ export const createGradebook = (gradebookName) => {
         payload: gradebookName,
     };
 };
+export const updateCleanGradebook = (cleanGradebookName) => {
+    return {
+        type: ActionTypes.UPDATE_CLEAN_GRADEBOOK,
+        payload: cleanGradebookName,
+    };
+};
 
 export const updateGradebookList = (gradebookName) => {
     return {
@@ -102,7 +108,7 @@ export const updateStudentList = (arrayStudentNames) => {
         })
         .map((n) => {
           n.replace(" ", ", ")
-          return {name: n, number: 0}
+          return {name: n, number: ""}
         });
    
     return {

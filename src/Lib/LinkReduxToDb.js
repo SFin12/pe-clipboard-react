@@ -1,5 +1,5 @@
 import { db } from "./FirebaseConfig"
-import { ref, onValue, update, get } from "firebase/database"
+import { ref, onValue, update, get, set } from "firebase/database"
 
 export async function writeUserData(userId, userObject) {
   console.log("online?", window.navigator.onLine)
@@ -52,6 +52,49 @@ export async function writeUserData(userId, userObject) {
     }
   }
 }
+
+export async function updateClassInfo(userId, gradebook, classInfoIndex, classInfoObject) {
+  if (ref(db, "/users/" + userId)) {
+    const classListRef = ref(db, "/users/" + userId + "/classList/" + gradebook + "/" + classInfoIndex)
+    
+    if (classInfoObject) {
+      return update(classListRef, classInfoObject)
+        .then(() => {
+          console.log("classInfo updated")
+          return "success"
+        })
+        .catch((err) => {
+          alert(err)
+          return "failure"
+        })
+    } else {
+      console.log("No userObject")
+      return "No userObject"
+    }
+  }
+}
+
+export async function updateStudentNumbers(userId, gradebookClass, studentListObjectArray) {
+  if (ref(db, "/users/" + userId)) {
+    const studentListRef = ref(db, "/users/" + userId + "/studentList/" + gradebookClass)
+    
+    if (studentListRef) {
+      return set(studentListRef, studentListObjectArray)
+        .then(() => {
+          console.log("Student numbers updated")
+          return "success"
+        })
+        .catch((err) => {
+          alert(err)
+          return "failure"
+        })
+    } else {
+      console.log("No userObject")
+      return "No userObject"
+    }
+  }
+}
+
 
 export async function getUserData(userId) {
   if (!userId) {
