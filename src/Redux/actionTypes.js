@@ -8,6 +8,7 @@ export const UPDATE_STORE = "UPDATE_STORE";
 
 export const CREATE_CLASS = "CREATE_CLASS";
 export const UPDATE_CLASSES = "UPDATE_CLASSES";
+export const UPDATE_CLASS = "UPDATE_CLASS"
 export const GET_CLASSES = "GET_CLASSES";
 export const DELETE_CLASS = "DELETE_CLASS";
 

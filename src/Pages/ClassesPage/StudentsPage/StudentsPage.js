@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import { connect } from "react-redux"
 import { Button, Modal } from "react-bootstrap"
-import { updatePage, updateStudentList, updateStudentInfo, updateDbResponse, updateClassList } from "../../../Redux/actions"
+import { updatePage, updateStudentList, updateStudentInfo, updateDbResponse, updateClassList, createClass } from "../../../Redux/actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router"
@@ -30,6 +30,7 @@ const mapDispatchToProps = {
   updateStudentInfo,
   updateDbResponse,
   updateClassList,
+  createClass,
 }
 
 function StudentsPage(props) {
@@ -51,8 +52,10 @@ function StudentsPage(props) {
   useEffect(() => {
     props.updatePage("Students")
     props.updateDbResponse("")
+    props.createClass(props.class)
     const thisGradeboookClasses = props.classList[props.cleanGradebook]
     if (thisGradeboookClasses) {
+      // find current class info using the gradebook-classname key
       const thisClassInfo = thisGradeboookClasses.find((obj) => obj.name === props.class)
       const thisClassIndex = thisGradeboookClasses.findIndex((obj) => obj.name === props.class)
       setThisClassInfo(thisClassInfo)
@@ -63,8 +66,12 @@ function StudentsPage(props) {
   }, [props.classList])
 
   useEffect(() => {
-    if (thisClassInfo) updateClassList(thisClassInfo)
-    updateClassInfo(props.id, currentGb, thisClassIndex, thisClassInfo)
+    // update redux
+    if (thisClassInfo) {
+      updateClassList(thisClassInfo)
+      // update db
+      updateClassInfo(props.id, currentGb, thisClassIndex, thisClassInfo)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thisClassInfo])
 
@@ -185,21 +192,21 @@ function StudentsPage(props) {
     setStudentRowDepth(e.target.value)
     setThisClassInfo((prev) => {
       prev.rows = e.target.value
-      return prev
+      return {...prev}
     })
   }
 
   function handleStartTime(e) {
     setThisClassInfo((prev) => {
       prev.start = e.target.value
-      return { ...prev }
+      return {...prev}
     })
   }
 
   function handleEndTime(e) {
     setThisClassInfo((prev) => {
       prev.end = e.target.value
-      return { ...prev }
+      return {...prev}
     })
   }
 

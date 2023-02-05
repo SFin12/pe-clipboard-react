@@ -67,6 +67,26 @@ export async function updateStudentNumbers(userId, gradebookClass, studentListOb
   }
 }
 
+export async function updateDbCurrentClass(userId, currentClass) {
+  if (ref(db, "/users/" + userId)) {
+    const currentClassRef = ref(db, "/users/" + userId)
+    if (currentClassRef) {
+      return update(currentClassRef, currentClass)
+        .then(() => {
+          console.log("Current class updated")
+          return "success"
+        })
+        .catch((err) => {
+          alert(err)
+          return "failure"
+        })
+    } else {
+      console.log("No classObject")
+      return "No classObject"
+    }
+  }
+}
+
 export async function getUserData(userId) {
   if (!userId) {
     return console.log("No user Id")

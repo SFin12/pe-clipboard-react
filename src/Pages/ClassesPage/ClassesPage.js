@@ -13,9 +13,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ClassesPage.scss";
 import Confirm from "../../components/ConfirmModal";
+import { updateDbCurrentClass } from "../../Lib/LinkReduxToDb"
 
 const mapStateToProps = (state) => {
     return {
+        id: state.id,
         gradebook: state.gradebook,
         classList: state.classList,
         currentPage: state.currentPage,
@@ -40,7 +42,13 @@ function ClassesPage(props) {
     const navigate = useNavigate();
     const uncleanGb = props.gradebook;
     const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
-    props.updateCleanGradebook(gb)
+    
+    useEffect(() => {
+      if(gb){
+        props.updateCleanGradebook(gb)
+
+      }
+    }, [gb, props])
 
     useEffect(() => {
         if (toggleDelete) {
@@ -162,7 +170,10 @@ function ClassesPage(props) {
     function handleClassClick(thisClass) {
    
         if (buttonClass !== "delete-class-button") {
-            props.createClass(thisClass.name);
+          // updates redux to current class  
+          props.createClass(thisClass.name);
+
+          updateDbCurrentClass(props.id, {class: thisClass.name} )
 
             //redirects to studentsPage
             navigate("/students", {state: [gb, thisClass]} );
