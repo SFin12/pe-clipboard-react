@@ -75,15 +75,9 @@ input {
     justify-self: start;
 }
 
-#signInButton {
-    // display: flex;
-    // justify-content: center;
-    // justify-self: center;
-    // height: fit-content;
-    // text-decoration: none;
-    // color: black;
-    // display: block;
-    // width: 50%;
+.back-arrow {
+  margin-left: 10px;
+  color: $green;
 }
 
 .form-container {

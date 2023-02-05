@@ -3,12 +3,10 @@ import "react-date-range/dist/styles.css" // main style file
 import "react-date-range/dist/theme/default.css" // theme css file
 import DatePicker from "../../../components/DatePicker"
 import { connect } from "react-redux"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { formatDate } from "../../../utils/utilities"
 import { Button } from "react-bootstrap"
 import { updateOldStudentInfo } from "../../../Redux/actions"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
@@ -25,7 +23,6 @@ const mapDispatchToProps = {
 
 function EditStudentInfoPage(props) {
   const defaultStartDate = new Date(new Date().setDate(new Date().getDate() - 1))
-
   const [startDate, setStartDate] = useState(formatDate(defaultStartDate))
   const [student, setStudent] = useState("")
   const [points, setPoints] = useState()
@@ -33,8 +30,6 @@ function EditStudentInfoPage(props) {
   const [notes, setNotes] = useState()
   const [objIndex, setObjIndex] = useState()
   const [submissionObj, setSubmissionObj] = useState()
-
-  const navigate = useNavigate()
   let currentStudentInfo = useLocation().state
 
   useEffect(() => {
@@ -53,7 +48,7 @@ function EditStudentInfoPage(props) {
         setPoints(Number(submissionObj[0].points))
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, student])
 
   function handleDateChange(e) {
@@ -67,25 +62,19 @@ function EditStudentInfoPage(props) {
 
   function handlePointsChange(e) {
     const value = +e.target.value
-    if(value >= 0 && value < 100){
+    if (value >= 0 && value < 100) {
       setPoints(e.target.value)
-      console.log(value)
-
-    } else if(value === ""){
+    } else if (value === "") {
       setPoints(0)
-     
-
     }
-
   }
 
   function handleAttendanceChange(e) {
     setAttendance(e.target.value)
   }
-    
+
   function handleNotesChange(e) {
-    let notesArray = e.target.value.split(",").map(note => note.trim())
-    console.log(notesArray)
+    // let notesArray = e.target.value.split(",").map((note) => note.trim())
     setNotes(e.target.value.split(","))
   }
 
@@ -101,7 +90,7 @@ function EditStudentInfoPage(props) {
   return (
     <div className="edit-student-info-container">
       <h1 className="header">Edit Student Info</h1>
-      <FontAwesomeIcon name="left-arrow" icon={faArrowLeft} color="green" className="back-arrow" onClick={() => navigate(-1)} />
+
       <hr />
       <div className="d-flex flex-column align-items-center">
         <label htmlFor="select-student">Select Student</label>
@@ -109,11 +98,12 @@ function EditStudentInfoPage(props) {
           {Object.keys(currentStudentInfo).map((name, i) => {
             if (name !== "dateLastSubmitted" && name !== "totalPoints") {
               return <option key={i + name}>{name}</option>
-            } return null
+            }
+            return null
           })}
         </select>
         <DatePicker label={"Choose a date to modify:"} name={"date"} id={"date"} startDate={startDate} changeHandler={handleDateChange} />
-        <br/>
+        <br />
         {submissionObj && (
           <>
             <label htmlFor="select-attendance">Edit Attendance</label>
@@ -125,7 +115,7 @@ function EditStudentInfoPage(props) {
             </select>
             <label htmlFor="edit-points">Points</label>
 
-            <input value={points} type={"number"} min={0} max={99} id="edit-points"  onChange={handlePointsChange} />
+            <input value={points} type={"number"} min={0} max={99} id="edit-points" onChange={handlePointsChange} />
             <label htmlFor="select-student">Notes (comma seperated)</label>
 
             <input value={notes} type={"text"} maxLength={25} id="edit-notes" onChange={handleNotesChange} />

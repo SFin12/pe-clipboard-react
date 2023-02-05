@@ -9,35 +9,7 @@ export async function writeUserData(userId, userObject) {
     // const studentInfoRef = ref(db, "/users/" + userId + "/studentInfo")
 
     if (userObject) {
-      return update(userRef, userObject
-      //   {
-      //   class: userObject.class,
-      //   classList: userObject.classList,
-      //   email: userObject.email,
-      //   gradebookList: userObject.gradebookList,
-      //   gradebook: userObject.gradebook,
-      //   name: userObject.name,
-      //   settings: userObject.settings,
-      //   id: userObject.id,
-      //   student: userObject.student,
-      //   userImg: userObject.userImg,
-      // })
-      //   .then(() => {
-      //     for(let list in userObject.studentList){
-      //       update(studentListRef, {
-      //         [list]: userObject.studentList[list]
-      //       })
-      //     }
-      //   }
-      //   )
-      //   .then(() => {
-      //     for(let info in userObject.studentInfo){
-      //       update(studentInfoRef, {
-      //         [info]: userObject.studentInfo[info]
-      //       })
-      //     }
-      //   }
-      )
+      return update(userRef, userObject)
         .then(() => {
           console.log("database updated")
           return "success"
@@ -56,7 +28,7 @@ export async function writeUserData(userId, userObject) {
 export async function updateClassInfo(userId, gradebook, classInfoIndex, classInfoObject) {
   if (ref(db, "/users/" + userId)) {
     const classListRef = ref(db, "/users/" + userId + "/classList/" + gradebook + "/" + classInfoIndex)
-    
+
     if (classInfoObject) {
       return update(classListRef, classInfoObject)
         .then(() => {
@@ -68,7 +40,7 @@ export async function updateClassInfo(userId, gradebook, classInfoIndex, classIn
           return "failure"
         })
     } else {
-      console.log("No userObject")
+      console.error("No classInfoObject")
       return "No userObject"
     }
   }
@@ -77,7 +49,7 @@ export async function updateClassInfo(userId, gradebook, classInfoIndex, classIn
 export async function updateStudentNumbers(userId, gradebookClass, studentListObjectArray) {
   if (ref(db, "/users/" + userId)) {
     const studentListRef = ref(db, "/users/" + userId + "/studentList/" + gradebookClass)
-    
+
     if (studentListRef) {
       return set(studentListRef, studentListObjectArray)
         .then(() => {
@@ -94,7 +66,6 @@ export async function updateStudentNumbers(userId, gradebookClass, studentListOb
     }
   }
 }
-
 
 export async function getUserData(userId) {
   if (!userId) {

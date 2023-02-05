@@ -1,11 +1,9 @@
 import React, { useRef, useState } from "react"
 import { Button } from "react-bootstrap"
 import { connect } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { updateSettings } from "../../Redux/actions"
 import SuccessModal from "../../components/SuccessModal"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+
 import "./SettingsPage.scss"
 import ToggleSwitch from "../../components/ToggleSwitch"
 
@@ -32,8 +30,6 @@ export function SettingsPage(props) {
   const n1PointsRef = useRef()
   const n2PointsRef = useRef()
   const n3PointsRef = useRef()
-
-  const navigate = useNavigate()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -67,7 +63,7 @@ export function SettingsPage(props) {
   return (
     <React.Fragment>
       <h1 className="header">Settings</h1>
-      <FontAwesomeIcon name="left-arrow" icon={faArrowLeft} color="green" className="back-arrow" onClick={() => navigate(-1)} />
+      
       <hr />
       <div className="form-container">
         <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center  align-items-lg-end settings-form">

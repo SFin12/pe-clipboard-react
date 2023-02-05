@@ -24,7 +24,7 @@ export const MainReducer = (state, action) => {
 
     //UPDATE REDUX STORE FROM DATABASE--------------------------------------------------
     case ActionTypes.UPDATE_STORE:
-      console.log("updating store: ", action.payload)
+      console.log("updating redux store...")
       return { ...state, ...action.payload }
 
     //UPDATE SETTINGS-------------------------------------------------------------------
@@ -35,7 +35,7 @@ export const MainReducer = (state, action) => {
     case ActionTypes.CREATE_GRADEBOOK:
       return { ...state, gradebook: action.payload }
     case ActionTypes.UPDATE_CLEAN_GRADEBOOK:
-      return { ...state, cleanGradebook: action.payload}
+      return { ...state, cleanGradebook: action.payload }
     case ActionTypes.UPDATE_GRADEBOOKLIST:
       const gbMatch = action.payload
       if (!state.gradebookList.some((obj) => obj === gbMatch)) {
@@ -55,15 +55,14 @@ export const MainReducer = (state, action) => {
       return { ...state, class: action.payload }
     case ActionTypes.UPDATE_CLASSES:
       const cMatch = action.payload
-      console.log("Matching Class?", state.classList[currentGb].some((obj) => obj.name === cMatch.name))
       if (state.classList[currentGb] && !state.classList[currentGb].some((obj) => obj.name === cMatch.name)) {
         return {
           ...state,
           classList: {
             ...state.classList,
-            [currentGb]: [...state.classList[currentGb], action.payload].sort((a,b) => {
-              if(a.name > b.name) return 1
-              if(a.name < b.name) return -1
+            [currentGb]: [...state.classList[currentGb], action.payload].sort((a, b) => {
+              if (a.name > b.name) return 1
+              if (a.name < b.name) return -1
               return 0
             }),
           },
@@ -115,7 +114,6 @@ export const MainReducer = (state, action) => {
     case ActionTypes.UPDATE_STUDENTLIST:
       const sMatch = action.payload
       //If one student is being added, check if the name already exists. If so, don't add.
-      console.log(state.studentList[currentGb + "-" + currentClass]?.some((student) => student.name === sMatch[0].name))
       if (sMatch.length === 1 && state.studentList[currentGb + "-" + currentClass] && state.studentList[currentGb + "-" + currentClass].some((student) => student.name === sMatch[0].name)) {
         return { ...state }
       }

@@ -19,7 +19,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    
     updatePage,
     updateStudentList,
 };
@@ -29,7 +28,7 @@ function ListStudentsInfo(props) {
     const uncleanCurrentClass = props.class;
     let studentInfoArr = [];
     const { screenWidth } = useViewport();
-    const breakpoint = 800;
+    const breakpoint = 756;
     const currentGb = uncleanCurrentGb.replace(
         /[.,/#!$%^&*;:{}=\-_`~()]/g,
         " "

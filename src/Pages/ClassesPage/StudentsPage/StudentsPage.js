@@ -41,7 +41,6 @@ function StudentsPage(props) {
   const [studentRowDepth, setStudentRowDepth] = useState(6)
   const target = useRef(null)
 
-
   //Remove punctuation in class & gradebook names to match db key
   const uncleanCurrentGb = props.gradebook
   const uncleanCurrentClass = props.class
@@ -60,13 +59,13 @@ function StudentsPage(props) {
       setThisClassIndex(thisClassIndex)
       setStudentRowDepth(thisClassInfo.rows)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.classList])
 
   useEffect(() => {
     if (thisClassInfo) updateClassList(thisClassInfo)
     updateClassInfo(props.id, currentGb, thisClassIndex, thisClassInfo)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thisClassInfo])
 
   const navigate = useNavigate()
@@ -160,7 +159,6 @@ function StudentsPage(props) {
       }
       if (students[i].name === "note4") {
         finishedOneStudent = true
-        console.log("finished student ", finishedOneStudent)
       }
       if (studentName && studentPoints && studentAttendance && finishedOneStudent) {
         const studentObj = {
@@ -191,23 +189,46 @@ function StudentsPage(props) {
     })
   }
 
-  function openClassDetails() {
-    navigate("/classDetails")
+  function handleStartTime(e) {
+    setThisClassInfo((prev) => {
+      prev.start = e.target.value
+      return { ...prev }
+    })
+  }
+
+  function handleEndTime(e) {
+    setThisClassInfo((prev) => {
+      prev.end = e.target.value
+      return { ...prev }
+    })
   }
 
   return (
     <React.Fragment>
       <h1 className="header">{props.class}</h1>
-      <div>
-        <label htmlFor="range" className={"d-block"}>
-          Row Depth = {studentRowDepth}
-        </label>
-        <input type={"range"} className="row-depth-slider" value={studentRowDepth} min="1" max="10" id="range" onChange={handleRowDepth}></input>
-      </div>
-      <button onClick={openClassDetails}>Class Details</button>
+
+      {thisClassInfo && (
+        <div>
+          <div className="d-flex justify-content-between">
+            <div className="d-flex flex-column">
+              <label htmlFor="range" className={"d-block"}>
+                Row Depth = {studentRowDepth}
+              </label>
+              <input type={"range"} className="row-depth-slider" value={studentRowDepth} min="1" max="10" id="range" onChange={handleRowDepth} />
+            </div>
+
+            <div className="d-flex flex-column">
+              <input className="class-time" type="time" value={thisClassInfo.start} onChange={handleStartTime} />
+
+              <input className="class-time end" type="time" value={thisClassInfo.end} onChange={handleEndTime} />
+            </div>
+          </div>
+        </div>
+      )}
+
       <hr />
       <div className="form-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="student-info-form">
           {props.studentList[classKey] ? (
             <ListStudents toggleDelete={toggleDelete} studentRowDepth={studentRowDepth} />
           ) : (

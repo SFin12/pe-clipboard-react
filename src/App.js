@@ -18,7 +18,6 @@ import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
 import LoginPage from "./Pages/LoginPage/LoginPage"
-import ClassDetailsPageCopy from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 
 const mapStateToProps = (state) => ({
@@ -100,7 +99,7 @@ class App extends React.Component {
         writeUserData(this.props.id, userObject).then((response) => {
      
           // clearTimeout(timeout)
-          console.log("response from write.",response)
+        
           if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
             if (response === "success") {
               this.setState({ showSuccessModal: true })

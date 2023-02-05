@@ -6,20 +6,24 @@ of players or students.
 
 ## Goals
 The app will eventually have the functionality to replace common grading and evaluation notes typically
-done using rosters and a clipboard. A google app script version of this was made that does the same thing
+done using rosters and a clipboard. A previous version of this app was made with google apps script that did the same thing
 but automatically creates a google sheet for each gradebook created.  The google sheet then keeps track
-of daily points, weekly points, notes, absenses, grades, ect.  
+of daily points, weekly points, notes, absenses, grades, ect. The newer version will use Firebase.
 
 ## Current Version
-The current version of the app doesn't utilize google sheets as a gradebook yet.  The current version
+The current newest version of the app utilizes Firebase's real time database rather than google sheets.  The current version
 can still be utilized for attendence and daily evaluations but the data will only be available through the
 web app, not in google drive.
 
 ## Technology
-- React
+- React v16
+- React-Router-Dom Version v6
+- Bootstrap & React-Bootstrap
+- SASS
 - Redux
 - Google Sign-in
-- Firebase Realtime Data
+- Firebase Realtime Database
+- Node v14 ( use `nvm use 14` if you have a newer version installed )
 
 **Important Note**:
 Since google sign-in and Firebase are used, users must create their own

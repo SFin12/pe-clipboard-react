@@ -1,10 +1,64 @@
 @import "../../../App.scss";
 
+.class-time {
+  background-color: $background-dark;
+  color: $green;
+  border: none;
+  border-color: $background-dark;
+  border-style: none;
+}
+
+.end {
+  color: rgb(255, 62, 45);
+}
+
+input[type="range"] {
+  outline: 0;
+  border: 0;
+  border-radius: 500px;
+  width: 150px;
+  max-width: 100%;
+  margin: 10px 0 16px;
+  // transition: box-shadow 0.2s ease-in-out;
+  // Chrome
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    & {
+      overflow: hidden;
+      height: 15px;
+      -webkit-appearance: none;
+      background-color: darkslategrey;
+    }
+    &::-webkit-slider-runnable-track {
+      height: 15px;
+      -webkit-appearance: none;
+      color: #444;
+ 
+    }
+    &::-webkit-slider-thumb {
+      width: 15px;
+      -webkit-appearance: none;
+      height: 15px;
+      cursor: ew-resize;
+      background: none;
+      box-shadow: -340px 0 0 330px $green, inset 0 0 0 15px $green;
+      border-radius: 50%;
+      position: relative;
+      // top: 1px;
+    }
+    
+  }
+}
+
+.student-info-form {
+  max-width: -webkit-fill-available;
+}
+
+
 .student {
     box-sizing: border-box;
     display: block;
     margin: auto;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
     width: 98%;
     max-width: 98%;
     border-radius: 1rem;
@@ -13,6 +67,7 @@
 .flex-space-between {
     display: flex;
     justify-content: space-between;
+    height: 50px;
 }
 
 .daily-points {
@@ -79,7 +134,7 @@
     position: relative;
     width: 19.2%;
     margin: 0px;
-    height: 55px;
+    height: 50px;
 }
 
 .delete {
@@ -119,11 +174,7 @@
     background-color: rgb(223, 222, 221) !important;
 }
 
-input[type='range'] {
-  color: rgb(50, 255, 50);
-  background-color: rgb(50, 255, 50);
-  overflow: hidden;
-}
+
 
 .row-divide {
   display: flex;
@@ -142,6 +193,6 @@ input[type='range'] {
 
 @media (min-width: 736px) {
     .button {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
     }
 }

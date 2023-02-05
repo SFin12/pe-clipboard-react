@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
-
 import { updatePage } from "../../../Redux/actions"
-import { useNavigate } from "react-router"
-
 import ListStudentInfo from "../../../components/ListStudentInfo"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import FilterDays from "../../../components/FilterDays"
 import "react-date-range/dist/styles.css" // main style file
 import "react-date-range/dist/theme/default.css" // theme css file
@@ -49,8 +44,6 @@ function StudentInfoPage(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const navigate = useNavigate()
-
   function handleDate(startDate, endDate) {
     setStartDateFilter(startDate)
     setEndDateFilter(endDate)
@@ -66,7 +59,7 @@ function StudentInfoPage(props) {
   return (
     <React.Fragment>
       <h1 className="header">Student Info</h1>
-      <FontAwesomeIcon name="left-arrow" icon={faArrowLeft} color="green" className="back-arrow" onClick={() => navigate(-1)} />
+
       <hr />
 
       <div className="d-flex justify-content-center">
@@ -82,15 +75,14 @@ function StudentInfoPage(props) {
         ) : (
           <>
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between mb-4">
-              
-
               <FilterDays handleDate={handleDate} checkFilter={checkFilter} />
-              <span className="mb-4"  >
+              <span className="mb-4">
                 <Link to={"/editStudentInfo"} state={studentInfo[classKey]}>
-                  <Button className="edit-button" size="sm">Edit</Button>
+                  <Button className="edit-button" size="sm">
+                    Edit
+                  </Button>
                 </Link>
               </span>
-              
             </div>
             <ListStudentInfo startDate={startDateFilter} endDate={endDateFilter} />
           </>

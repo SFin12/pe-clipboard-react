@@ -22,17 +22,14 @@ const mapDispatchToProps = {
 
 function ClassDetailsPage(props) {
   const [studentNumberInputs, setStudentNumberInputs] = useState([])
-  const [showStudentNumbers, setShowStudentNumbers] = useState(false)
-  const [studentNumberToggleText, setStudentNumberToggleText] = useState("Edit Student Numbers")
   const studentNumbersRef = useRef([])
 
   useEffect(() => {
     const studentDetails = props.studentList[props.cleanGradebook + "-" + props.class]
     setStudentNumberInputs(studentDetails)
-  }, [])
+  }, [props.studentList, props.cleanGradebook, props.class])
 
   function handleStudentNumberChanges(e) {
-    
     const name = e.target.name
     const number = e.target.value
     const objIndex = studentNumberInputs.findIndex((obj) => obj.name === name)
@@ -46,19 +43,10 @@ function ClassDetailsPage(props) {
   function handleSave(e) {
     e.preventDefault()
     const gradebookClass = props.cleanGradebook + "-" + props.class
-    console.log(gradebookClass)
     updateStudentNumbers(props.id, gradebookClass, studentNumberInputs)
   }
 
-  function toggleStudentNumbers() {
-    // if true, it will turn to false
-    if (showStudentNumbers) {
-      setStudentNumberToggleText("Hide Student Info")
-    } else {
-      setStudentNumberToggleText("Edit Student Numbers")
-    }
-    setShowStudentNumbers(!showStudentNumbers)
-  }
+  
 
   function handleEnter(e) {
     let index = e.target.id.slice(0, 2)
@@ -77,8 +65,9 @@ function ClassDetailsPage(props) {
 
   return (
     <section className="mt-5 pt-5">
-      <button onClick={toggleStudentNumbers}>{studentNumberToggleText}</button>
-      {showStudentNumbers && <EditStudentNumbers studentNumberInputs={studentNumberInputs} studentNumbersRef={studentNumbersRef} handleChange={handleStudentNumberChanges} handleEnter={handleEnter} />} <button onClick={handleSave}>Save</button>
+      
+      <EditStudentNumbers studentNumberInputs={studentNumberInputs} studentNumbersRef={studentNumbersRef} handleChange={handleStudentNumberChanges} handleEnter={handleEnter} />
+      <button onClick={handleSave}>Save</button>
     </section>
   )
 }

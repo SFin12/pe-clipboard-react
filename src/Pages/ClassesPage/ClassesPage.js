@@ -160,7 +160,7 @@ function ClassesPage(props) {
     }
 
     function handleClassClick(thisClass) {
-        console.log(thisClass)
+   
         if (buttonClass !== "delete-class-button") {
             props.createClass(thisClass.name);
 

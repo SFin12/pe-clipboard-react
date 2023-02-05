@@ -4,8 +4,6 @@ import { updateLogin, updateUserInfo, updateStore } from "../../Redux/actions"
 import { db } from "../../Lib/FirebaseConfig"
 import { ref, onValue } from "firebase/database"
 import jwtDecode from "jwt-decode"
-import { getCurrentGradeBook } from "../../Lib/LinkReduxToDb"
-
 
 const mapStateToProps = (state) => {
   return {
@@ -14,7 +12,6 @@ const mapStateToProps = (state) => {
     name: state.name,
     email: state.email,
     imageUrl: state.userImg,
-    
   }
 }
 
@@ -26,27 +23,21 @@ const mapDispatchToProps = {
 
 function LoginPage(props) {
   //destructuring props
-  const {
-    isLoggedIn,
-    name,
-    email,
-    imageUrl,
-    updateLogin,
-    updateUserInfo,
-    updateStore,
-  } = props
+  const { isLoggedIn, name, email, imageUrl, updateLogin, updateUserInfo, updateStore } = props
   // fetch current user data from firebase to update redux store when first loading
   function getUserData(userId) {
     if (!userId) {
       return console.log("No user Id")
     }
-    
+
     const userRef = ref(db, "/users/" + userId)
     onValue(userRef, (snapshot) => {
       const data = snapshot.val()
       //check if user has any saved data
       if (data) {
-        // updates redux store with user data stored in realtime database from firebase
+        // DO NOT USE CODE BELOW UNTIL WRITING TO DB IS REFACTORED OR IT WILL ERRASE DATA
+        // ===================================================================
+        // updates redux store with user data stored in realtime database from firebase. 
         // if(data?.studentList && data?.studentInfo){
 
         //   const currentGbStudentList = Object.keys(data.studentList).filter(key => key.includes(data.gradebook))
@@ -54,13 +45,13 @@ function LoginPage(props) {
         //   if(currentGbStudentList.length){
         //     currentGbStudentList.forEach((studentList) => filteredStudentList[studentList] = data.studentList[studentList])
         //   }
-          
+
         //   const currentGbStudentInfo = Object.keys(data.studentInfo).filter(key => key.includes(data.gradebook))
         //   const filteredStudentInfo = {}
         //   if(currentGbStudentInfo.length){
         //     currentGbStudentInfo.forEach((studentInfo) => filteredStudentInfo[studentInfo] = data.studentInfo[studentInfo])
         //   }
-  
+
         //   data.studentList = filteredStudentList
         //   data.studentInfo = filteredStudentInfo
         // }
@@ -86,14 +77,19 @@ function LoginPage(props) {
   }
 
   useEffect(() => {
-      /* global google */
-      google.accounts.id.initialize({
+    /* global google */
+    google.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
     })
-    google.accounts.id.renderButton(document.getElementById("signInButton"), { theme: "outlined", shape: "rectangular", type: "standard", size: "large", text: "signin" })
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // try next provider if OneTap is not displayed or skipped
+        google.accounts.id.renderButton(document.getElementById("signInButton"), { theme: "outlined", shape: "rectangular", type: "standard", size: "large", text: "signin" })
+      }
+    })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
