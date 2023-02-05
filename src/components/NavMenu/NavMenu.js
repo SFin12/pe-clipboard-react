@@ -141,12 +141,12 @@ class NavMenu extends Component {
       </NavLink>
     </NavItem>
   )
-
+   
   render() {
     return (
       <div>
         <Navbar color="dark" light expand="lg" fixed="top">
-          {this.state.screenWidth > 756 || window.location.pathname === "/classes" || window.location.pathname === "/gradebook" ? (
+          { window.location.pathname === "/" || window.location.pathname === "/classes" || window.location.pathname === "/gradebook" ? (
             <NavLink to="/info" id="PE-clipboard" className="nav-text">
               Coach's Clipboard
             </NavLink>
