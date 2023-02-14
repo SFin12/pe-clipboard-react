@@ -331,7 +331,7 @@ function ListStudents(props) {
     return (
       <React.Fragment key={student.name + "-info"}>
         {((i + 1) % studentRowDepth) - 1 === 0 ? (
-          <div className="row-divide">
+          <div key={i+student.name}className="row-divide">
             <hr></hr>
             <span>{i / studentRowDepth + 1}</span>
             <hr></hr>

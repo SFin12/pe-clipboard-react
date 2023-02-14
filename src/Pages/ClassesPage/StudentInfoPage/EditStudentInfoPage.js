@@ -53,7 +53,8 @@ function EditStudentInfoPage(props) {
 
   function handleDateChange(e) {
     const date = e.target.value
-    setStartDate(formatDate(date))
+    console.log(formatDate(date))
+    setStartDate(date)
   }
 
   function handleStudentChange(e) {
@@ -94,7 +95,8 @@ function EditStudentInfoPage(props) {
       <hr />
       <div className="d-flex flex-column align-items-center">
         <label htmlFor="select-student">Select Student</label>
-        <select onChange={handleStudentChange} id="select-student">
+        <select onChange={handleStudentChange} id="select-student" >
+          <option selected>Select Student</option>
           {Object.keys(currentStudentInfo).map((name, i) => {
             if (name !== "dateLastSubmitted" && name !== "totalPoints") {
               return <option key={i + name}>{name}</option>
