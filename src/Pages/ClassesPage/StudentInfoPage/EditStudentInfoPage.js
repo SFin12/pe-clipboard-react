@@ -36,7 +36,7 @@ function EditStudentInfoPage(props) {
     if (currentStudentInfo[student]) {
       const index = currentStudentInfo[student].findIndex((submission) => submission.date === startDate)
 
-      if (index > 0) {
+      if (index >= 0) {
         setObjIndex(index)
         setSubmissionObj(currentStudentInfo[student][index])
         setPoints(currentStudentInfo[student][index].points)
@@ -53,12 +53,11 @@ function EditStudentInfoPage(props) {
 
   function handleDateChange(e) {
     const date = e.target.value
-    console.log(formatDate(date))
-    setStartDate(date)
+    setStartDate(() => date)
   }
 
   function handleStudentChange(e) {
-    setStudent(e.target.value)
+    setStudent(() => e.target.value)
   }
 
   function handlePointsChange(e) {
@@ -95,7 +94,7 @@ function EditStudentInfoPage(props) {
       <hr />
       <div className="d-flex flex-column align-items-center">
         <label htmlFor="select-student">Select Student</label>
-        <select onChange={handleStudentChange} id="select-student" >
+        <select onChange={handleStudentChange} id="select-student">
           <option selected>Select Student</option>
           {Object.keys(currentStudentInfo).map((name, i) => {
             if (name !== "dateLastSubmitted" && name !== "totalPoints") {

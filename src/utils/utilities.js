@@ -1,25 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 
 export function useViewport() {
-    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
 
-    useEffect(() => {
-        const handleWindowResize = () => setScreenWidth(window.innerWidth);
-        window.addEventListener("resize", handleWindowResize);
-        return () => window.removeEventListener("resize", handleWindowResize);
-    }, []);
+  useEffect(() => {
+    const handleWindowResize = () => setScreenWidth(window.innerWidth)
+    window.addEventListener("resize", handleWindowResize)
+    return () => window.removeEventListener("resize", handleWindowResize)
+  }, [])
 
-    // Return the width so we can use it in our components
-    return { screenWidth };
+  // Return the width so we can use it in our components
+  return { screenWidth }
 }
 
 /**
- * 
- * @param {new Date} date 
- * @returns 
+ *
+ * @param {new Date} date
+ * @returns
  */
-export function formatDate (date) {
+export function formatDate(date) {
   // Convert date to local date and format it to 'yyyy-mm-dd'
-  const formattedLocalDate = new Date(new Date(date) - (333*60*60*24)).toISOString().split('T')[0]
+  const formattedLocalDate = new Date(new Date(date) - 333 * 60 * 60 * 24).toISOString().split("T")[0]
   return formattedLocalDate
 }
