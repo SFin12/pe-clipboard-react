@@ -79,7 +79,7 @@ function EditStudentInfoPage(props) {
   }
 
   function handleSave() {
-    if (student && objIndex && objIndex >= 0) {
+    if (student && objIndex >= 0) {
       currentStudentInfo[student][objIndex].attendance = attendance
       currentStudentInfo[student][objIndex].points = points
       currentStudentInfo[student][objIndex].notes = notes
