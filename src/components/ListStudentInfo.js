@@ -1,3 +1,4 @@
+import { ja } from "date-fns/locale"
 import React from "react";
 import { Button } from "react-bootstrap"
 import { connect } from "react-redux";

@@ -76,7 +76,7 @@ function ListStudents(props) {
             ...newState,
             [studentId]:
               //if student points already exists, use that value, otherwise create it with starting daily points.
-              
+              //TODO: change this to allow for points to be updated from another device.
               studentPoints[studentId] ? studentPoints[studentId] : studentInfo ? studentInfo.points : props.dailyPoints,
             //track how much the points have changed (i.e., clicking on and off notes)
             [studentId + "changed"]: 0,
