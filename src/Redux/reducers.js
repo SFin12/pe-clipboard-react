@@ -170,6 +170,7 @@ export const MainReducer = (state, action) => {
 
         // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
         if (date === thisClass.dateLastSubmitted) {
+          console.log("date === date last submitted", date)
           // Each key is the name of a student
           Object.keys(action.payload).forEach((key) => {
             // If the student exists...
@@ -194,9 +195,11 @@ export const MainReducer = (state, action) => {
               },
             },
           }
-          // If it's a new day, creat a new submission
-        } else {
+          // If it's a new day, create a new submission
+        } else if (date > thisClass.dateLastSubmitted) {
+          console.log("date greater than last submitted", date)
           Object.keys(action.payload).forEach((key) => {
+            // if student already exists...
             if (thisClass[key]) {
               thisClass[key] = [...thisClass[key], ...action.payload[key]]
             } else {
@@ -214,6 +217,42 @@ export const MainReducer = (state, action) => {
               },
             },
           }
+        } else if (date < thisClass.dateLastSubmitted) {
+          // if no students have an entry from this date, it is a new entry and daily points should be added to totalPoints.
+          let newEntry = true
+          // Each key is the name of a student
+          Object.keys(action.payload).forEach((key) => {
+            // If the student exists...
+            if (thisClass[key]) {
+              const matchingDate = thisClass[key].findIndex((entry) => entry.date === date)
+              if (matchingDate >= 0) {
+                newEntry = false
+                console.log("matching", matchingDate)
+                thisClass[key][matchingDate] = action.payload[key][0]
+              } else {
+                console.log("no match", action.payload[key][0])
+                thisClass[key] = [...action.payload[key], ...thisClass[key]]
+              }
+            }
+            // else {
+            //   thisClass[key] = [...action.payload[key]]
+            // }
+          })
+          if(newEntry){
+            thisClass.totalPoints = state.studentInfo[currentGb + "-" + currentClass].totalPoints + state.settings.dailyPoints
+          }
+          return {
+            ...state,
+            studentInfo: {
+              ...state.studentInfo,
+              [currentGb + "-" + currentClass]: {
+                ...thisClass,
+              },
+            },
+          }
+        } else {
+          console.log("didn't fall detect date correctly", date)
+          return { ...state }
         }
       }
       // If this is the first submission for a class...

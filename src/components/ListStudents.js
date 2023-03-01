@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions"
-import { formatDate } from "../utils/utilities"
 import Confirm from "./ConfirmModal"
 
 const mapStateToProps = (state) => ({
@@ -57,11 +56,11 @@ function ListStudents(props) {
     const alreadySubmitted = new Date(dateLastSubmitted) >= new Date(todaysDate)
     if (alreadySubmitted) {
       
-      let filteredStudentInfo = Object.values(classInfo).filter((value) => Array.isArray(value) && value.slice(-1)[0].date === todaysDate)
+      // let filteredStudentInfo = Object.values(classInfo).filter((value) => Array.isArray(value) && value.slice(-1)[0].date === todaysDate)
       let filteredDay = Object.values(classInfo)
         .filter((value) => Array.isArray(value))
         .map((arr) => {
-          let filteredArr = arr.filter((entry) => entry.date === todaysDate)
+          let filteredArr = arr.filter((entry) => entry?.date === todaysDate)
           return filteredArr
         })
    
@@ -187,7 +186,6 @@ function ListStudents(props) {
             notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: false, [customNote]:""}
             
           }
-          console.log(notesState)
         }
       }
 

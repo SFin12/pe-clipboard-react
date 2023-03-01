@@ -5,8 +5,6 @@ import ListStudentInfo from "../../../components/ListStudentInfo"
 import FilterDays from "../../../components/FilterDays"
 import "react-date-range/dist/styles.css" // main style file
 import "react-date-range/dist/theme/default.css" // theme css file
-import { Button } from "reactstrap"
-import { Link } from "react-router-dom"
 import "./studentInfoPage.scss"
 
 const mapStateToProps = (state) => ({
