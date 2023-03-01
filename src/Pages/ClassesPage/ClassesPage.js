@@ -44,6 +44,7 @@ function ClassesPage(props) {
     const gb = uncleanGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
     
     useEffect(() => {
+      props.updatePage("Classes")
       if(gb){
         props.updateCleanGradebook(gb)
 

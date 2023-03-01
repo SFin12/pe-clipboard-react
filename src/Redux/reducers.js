@@ -224,13 +224,12 @@ export const MainReducer = (state, action) => {
           Object.keys(action.payload).forEach((key) => {
             // If the student exists...
             if (thisClass[key]) {
-              const matchingDate = thisClass[key].findIndex((entry) => entry.date === date)
+              const matchingDate = thisClass[key].findIndex((entry) => entry?.date === date)
               if (matchingDate >= 0) {
                 newEntry = false
-                console.log("matching", matchingDate)
+
                 thisClass[key][matchingDate] = action.payload[key][0]
               } else {
-                console.log("no match", action.payload[key][0])
                 thisClass[key] = [...action.payload[key], ...thisClass[key]]
               }
             }
@@ -238,7 +237,7 @@ export const MainReducer = (state, action) => {
             //   thisClass[key] = [...action.payload[key]]
             // }
           })
-          if(newEntry){
+          if (newEntry) {
             thisClass.totalPoints = state.studentInfo[currentGb + "-" + currentClass].totalPoints + state.settings.dailyPoints
           }
           return {

@@ -12,9 +12,9 @@ import { withRouter } from "../withRouter"
 const links = [
   { to: "/classes", text: "Classes", key: "link1" },
   { to: "/gradebook", text: "Gradebook", key: "link2" },
-  { to: "/info", text: "Info" },
-  { to: "/settings", text: "Settings", key: "link3" },
-  { to: "/", text: "Logout", key: "link4" },
+  { to: "/info", text: "About", key: "link3" },
+  { to: "/settings", text: "Settings", key: "link4" },
+  { to: "/classes", text: "Logout", key: "link5" },
 ]
 
 const mapStateToProps = (state) => {
@@ -80,6 +80,7 @@ class NavMenu extends Component {
     }
     if (this.props.currentPage === "Students") {
       if (links.length === 5) {
+        const logoutLink = links.pop()
         links.push({
           to: "/uploadRoster",
           text: "Upload Roster",
@@ -95,13 +96,17 @@ class NavMenu extends Component {
           text: "Student Info",
           key: "link8",
         })
+        links.push(logoutLink)
+        
         this.setState({ rosterNav: true })
       }
     } else if (this.props.currentPage !== "Students") {
       if (links.length > 5) {
+        const logoutLink = links.pop()
         links.pop()
         links.pop()
         links.pop()
+        links.push(logoutLink)
         this.setState({ rosterNav: false })
       }
     }
@@ -114,16 +119,19 @@ class NavMenu extends Component {
   }
 
   logOut = () => {
+    this.props.updatePage("Classes")
+    this.props.navigate('/')
     this.props.updateLogin(false)
     window.location.reload()
   }
 
   handleClick(e) {
+    
+    this.props.updatePage(e.target.text)
+    this.setState({ isOpen: false })
     if (e.currentTarget.text === "Logout") {
       this.logOut()
     }
-    this.props.updatePage(e.target.text)
-    this.setState({ isOpen: false })
   }
 
   closeNavMenu(e) {
@@ -151,7 +159,9 @@ class NavMenu extends Component {
               Coach's Clipboard
             </NavLink>
           ) : (
-            <FontAwesomeIcon name="left-arrow" icon={faArrowLeft} color="green" className="back-arrow ml-2" onClick={() => this.props.navigate(-1)} />
+            <FontAwesomeIcon name="left-arrow" icon={faArrowLeft} color="green" className="back-arrow ml-2" onClick={() => {
+              this.props.navigate(-1)
+            }} />
           )}
 
           <NavbarToggler className="nav-text" id="toggler" onClick={this.toggle} />

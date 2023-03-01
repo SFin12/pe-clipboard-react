@@ -5,6 +5,8 @@ import ListStudentInfo from "../../../components/ListStudentInfo"
 import FilterDays from "../../../components/FilterDays"
 import "react-date-range/dist/styles.css" // main style file
 import "react-date-range/dist/theme/default.css" // theme css file
+import { Link } from "react-router-dom"
+import { Button } from "react-bootstrap"
 import "./studentInfoPage.scss"
 
 const mapStateToProps = (state) => ({
@@ -74,7 +76,13 @@ function StudentInfoPage(props) {
           <>
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between mb-4">
               <FilterDays handleDate={handleDate} checkFilter={checkFilter} />
-         
+              <span className="mb-4">
+                <Link to={"/editStudentInfo"} state={studentInfo[classKey]}>
+                  <Button className="edit-button btn-secondary" size="sm">
+                    Edit
+                  </Button>
+                </Link>
+              </span>
             </div>
             <ListStudentInfo startDate={startDateFilter} endDate={endDateFilter} />
           </>

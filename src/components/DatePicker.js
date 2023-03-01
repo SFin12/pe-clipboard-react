@@ -10,6 +10,7 @@ function DatePicker({
 }) {
     return (
         <>
+        <div className="d-flex">
             <label className="date-picker-label align-self-center">
                 {label}
             </label>
@@ -22,6 +23,7 @@ function DatePicker({
                 max={max ? max : null}
                 onChange={changeHandler}
             />
+            </div>
         </>
     );
 }

@@ -139,8 +139,12 @@ class App extends React.Component {
           <React.Fragment>
             <NavMenu navOpen={this.state.navOpen} />
             <main className="container">
+              {this.props.currentPage !== "Classes" &&
+              <>
               <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Information updated." />
               <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString="Please try again later." />
+              </>
+        }
               <Routes>
                 {/* If no gradebook is found, start on gradebook page otherwise
                                 start on class page. */}
