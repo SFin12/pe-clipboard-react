@@ -16,7 +16,6 @@ import { writeUserData } from "./Lib/LinkReduxToDb"
 import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
-import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
 import LoginPage from "./Pages/LoginPage/LoginPage"
 import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 
@@ -174,10 +173,6 @@ class App extends React.Component {
                 <Route //Not to be confused with Gradebook page. This is to view student grades.
                   path="/studentInfo"
                   element={<StudentInfoPage />}
-                />
-                <Route //Edit student information for individual days.
-                  path="/editStudentInfo"
-                  element={<EditStudentInfoPage />}
                 />
                 <Route //Edit student information for individual days.
                   path="/classDetails"

@@ -76,13 +76,7 @@ function StudentInfoPage(props) {
           <>
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between mb-4">
               <FilterDays handleDate={handleDate} checkFilter={checkFilter} />
-              <span className="mb-4">
-                <Link to={"/editStudentInfo"} state={studentInfo[classKey]}>
-                  <Button className="edit-button" size="sm">
-                    Edit
-                  </Button>
-                </Link>
-              </span>
+         
             </div>
             <ListStudentInfo startDate={startDateFilter} endDate={endDateFilter} />
           </>

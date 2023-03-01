@@ -1,4 +1,3 @@
-import React from "react";
 import "./DatePicker.scss";
 
 function DatePicker({
@@ -10,11 +9,10 @@ function DatePicker({
     changeHandler,
 }) {
     return (
-        <React.Fragment>
+        <>
             <label className="date-picker-label align-self-center">
                 {label}
             </label>
-
             <input
                 className="date-input"
                 type="date"
@@ -24,7 +22,7 @@ function DatePicker({
                 max={max ? max : null}
                 onChange={changeHandler}
             />
-        </React.Fragment>
+        </>
     );
 }
 

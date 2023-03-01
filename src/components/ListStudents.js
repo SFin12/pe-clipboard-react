@@ -22,6 +22,8 @@ const mapDispatchToProps = {
 }
 
 function ListStudents(props) {
+  //sets starting values for attendance and daily points
+  const { studentList, studentInfo, studentRowDepth, settings, date } = props
   const [studentPoints, setStudentPoints] = useState({})
   const [attendance, setAttendance] = useState({})
   const [note, setNote] = useState({})
@@ -36,8 +38,11 @@ function ListStudents(props) {
   const currentClass = uncleanCurrentClass.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
   const classKey = currentGb + "-" + currentClass
 
-  //sets starting values for attendance and daily points
-  const { studentList, studentInfo, studentRowDepth, settings } = props
+  useEffect(() => {
+    setStudentPoints({})
+    setAttendance({})
+    setNote({})
+  },[date])
 
   useEffect(() => {
     props.updatePage("Students")
@@ -46,13 +51,23 @@ function ListStudents(props) {
     const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
       ? classInfo.dateLastSubmitted
       : null
-    const todaysDate = formatDate(new Date())
-    const alreadySubmitted = dateLastSubmitted === todaysDate
+    // const todaysDate = formatDate(new Date())
+    const todaysDate = date
+    
+    const alreadySubmitted = new Date(dateLastSubmitted) >= new Date(todaysDate)
     if (alreadySubmitted) {
-      let todaysStudentInfo = Object.values(classInfo)
-        .filter((value) => Array.isArray(value) && value.slice(-1)[0].date === todaysDate)
-        .map((arr) => arr.slice(-1))
-      todaysStudentInfoArr = todaysStudentInfo
+      
+      let filteredStudentInfo = Object.values(classInfo).filter((value) => Array.isArray(value) && value.slice(-1)[0].date === todaysDate)
+      let filteredDay = Object.values(classInfo)
+        .filter((value) => Array.isArray(value))
+        .map((arr) => {
+          let filteredArr = arr.filter((entry) => entry.date === todaysDate)
+          return filteredArr
+        })
+   
+      // let todaysStudentInfo = filteredStudentInfo.map((arr) => arr.slice(-1))
+      
+      todaysStudentInfoArr = filteredDay
     }
 
     const studentsExist = studentList[classKey]
@@ -65,7 +80,7 @@ function ListStudents(props) {
           let studentName = studentList[classKey][i].name
           let studentInfo = null
           if (alreadySubmitted) {
-            studentInfo = todaysStudentInfoArr.filter((arr) => arr[0].name === studentName)
+            studentInfo = todaysStudentInfoArr.filter((arr) => arr[0]?.name === studentName)
             //if the name doesn't match, student info should be null, else it is today's studentInfo object for that student
             studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
           }
@@ -91,9 +106,10 @@ function ListStudents(props) {
           let studentName = studentList[classKey][i].name
           let studentInfo = null
           if (alreadySubmitted) {
-            studentInfo = todaysStudentInfoArr.filter((arr) => arr[0].name === studentName)
+            studentInfo = todaysStudentInfoArr.filter((arr) => arr[0]?.name === studentName)
             //if the name doesn't match, studenent info should be null, else it is today's studentInfo object for that student
             studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
+           
           }
           let studentId = i + "-student"
 
@@ -101,76 +117,85 @@ function ListStudents(props) {
             ...attendanceState,
             [studentId]: attendance[studentId] ? attendance[studentId] : studentInfo ? studentInfo.attendance : "P",
           }
+          
         }
 
         return attendanceState
       })
       // sets all notes to not-clicked / off
       // setNote((note) => {
-        let notesState = {}
-        for (let i = 0; i < totalStudents; i++) {
-          let note1 = i + "-note1"
-          let note2 = i + "-note2"
-          let note3 = i + "-note3"
-          let note4 = i + "-note4"
-          let customNote = i + "-customNote"
-          notesState = {
-            ...notesState,
-            [note1]: note[note1] || false,
-            [note2]: note[note2] || false,
-            [note3]: note[note3] || false,
-            [note4]: note[note4] || false,
-            [customNote]: note[customNote] || ''
+      let notesState = {}
+      for (let i = 0; i < totalStudents; i++) {
+        let note1 = i + "-note1"
+        let note2 = i + "-note2"
+        let note3 = i + "-note3"
+        let note4 = i + "-note4"
+        let customNote = i + "-customNote"
+        notesState = {
+          ...notesState,
+          [note1]: false,
+          [note2]: false,
+          [note3]: false,
+          [note4]: false,
+          // [note1]: note[note1] || false,
+          // [note2]: note[note2] || false,
+          // [note3]: note[note3] || false,
+          // [note4]: note[note4] || false,
+          [customNote]: "",
+        }
+        let studentName = studentList[classKey][i].name
+        let studentInfo = null
+        if (alreadySubmitted) {
+          studentInfo = todaysStudentInfoArr.filter((arr) => arr[0]?.name === studentName)
 
-          }
-          let studentName = studentList[classKey][i].name
-          let studentInfo = null
-          if (alreadySubmitted) {
-            studentInfo = todaysStudentInfoArr.filter((arr) => arr[0].name === studentName)
-
-            studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
-
-            if (studentInfo && studentInfo.notes) {
-              for (let i in studentInfo.notes) {
-                switch (studentInfo.notes[i]) {
-                  // turn on any notest that match notes in settings.
-
-                  case props.settings.note1:
-                    notesState = {
-                      ...notesState,
-                      [note1]: true,
-                    }
-                    break
-                  case props.settings.note2:
-                    notesState = {
-                      ...notesState,
-                      [note2]: true,
-                    }
-                    break
-                  case props.settings.note3:
-                    notesState = {
-                      ...notesState,
-                      [note3]: true,
-                    }
-                    break
-                  default:
-                    notesState = {
-                      ...notesState,
-                      [note4]: true,
-                      [customNote]: studentInfo.notes[i]
-                    }
-                    break
-                }
+          studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
+          
+          if (studentInfo && studentInfo.notes) {
+            
+            for (let i in studentInfo.notes) {
+            
+              switch (studentInfo.notes[i]) {
+                // turn on any notest that match notes in settings.
+                case props.settings.note1:
+                  notesState = {
+                    ...notesState,
+                    [note1]: true,
+                  }
+                  break
+                case props.settings.note2:
+                  notesState = {
+                    ...notesState,
+                    [note2]: true,
+                  }
+                  break
+                case props.settings.note3:
+                  notesState = {
+                    ...notesState,
+                    [note3]: true,
+                  }
+                  break
+                default:
+                  notesState = {
+                    ...notesState,
+                    [note4]: true,
+                    [customNote]: studentInfo.notes[i],
+                  }
+                  break
               }
             }
+          } else {
+            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: false, [customNote]:""}
+            
           }
+          console.log(notesState)
         }
+      }
 
-        setNote(notesState)
+      setNote(notesState)
       // })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentList])
+  }, [studentList, date])
 
   function handleDecrement(e) {
     //decrease student points by one.
@@ -233,7 +258,7 @@ function ListStudents(props) {
 
   function handleNote(e) {
     let noteId = e.currentTarget.id
-    
+
     let studentIdNumber
     let buttonName = e.currentTarget.name
     let noteName = e.currentTarget.name
@@ -254,18 +279,18 @@ function ListStudents(props) {
       // check if custom note was clicked, if so, if user entered note, change button to active.
     } else if (noteName === "note4") {
       let noteValue = e.currentTarget.value
-      let customNote = noteId.split('-')[0] + "-customNote"
-      
+      let customNote = noteId.split("-")[0] + "-customNote"
+
       noteValue.length > 0
         ? setNote({
             ...note,
             [noteId]: true,
-            [customNote]: noteValue
+            [customNote]: noteValue,
           })
         : setNote({
             ...note,
             [noteId]: false,
-            [customNote]: noteValue
+            [customNote]: noteValue,
           })
     }
     handlePoints(e, studentIdNumber, buttonName)
@@ -314,7 +339,6 @@ function ListStudents(props) {
   }
 
   function handleDelete(e) {
-    
     setStudentToDelete(e.currentTarget.id.split("-")[0])
     setShowModal(true)
   }
@@ -324,15 +348,15 @@ function ListStudents(props) {
     e.target.name === "delete" && props.deleteStudent(studentToDelete)
   }
 
-
-  if(settings.alphabetize) props.studentList[classKey].sort((a, b) => (a.name > b.name) ? 1 : -1)
+  if (settings.alphabetize) props.studentList[classKey].sort((a, b) => (a.name > b.name ? 1 : -1))
   const studentButtons = props.studentList[classKey].map((student, i) => {
     const studentId = i + "-student"
 
     return (
       <React.Fragment key={student.name + "-info"}>
+        {/* place horizontal bar every x students based on row depth */}
         {((i + 1) % studentRowDepth) - 1 === 0 ? (
-          <div key={i+student.name}className="row-divide">
+          <div key={i + student.name} className="row-divide">
             <hr></hr>
             <span>{i / studentRowDepth + 1}</span>
             <hr></hr>

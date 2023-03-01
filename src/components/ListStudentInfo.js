@@ -114,6 +114,7 @@ function ListStudentsInfo(props) {
             } else if (note === note3) {
               n3Count++
             } else {
+              // count how many times each specific custom note was used.
               const n = note.toUpperCase()
               if (customNotesObj[n]) {
                 customNotesObj[n] += 1
@@ -135,7 +136,7 @@ function ListStudentsInfo(props) {
     if (n3Count) {
       notesSummary += `${note3}:${n3Count} `
     }
-    
+    // if there are custom notes, add each key value pair to notes summary to be displayed
     if (!isEmpty(customNotesObj)) {
       for (let [key, value] of Object.entries(customNotesObj)) {
         notesSummary += key + ":" + value + " "

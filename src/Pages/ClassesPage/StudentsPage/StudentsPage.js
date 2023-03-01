@@ -8,8 +8,9 @@ import { useNavigate } from "react-router"
 import RosterPage from "../RosterPage/RosterPage"
 import ListStudents from "../../../components/ListStudents"
 import "./StudentPage.scss"
-import { formatDate } from "../../../utils/utilities"
+import { formatDate, useViewport } from "../../../utils/utilities"
 import { updateClassInfo } from "../../../Lib/LinkReduxToDb"
+import DatePicker from "../../../components/DatePicker"
 
 const mapStateToProps = (state) => ({
   id: state.id,
@@ -34,12 +35,16 @@ const mapDispatchToProps = {
 }
 
 function StudentsPage(props) {
+  const defaultStartDate = new Date(new Date().setDate(new Date().getDate()))
+  const viewPort = useViewport()
+  const {screenWidth} = viewPort
   const [toggleDelete, setToggleDelete] = useState(false)
   const [newStudent, setNewStudent] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [thisClassInfo, setThisClassInfo] = useState(null)
   const [thisClassIndex, setThisClassIndex] = useState(null)
   const [studentRowDepth, setStudentRowDepth] = useState(6)
+  const [chosenDate, setChosenDate] = useState(formatDate(defaultStartDate))
   const target = useRef(null)
 
   //Remove punctuation in class & gradebook names to match db key
@@ -48,7 +53,7 @@ function StudentsPage(props) {
   const currentGb = uncleanCurrentGb.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
   const currentClass = uncleanCurrentClass.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ") //key/property used in db for studentLists and studentInfo
   const classKey = currentGb + "-" + currentClass
-
+  
   useEffect(() => {
     props.updatePage("Students")
     props.updateDbResponse("")
@@ -105,6 +110,11 @@ function StudentsPage(props) {
       </Modal.Footer>
     </Modal>
   )
+  
+  function handleDateChange(e){
+    const date = e.target.value
+    setChosenDate(date)
+  }
 
   function handleChange(e) {
     if (e.target.id === "create-student") {
@@ -223,6 +233,8 @@ function StudentsPage(props) {
               </label>
               <input type={"range"} className="row-depth-slider" value={studentRowDepth} min="1" max="10" id="range" onChange={handleRowDepth} />
             </div>
+            {screenWidth > 819 && <DatePicker label={"Change date:"} name={"date"} id={"date"} startDate={chosenDate} changeHandler={handleDateChange} />}
+          
 
             <div className="d-flex flex-column">
               <input className="class-time" type="time" value={thisClassInfo.start} onChange={handleStartTime} />
@@ -237,7 +249,7 @@ function StudentsPage(props) {
       <div className="form-container">
         <form onSubmit={handleSubmit} className="student-info-form">
           {props.studentList[classKey] ? (
-            <ListStudents toggleDelete={toggleDelete} studentRowDepth={studentRowDepth} />
+            <ListStudents toggleDelete={toggleDelete} studentRowDepth={studentRowDepth} date={chosenDate}/>
           ) : (
             <div>
               {/* addStudentRoster() */}
