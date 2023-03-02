@@ -1,3 +1,4 @@
+import { sortArrayOfObjects } from "../utils/utilities"
 import * as ActionTypes from "./actionTypes"
 
 export const MainReducer = (state, action) => {
@@ -183,7 +184,9 @@ export const MainReducer = (state, action) => {
             } else {
               thisClass[key] = [...action.payload[key]]
             }
+            thisClass[key].sort((a,b) => sortArrayOfObjects(a.date, b.date))
           })
+          
           return {
             ...state,
             studentInfo: {
@@ -233,9 +236,7 @@ export const MainReducer = (state, action) => {
                 thisClass[key] = [...action.payload[key], ...thisClass[key]]
               }
             }
-            // else {
-            //   thisClass[key] = [...action.payload[key]]
-            // }
+            thisClass[key].sort((a,b) => sortArrayOfObjects(a.date, b.date))
           })
           if (newEntry) {
             thisClass.totalPoints = state.studentInfo[currentGb + "-" + currentClass].totalPoints + state.settings.dailyPoints

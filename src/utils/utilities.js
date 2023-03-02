@@ -23,3 +23,13 @@ export function formatDate(date) {
   const formattedLocalDate = new Date(new Date(date) - 333 * 60 * 60 * 24).toISOString().split("T")[0]
   return formattedLocalDate
 }
+
+export function sortArrayOfObjects(a, b) {
+  if (a > b) {
+    return 1
+  }
+  if (a < b) {
+    return -1
+  }
+  return 0
+}
