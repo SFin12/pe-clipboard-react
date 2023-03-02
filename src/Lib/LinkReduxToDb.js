@@ -125,7 +125,7 @@ export function getCurrentGradeBook(userId) {
   const userRef = ref(db, "/users/" + userId + "/gradebook")
   onValue(userRef, (snapshot) => {
     const data = snapshot.val()
-    console.log("getting current gb", data)
+    console.log("getting current gb")
     return data
   })
 }

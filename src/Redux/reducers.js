@@ -170,7 +170,7 @@ export const MainReducer = (state, action) => {
 
         // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
         if (date === thisClass.dateLastSubmitted) {
-          console.log("date === date last submitted", date)
+          console.log("date === date last submitted")
           // Each key is the name of a student
           Object.keys(action.payload).forEach((key) => {
             // If the student exists...
@@ -197,7 +197,7 @@ export const MainReducer = (state, action) => {
           }
           // If it's a new day, create a new submission
         } else if (date > thisClass.dateLastSubmitted) {
-          console.log("date greater than last submitted", date)
+          console.log("date greater than last submitted")
           Object.keys(action.payload).forEach((key) => {
             // if student already exists...
             if (thisClass[key]) {
@@ -250,7 +250,7 @@ export const MainReducer = (state, action) => {
             },
           }
         } else {
-          console.log("didn't fall detect date correctly", date)
+          console.log("didn't fall detect date correctly")
           return { ...state }
         }
       }
