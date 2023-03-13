@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { updateStudentNumbers } from "../../../../Lib/LinkReduxToDb"
 import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
 import EditStudentNumbers from "./EditStudentNumbers"
@@ -23,6 +24,7 @@ const mapDispatchToProps = {
 function ClassDetailsPage(props) {
   const [studentNumberInputs, setStudentNumberInputs] = useState([])
   const studentNumbersRef = useRef([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     const studentDetails = props.studentList[props.cleanGradebook + "-" + props.class]
@@ -44,18 +46,19 @@ function ClassDetailsPage(props) {
     e.preventDefault()
     const gradebookClass = props.cleanGradebook + "-" + props.class
     updateStudentNumbers(props.id, gradebookClass, studentNumberInputs)
+    navigate(-1)
   }
-
-  
 
   function handleEnter(e) {
     let index = e.target.id.slice(0, 2)
     if (index[1] === "-") index = index[0]
+    // Check for enter or down arrow
     if (e.key === "Enter" || e.keyCode === 40) {
       if (studentNumbersRef.current[+index + 1]) {
         studentNumbersRef.current[+index + 1].focus()
       }
     }
+    // Check for up arrow
     if (e.keyCode === 38) {
       if (studentNumbersRef.current[+index - 1]) {
         studentNumbersRef.current[+index - 1].focus()
@@ -65,9 +68,19 @@ function ClassDetailsPage(props) {
 
   return (
     <section className="mt-5 pt-5">
-      
+      {/* <div className="d-flex justify-content-center p-2">
+      <select>
+        <option value="Student Numbers">Student Numbers</option>
+        <option value="Current Pacer">Current Pacer</option>
+        <option value="Other">Other</option>
+      </select>
+      </div> */}
       <EditStudentNumbers studentNumberInputs={studentNumberInputs} studentNumbersRef={studentNumbersRef} handleChange={handleStudentNumberChanges} handleEnter={handleEnter} />
-      <button onClick={handleSave}>Save</button>
+      <div className="d-flex justify-content-center p-2">
+        <button className="" onClick={handleSave}>
+          Save
+        </button>
+      </div>
     </section>
   )
 }

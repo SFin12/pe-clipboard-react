@@ -9,10 +9,10 @@ export default function EditStudentNumbers({studentNumberInputs, studentNumbersR
           <div>{s.name}</div>
           <input
           type="text"
-          inputMode="numeric"
+          // inputMode="numeric"
           onFocus={(e) => e.target.select()}
-          min={0}
-          max={99}
+          // min={0}
+          // max={99}
             ref={(ref) => {
               // creates dynamic array of refs
               studentNumbersRef.current[i] = ref 
