@@ -93,7 +93,7 @@ export async function getUserData(userId) {
   }
   const userRef = ref(db, "/users/" + userId)
   const snapshot = await get(userRef)
-
+  console.log(snapshot.val())
   return snapshot.val()
 }
 
@@ -112,8 +112,9 @@ export async function getStudentInfo(userId) {
     return console.log("No user Id")
   }
   const StudentInfoRef = ref(db, "/users/" + userId + "/StudentInfo")
+  
   const snapshot = await get(StudentInfoRef)
-
+  console.log("getStudentInfo", snapshot.val())
   return snapshot.val()
 }
 

@@ -27,9 +27,11 @@ export function SettingsPage(props) {
   const n1Ref = useRef()
   const n2Ref = useRef()
   const n3Ref = useRef()
+  const n4aRef = useRef()
   const n1PointsRef = useRef()
   const n2PointsRef = useRef()
   const n3PointsRef = useRef()
+  const n4aPointsRef = useRef()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -46,6 +48,8 @@ export function SettingsPage(props) {
         note2Points: Number(n2PointsRef.current.value),
         note3: n3Ref.current.value,
         note3Points: Number(n3PointsRef.current.value),
+        note4a: n4aRef.current.value,
+        note4aPoints: Number(n4aPointsRef.current.value),
       }
       props.updateSettings(settingsObj)
       setShowSaved(true)
@@ -133,6 +137,14 @@ export function SettingsPage(props) {
                 </td>
                 <td>
                   Number Value: <input type="number" className="note-settings" maxLength={3} ref={n3PointsRef} defaultValue={props.settings.note3Points} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  4th Note: <input type="text" className="note-settings" maxLength={2} ref={n4aRef} defaultValue={props.settings.note3} />
+                </td>
+                <td>
+                  Number Value: <input type="number" className="note-settings" maxLength={3} ref={n4aPointsRef} defaultValue={props.settings.note4aPoints} />
                 </td>
               </tr>
             </tbody>

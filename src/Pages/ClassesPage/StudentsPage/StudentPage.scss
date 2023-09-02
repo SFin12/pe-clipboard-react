@@ -72,7 +72,7 @@ input[type="range"] {
 
 .daily-points {
     display: inline;
-    width: 19.2%;
+    width: 16.2%;
     padding: 3px;
     border: 0px;
     min-width: 15%;
@@ -111,8 +111,8 @@ input[type="range"] {
     padding: 3px;
     border: 0px;
     margin: 0px;
-    width: 79.8%;
-    min-width: 79.8%;
+    width: 83.3%;
+    min-width: 83.3%;
     max-height: 55px;
 }
 
@@ -132,7 +132,8 @@ input[type="range"] {
 .note {
     display: inline-block;
     position: relative;
-    width: 19.2%;
+    // width: 19.2%;
+    width: 16.2%;
     margin: 0px;
     height: 50px;
 }

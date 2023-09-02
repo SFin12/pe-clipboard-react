@@ -128,6 +128,7 @@ function ListStudents(props) {
         let note1 = i + "-note1"
         let note2 = i + "-note2"
         let note3 = i + "-note3"
+        let note4a = i + "-note4a"
         let note4 = i + "-note4"
         let customNote = i + "-customNote"
         notesState = {
@@ -135,6 +136,7 @@ function ListStudents(props) {
           [note1]: false,
           [note2]: false,
           [note3]: false,
+          [note4a]: false,
           [note4]: false,
           // [note1]: note[note1] || false,
           // [note2]: note[note2] || false,
@@ -173,6 +175,12 @@ function ListStudents(props) {
                     [note3]: true,
                   }
                   break
+                case props.settings.note4a:
+                  notesState = {
+                    ...notesState,
+                    [note4a]: true,
+                  }
+                  break
                 default:
                   notesState = {
                     ...notesState,
@@ -183,7 +191,7 @@ function ListStudents(props) {
               }
             }
           } else {
-            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: false, [customNote]:""}
+            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4a]: false, [note4]: false, [customNote]:""}
             
           }
         }
@@ -312,7 +320,7 @@ function ListStudents(props) {
         }
       }
       // check to see if the notes are clicked.
-      else if (i > 0 && i < 4) {
+      else if (i > 0 && i < 5) {
         let buttonClicked = button.getAttribute("data-note")
         let buttonClickedBool = buttonClicked === "true" ? true : false
         if (buttonName === button.name) {
@@ -371,6 +379,7 @@ function ListStudents(props) {
             <input className="button absent note" name="note1" type="button" id={i + "-note1"} data-note={note[i + "-note1"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note1} />
             <input className="button absent note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
             <input className="button absent note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
+            <input className="button absent note " name="note4a" type="button" id={i + "-note4a"} data-note={note[i + "-note4a"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note4a} />
             <input className="br-round button absent note " style={{ textAlign: "center" }} name="note4" type="text" key={student + "-note4"} id={i + "-note4"} placeholder="?" data-note={note[i + "-note4"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
           </div>
         </div>
