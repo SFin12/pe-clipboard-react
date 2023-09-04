@@ -174,7 +174,7 @@ function StudentsPage(props) {
       if (students[i].name.slice(0, 4) === "note" && students[i].dataset.note === "true") {
         studentNotes.push(students[i].value)
       }
-      if (students[i].name === "note4") {
+      if (students[i].name === "note5") {
         finishedOneStudent = true
       }
       if (studentName && studentPoints && studentAttendance && finishedOneStudent) {

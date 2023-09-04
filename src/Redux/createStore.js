@@ -13,6 +13,9 @@ const initialState = {
     gradebook: "",
     cleanedGradebook: "",
     gradebookList: [],
+    gradebooks: {
+      
+    },
     class: "",
     classList: {},
     student: "",
@@ -29,6 +32,8 @@ const initialState = {
         note2Points: 0,
         note3: "E",
         note3Points: 0,
+        note4a: "OT",
+        note4aPoints: 0,
     },
     studentInfo: {},
     totalPoints: {},

@@ -89,12 +89,12 @@ export default function StudentButtons(props) {
                 <input
                     className="br-round button absent note "
                     style={{ textAlign: "center" }}
-                    name="note4"
+                    name="note5"
                     type="text"
-                    key={student + "-note4"}
-                    id={i + "-note4"}
+                    key={student + "-note5"}
+                    id={i + "-note5"}
                     placeholder="?"
-                    data-note={note[i + "-note4"]}
+                    data-note={note[i + "-note5"]}
                     defaultValue=""
                     onChange={props.toggleDelete ? undefined : handleNote}
                 />

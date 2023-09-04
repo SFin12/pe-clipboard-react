@@ -34,7 +34,7 @@ export const MainReducer = (state, action) => {
 
     //GRADEBOOK-------------------------------------------------------------------------
     case ActionTypes.CREATE_GRADEBOOK:
-      return { ...state, gradebook: action.payload }
+      return { ...state, gradebook: action.payload, gradebooks: { ...state.gradebooks, [action.payload]: {} }}
     case ActionTypes.UPDATE_CLEAN_GRADEBOOK:
       return { ...state, cleanGradebook: action.payload }
     case ActionTypes.UPDATE_GRADEBOOKLIST:

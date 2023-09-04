@@ -63,7 +63,6 @@ class App extends React.Component {
     if(!window.navigator.onLine){
       console.log("Not online")
     }
-    
     if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||
@@ -105,13 +104,13 @@ class App extends React.Component {
               this.setState({ showSuccessModal: true })
               setTimeout(() => {
                 this.setState({ showSuccessModal: false })
-              }, 3000)
+              }, 2000)
             } else {
               
               this.setState({ showFailureModal: true })
               setTimeout(() => {
                 this.setState({ showFailureModal: false })
-              }, 3000)
+              }, 2000)
             }
         }).catch(err => {
           alert(err)

@@ -129,7 +129,7 @@ function ListStudents(props) {
         let note2 = i + "-note2"
         let note3 = i + "-note3"
         let note4a = i + "-note4a"
-        let note4 = i + "-note4"
+        let note5 = i + "-note5"
         let customNote = i + "-customNote"
         notesState = {
           ...notesState,
@@ -137,11 +137,11 @@ function ListStudents(props) {
           [note2]: false,
           [note3]: false,
           [note4a]: false,
-          [note4]: false,
+          [note5]: false,
           // [note1]: note[note1] || false,
           // [note2]: note[note2] || false,
           // [note3]: note[note3] || false,
-          // [note4]: note[note4] || false,
+          // [note5]: note[note5] || false,
           [customNote]: "",
         }
         let studentName = studentList[classKey][i].name
@@ -184,14 +184,14 @@ function ListStudents(props) {
                 default:
                   notesState = {
                     ...notesState,
-                    [note4]: true,
+                    [note5]: true,
                     [customNote]: studentInfo.notes[i],
                   }
                   break
               }
             }
           } else {
-            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4a]: false, [note4]: false, [customNote]:""}
+            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4a]: false, [note5]: false, [customNote]:""}
             
           }
         }
@@ -270,7 +270,7 @@ function ListStudents(props) {
     let noteName = e.currentTarget.name
 
     // if note is not active, add the active class and set it to true.
-    if (noteName !== "note4") {
+    if (noteName !== "note5") {
       setNote({
         ...note,
         [noteId]: !note[noteId],
@@ -283,7 +283,7 @@ function ListStudents(props) {
       }
 
       // check if custom note was clicked, if so, if user entered note, change button to active.
-    } else if (noteName === "note4") {
+    } else if (noteName === "note5") {
       let noteValue = e.currentTarget.value
       let customNote = noteId.split("-")[0] + "-customNote"
 
@@ -380,7 +380,7 @@ function ListStudents(props) {
             <input className="button absent note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
             <input className="button absent note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
             <input className="button absent note " name="note4a" type="button" id={i + "-note4a"} data-note={note[i + "-note4a"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note4a} />
-            <input className="br-round button absent note " style={{ textAlign: "center" }} name="note4" type="text" key={student + "-note4"} id={i + "-note4"} placeholder="?" data-note={note[i + "-note4"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
+            <input className="br-round button absent note " style={{ textAlign: "center" }} name="note5" type="text" key={student + "-note5"} id={i + "-note5"} placeholder="?" data-note={note[i + "-note5"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
           </div>
         </div>
       </React.Fragment>

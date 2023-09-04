@@ -38,23 +38,23 @@ function LoginPage(props) {
         // DO NOT USE CODE BELOW UNTIL WRITING TO DB IS REFACTORED OR IT WILL ERRASE DATA
         // ===================================================================
         // updates redux store with user data stored in realtime database from firebase. 
-        // if(data?.studentList && data?.studentInfo){
+        if(data?.studentList && data?.studentInfo){
 
-        //   const currentGbStudentList = Object.keys(data.studentList).filter(key => key.includes(data.gradebook))
-        //   const filteredStudentList = {}
-        //   if(currentGbStudentList.length){
-        //     currentGbStudentList.forEach((studentList) => filteredStudentList[studentList] = data.studentList[studentList])
-        //   }
+          const currentGbStudentList = Object.keys(data.studentList).filter(key => key.includes(data.gradebook))
+          const filteredStudentList = {}
+          if(currentGbStudentList.length){
+            currentGbStudentList.forEach((studentList) => filteredStudentList[studentList] = data.studentList[studentList])
+          }
 
-        //   const currentGbStudentInfo = Object.keys(data.studentInfo).filter(key => key.includes(data.gradebook))
-        //   const filteredStudentInfo = {}
-        //   if(currentGbStudentInfo.length){
-        //     currentGbStudentInfo.forEach((studentInfo) => filteredStudentInfo[studentInfo] = data.studentInfo[studentInfo])
-        //   }
+          const currentGbStudentInfo = Object.keys(data.studentInfo).filter(key => key.includes(data.gradebook))
+          const filteredStudentInfo = {}
+          if(currentGbStudentInfo.length){
+            currentGbStudentInfo.forEach((studentInfo) => filteredStudentInfo[studentInfo] = data.studentInfo[studentInfo])
+          }
 
-        //   data.studentList = filteredStudentList
-        //   data.studentInfo = filteredStudentInfo
-        // }
+          data.studentList = filteredStudentList
+          data.studentInfo = filteredStudentInfo
+        }
         console.log(data)
         updateStore(data)
       }

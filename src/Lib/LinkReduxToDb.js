@@ -2,6 +2,9 @@ import { db } from "./FirebaseConfig"
 import { ref, onValue, update, get, set } from "firebase/database"
 
 export async function writeUserData(userId, userObject) {
+  const studentInfo = userObject.studentInfo
+  delete userObject.studentInfo
+  delete userObject.studentList
   console.log("online?", window.navigator.onLine)
   if (ref(db, "/users/" + userId)) {
     const userRef = ref(db, "/users/" + userId)
@@ -23,6 +26,7 @@ export async function writeUserData(userId, userObject) {
       return "No userObject"
     }
   }
+  updateStudentInfo(userId, studentInfo)
 }
 
 export async function updateClassInfo(userId, gradebook, classInfoIndex, classInfoObject) {
@@ -52,6 +56,27 @@ export async function updateStudentNumbers(userId, gradebookClass, studentListOb
 
     if (studentListRef) {
       return set(studentListRef, studentListObjectArray)
+        .then(() => {
+          console.log("Student numbers updated")
+          return "success"
+        })
+        .catch((err) => {
+          alert(err)
+          return "failure"
+        })
+    } else {
+      console.log("No userObject")
+      return "No userObject"
+    }
+  }
+}
+
+export async function updateStudentInfo(userId, studentInfoObject) {
+  if (ref(db, "/users/" + userId)) {
+    const studentInfoRef = ref(db, "/users/" + userId + "/studentInfo" )
+
+    if (studentInfoRef) {
+      return update(studentInfoRef, studentInfoObject)
         .then(() => {
           console.log("Student numbers updated")
           return "success"
