@@ -27,11 +27,11 @@ export function SettingsPage(props) {
   const n1Ref = useRef()
   const n2Ref = useRef()
   const n3Ref = useRef()
-  const n4Ref = useRef()
+  const n4aRef = useRef([])
   const n1PointsRef = useRef()
   const n2PointsRef = useRef()
   const n3PointsRef = useRef()
-  const n4PointsRef = useRef()
+  const n4aPointsRef = useRef([])
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -48,8 +48,10 @@ export function SettingsPage(props) {
         note2Points: Number(n2PointsRef.current.value),
         note3: n3Ref.current.value,
         note3Points: Number(n3PointsRef.current.value),
-        note4: n4Ref.current.value,
-        note4Points: Number(n4PointsRef.current.value),
+        note4: n4aRef.current.value[0],
+        note4Points: Number(n4aPointsRef.current.value[0]),
+        note4b: n4aRef.current.value[1],
+        note4bPoints: Number(n4aPointsRef.current.value[1]),
       }
       props.updateSettings(settingsObj)
       setShowSaved(true)
@@ -141,10 +143,20 @@ export function SettingsPage(props) {
               </tr>
               <tr>
                 <td>
-                  4th Note: <input type="text" className="note-settings" maxLength={2} ref={n4Ref} defaultValue={props.settings.note4} />
+                  4th Note a: <input type="text" className="note-settings" maxLength={2} ref={(inputText)=> n4aRef.current.push(inputText)} defaultValue={props.settings.note4} />
+                
                 </td>
                 <td>
-                  Number Value: <input type="number" className="note-settings" maxLength={3} ref={n4PointsRef} defaultValue={props.settings.note4Points} />
+                  Number Value: <input type="number" className="note-settings" maxLength={3} ref={(inputNumber)=> n4aPointsRef.current.push(inputNumber)} defaultValue={props.settings.note4Points} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  4th Note b: <input type="text" className="note-settings" maxLength={2} ref={(inputText)=> n4aRef.current.push(inputText)} defaultValue={props.settings.note4} />
+                
+                </td>
+                <td>
+                  Number Value: <input type="number" className="note-settings" maxLength={3} ref={(inputNumber)=> n4aPointsRef.current.push(inputNumber)} defaultValue={props.settings.note4bPoints} />
                 </td>
               </tr>
             </tbody>
