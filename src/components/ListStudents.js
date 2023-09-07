@@ -50,7 +50,7 @@ function ListStudents(props) {
     const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
       ? classInfo.dateLastSubmitted
       : null
-    // const todaysDate = formatDate(new Date())
+    
     const todaysDate = date
     
     const alreadySubmitted = new Date(dateLastSubmitted) >= new Date(todaysDate)
@@ -156,7 +156,7 @@ function ListStudents(props) {
             for (let i in studentInfo.notes) {
             
               switch (studentInfo.notes[i]) {
-                // turn on any notest that match notes in settings.
+                // turn on any notes that match notes in settings.
                 case props.settings.note1:
                   notesState = {
                     ...notesState,
