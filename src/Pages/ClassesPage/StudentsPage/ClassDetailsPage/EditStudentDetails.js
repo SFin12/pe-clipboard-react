@@ -9,7 +9,7 @@ export default function EditStudentDetails({studentDetailInputs, studentDetailsR
     email: "email",
     phone: "tel",
     pacer: "numeric",
-    mileRun: "numeric",
+    mileRun: "decimal",
     pushUps: "numeric",
     curlUps: "numeric",
     trunkLift: "numeric",
