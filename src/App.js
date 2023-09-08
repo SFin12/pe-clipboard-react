@@ -17,7 +17,6 @@ import SuccessModal from "./components/SuccessModal"
 import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import LoginPage from "./Pages/LoginPage/LoginPage"
-import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
 import ClassDetailsPage2 from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage2"
 
