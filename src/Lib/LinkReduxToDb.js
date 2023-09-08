@@ -2,8 +2,10 @@ import { db } from "./FirebaseConfig"
 import { ref, onValue, update, get, set } from "firebase/database"
 
 export async function writeUserData(userId, userObject) {
-  console.log("online?", window.navigator.onLine)
-  if (ref(db, "/users/" + userId)) {
+  if( !window.navigator.onLine){
+    return "failure"
+  }
+  else if (ref(db, "/users/" + userId)) {
     const userRef = ref(db, "/users/" + userId)
     // const studentListRef = ref(db, "/users/" + userId + "/studentList")
     // const studentInfoRef = ref(db, "/users/" + userId + "/studentInfo")
@@ -11,18 +13,18 @@ export async function writeUserData(userId, userObject) {
     if (userObject) {
       return update(userRef, userObject)
         .then(() => {
-          console.log("database updated")
+  
           return "success"
         })
         .catch((err) => {
-          alert(err)
+
           return "failure"
         })
     } else {
-      console.log("No userObject")
+      console.error("No userObject")
       return "No userObject"
     }
-  }
+  } 
 }
 
 export async function updateClassInfo(userId, gradebook, classInfoIndex, classInfoObject) {
@@ -32,7 +34,7 @@ export async function updateClassInfo(userId, gradebook, classInfoIndex, classIn
     if (classInfoObject) {
       return update(classListRef, classInfoObject)
         .then(() => {
-          console.log("classInfo updated")
+    
           return "success"
         })
         .catch((err) => {
@@ -46,14 +48,14 @@ export async function updateClassInfo(userId, gradebook, classInfoIndex, classIn
   }
 }
 
-export async function updateStudentNumbers(userId, gradebookClass, studentListObjectArray) {
+export async function updateStudentDetails(userId, gradebookClass, studentListObjectArray) {
   if (ref(db, "/users/" + userId)) {
     const studentListRef = ref(db, "/users/" + userId + "/studentList/" + gradebookClass)
 
     if (studentListRef) {
       return set(studentListRef, studentListObjectArray)
         .then(() => {
-          console.log("Student numbers updated")
+     
           return "success"
         })
         .catch((err) => {
@@ -73,7 +75,7 @@ export async function updateDbCurrentClass(userId, currentClass) {
     if (currentClassRef) {
       return update(currentClassRef, currentClass)
         .then(() => {
-          console.log("Current class updated")
+     
           return "success"
         })
         .catch((err) => {
@@ -81,7 +83,7 @@ export async function updateDbCurrentClass(userId, currentClass) {
           return "failure"
         })
     } else {
-      console.log("No classObject")
+
       return "No classObject"
     }
   }
@@ -93,40 +95,32 @@ export async function getUserData(userId) {
   }
   const userRef = ref(db, "/users/" + userId)
   const snapshot = await get(userRef)
-  console.log(snapshot.val())
+
   return snapshot.val()
 }
 
 export async function getStudentList(userId) {
-  if (!userId) {
-    return console.log("No user Id")
-  }
+
   const StudentListRef = ref(db, "/users/" + userId + "/StudentList")
   const snapshot = await get(StudentListRef)
 
   return snapshot.val()
 }
 
-export async function getStudentInfo(userId) {
-  if (!userId) {
-    return console.log("No user Id")
-  }
-  const StudentInfoRef = ref(db, "/users/" + userId + "/StudentInfo")
+export async function getStudentInfo(userId, key) {
+  const StudentInfoRef = ref(db, "/users/" + userId + "/StudentInfo/" + key)
   
   const snapshot = await get(StudentInfoRef)
-  console.log("getStudentInfo", snapshot.val())
+
   return snapshot.val()
 }
 
 export function getCurrentGradeBook(userId) {
-  console.log("getting current gb")
-  if (!userId) {
-    return console.log("No user Id")
-  }
+
   const userRef = ref(db, "/users/" + userId + "/gradebook")
   onValue(userRef, (snapshot) => {
     const data = snapshot.val()
-    console.log("getting current gb")
+
     return data
   })
 }

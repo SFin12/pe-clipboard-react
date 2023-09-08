@@ -108,7 +108,7 @@ export const updateStudentList = (arrayStudentNames) => {
         })
         .map((n) => {
           n.replace(" ", ", ")
-          return {name: n, number: ""}
+          return {name: n, number:"", group:"", email:"", phone:"", pacer: "", mileRun:"", pushUps:"", curlUps: "", trunkLift:"", shoulderLeft: "", shoulderRight:"", sitReachLeft: "", sitReachRight:"", height: "", weight:"", notes: ""}
         });
    
     return {
@@ -118,7 +118,7 @@ export const updateStudentList = (arrayStudentNames) => {
 };
 
 export const deleteRoster = () => {
-    console.log("Deleting Student List");
+
     return {
         type: ActionTypes.DELETE_ROSTER,
         payload: [],
@@ -126,7 +126,7 @@ export const deleteRoster = () => {
 };
 
 export const deleteStudent = (student) => {
-    console.log("Deleting ", student);
+
     return {
         type: ActionTypes.DELETE_STUDENT,
         payload: student,
@@ -174,7 +174,6 @@ export const updateSettings = (settingsObj) => {
   };
 
 export const updateDbResponse = (response) => {
-  console.log("updating response", response);
   return {
     type: ActionTypes.UPDATE_DB_RESPONSE,
     payload: response, // response should be a string with "success" or "failure"

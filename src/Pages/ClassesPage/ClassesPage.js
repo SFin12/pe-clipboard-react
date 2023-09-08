@@ -115,11 +115,11 @@ function ClassesPage(props) {
                     <input
                         id="create-class"
                         type="text"
-                        value={newClass.name}
+                        value={newClass?.name}
                         placeholder="Class Name"
                         className="text-input"
                         onChange={handleChange}
-                        onKeyDown={handleSave}
+                        onKeyDown={(e) => newClass?.name && e.key === "Enter" && handleSave(e)}
                     />
                 </div>
                 <p>Press Enter or click add</p>
@@ -158,6 +158,8 @@ function ClassesPage(props) {
                 props.createClass(newClass.name);
                 props.updateClassList(newClass);
                 setNewClass({});
+                // setShowAddClassModal(false)
+
             }
         }
     }

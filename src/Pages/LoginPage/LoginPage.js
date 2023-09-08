@@ -55,7 +55,6 @@ function LoginPage(props) {
         //   data.studentList = filteredStudentList
         //   data.studentInfo = filteredStudentInfo
         // }
-        console.log(data)
         updateStore(data)
       }
       return updateLogin(true)

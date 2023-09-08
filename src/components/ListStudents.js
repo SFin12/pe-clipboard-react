@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions"
 import Confirm from "./ConfirmModal"
 
+
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
   gradebook: state.gradebook,
@@ -41,7 +42,7 @@ function ListStudents(props) {
     setStudentPoints({})
     setAttendance({})
     setNote({})
-  },[date])
+  }, [date])
 
   useEffect(() => {
     props.updatePage("Students")
@@ -50,12 +51,11 @@ function ListStudents(props) {
     const dateLastSubmitted = classInfo // If class grades have been submitted, get last date submitted.
       ? classInfo.dateLastSubmitted
       : null
-    
+
     const todaysDate = date
-    
+
     const alreadySubmitted = new Date(dateLastSubmitted) >= new Date(todaysDate)
     if (alreadySubmitted) {
-      
       // let filteredStudentInfo = Object.values(classInfo).filter((value) => Array.isArray(value) && value.slice(-1)[0].date === todaysDate)
       let filteredDay = Object.values(classInfo)
         .filter((value) => Array.isArray(value))
@@ -63,9 +63,9 @@ function ListStudents(props) {
           let filteredArr = arr.filter((entry) => entry?.date === todaysDate)
           return filteredArr
         })
-   
+
       // let todaysStudentInfo = filteredStudentInfo.map((arr) => arr.slice(-1))
-      
+
       todaysStudentInfoArr = filteredDay
     }
 
@@ -108,7 +108,6 @@ function ListStudents(props) {
             studentInfo = todaysStudentInfoArr.filter((arr) => arr[0]?.name === studentName)
             //if the name doesn't match, studenent info should be null, else it is today's studentInfo object for that student
             studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
-           
           }
           let studentId = i + "-student"
 
@@ -116,7 +115,6 @@ function ListStudents(props) {
             ...attendanceState,
             [studentId]: attendance[studentId] ? attendance[studentId] : studentInfo ? studentInfo.attendance : "P",
           }
-          
         }
 
         return attendanceState
@@ -136,25 +134,20 @@ function ListStudents(props) {
           [note1]: false,
           [note2]: false,
           [note3]: false,
-          [note4]: false,
+          [note4]: {active: false, value: props.settings.note4[0], points: props.settings.note4Points[0]},
           [note5]: false,
-          // [note1]: note[note1] || false,
-          // [note2]: note[note2] || false,
-          // [note3]: note[note3] || false,
-          // [note5]: note[note5] || false,
           [customNote]: "",
         }
+   
         let studentName = studentList[classKey][i].name
         let studentInfo = null
         if (alreadySubmitted) {
           studentInfo = todaysStudentInfoArr.filter((arr) => arr[0]?.name === studentName)
 
           studentInfo = studentInfo.length < 1 ? null : studentInfo[0][0]
-          
+
           if (studentInfo && studentInfo.notes) {
-            
             for (let i in studentInfo.notes) {
-            
               switch (studentInfo.notes[i]) {
                 // turn on any notes that match notes in settings.
                 case props.settings.note1:
@@ -175,10 +168,16 @@ function ListStudents(props) {
                     [note3]: true,
                   }
                   break
-                case props.settings.note4:
+                case props.settings.note4[0]:
                   notesState = {
                     ...notesState,
-                    [note4]: true,
+                    [note4]: {active: true, value: props.settings.note4[0], points: props.settings.note4Points[0]},
+                  }
+                  break
+                case props.settings.note4[1]:
+                  notesState = {
+                    ...notesState,
+                    [note4]: {active: true, value: props.settings.note4[1], points: props.settings.note4Points[1]},
                   }
                   break
                 default:
@@ -191,8 +190,7 @@ function ListStudents(props) {
               }
             }
           } else {
-            notesState= {...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: false, [note5]: false, [customNote]:""}
-            
+            notesState = { ...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: {active: false, value:props.settings.note4[0], points: props.settings.note4Points[0] }, [note5]: false, [customNote]: "" }
           }
         }
       }
@@ -271,10 +269,34 @@ function ListStudents(props) {
 
     // if note is not active, add the active class and set it to true.
     if (noteName !== "note5") {
-      setNote({
-        ...note,
-        [noteId]: !note[noteId],
-      })
+      if (noteName === "note4") {
+        // if note4[0], check if button is active, if so, switch to note4[1], else keep note4[0] but set button to active.
+        let noteValue = e.currentTarget.value
+        if (noteValue === props.settings.note4[0] && note[noteId].active === true) {
+
+          setNote({
+            ...note,
+            [noteId]: {value: props.settings.note4[1], points: props.settings.note4Points[1], active: true},
+          })
+        } else if(noteValue === props.settings.note4[0] && note[noteId].active === false) {
+ 
+          setNote({
+            ...note,
+            [noteId]: {value: props.settings.note4[0], points: props.settings.note4Points[0], active: true},
+          })
+        } else {
+
+          setNote({
+            ...note,
+            [noteId]: {value: props.settings.note4[0], points: props.settings.note4Points[0], active: false},
+          })
+        }
+      } else {
+        setNote({
+          ...note,
+          [noteId]: !note[noteId],
+        })
+      }
       // getting the first character of the note id which is a number.
       studentIdNumber = e.target.id[0]
       // if the note id number is 2 digits...
@@ -302,7 +324,8 @@ function ListStudents(props) {
     handlePoints(e, studentIdNumber, buttonName)
   }
 
-  function handlePoints(e, studentIdNumber, buttonName) {
+  function handlePoints(e, studentIdNumber, buttonName, noteValue) {
+ 
     const studentId = studentIdNumber + "-student"
     const buttonElements = Array.from(e.target.parentElement.children)
     const buttonsClicked = []
@@ -320,15 +343,27 @@ function ListStudents(props) {
         }
       }
       // check to see if the notes are clicked.
-      else if (i > 0 && i < 5) {
+      else if (i > 0 && i < 4) {
         let buttonClicked = button.getAttribute("data-note")
         let buttonClickedBool = buttonClicked === "true" ? true : false
         if (buttonName === button.name) {
+          
           buttonClickedBool = !buttonClickedBool
         }
         if (buttonClickedBool) {
           buttonsClicked.push(props.settings[button.name + "Points"])
         }
+      }
+      // check to see if the custom note is clicked.
+      else if (i === 4 && buttonName === "note4") {
+        
+        if( button.value === props.settings.note4[0] &&  button.getAttribute("data-note") !== "true") {
+          buttonsClicked.push(Number(props.settings.note4Points[0]))
+        }
+         else if ( button.value === props.settings.note4[0] && button.getAttribute("data-note") === "true") {
+            buttonsClicked.push(Number(props.settings.note4Points[1]))
+          }
+        
       }
     })
     let pointValues = buttonsClicked.length > 0 ? buttonsClicked.reduce((total, current) => total + current) : 0
@@ -375,12 +410,12 @@ function ListStudents(props) {
             <input className="tr-round button daily-points " key={student.name + "-points"} name="daily-points" type="button" id={i + "-points"} value={studentPoints[studentId]} onClick={props.toggleDelete ? undefined : handleIncrement} />
           </div>
           <div className="flex-space-between notes" data-toggle="off">
-            <input className={"bl-round button absent note " + attendance[studentId]} name="attendance" type="button" key={student.name + "-attendance"} id={i + "-attendance"} data-toggle="off" value={attendance[studentId]} onClick={props.toggleDelete ? undefined : handleAttendance} />
-            <input className="button absent note" name="note1" type="button" id={i + "-note1"} data-note={note[i + "-note1"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note1} />
-            <input className="button absent note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
-            <input className="button absent note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
-            <input className="button absent note " name="note4" type="button" id={i + "-note4"} data-note={note[i + "-note4"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note4} />
-            <input className="br-round button absent note " style={{ textAlign: "center" }} name="note5" type="text" key={student + "-note5"} id={i + "-note5"} placeholder="?" data-note={note[i + "-note5"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
+            <input className={"bl-round button note " + attendance[studentId]} name="attendance" type="button" key={student.name + "-attendance"} id={i + "-attendance"} data-toggle="off" value={attendance[studentId]} onClick={props.toggleDelete ? undefined : handleAttendance} />
+            <input className="button note" name="note1" type="button" id={i + "-note1"} data-note={note[i + "-note1"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note1} />
+            <input className="button note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
+            <input className="button note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
+            <input className="button note " name="note4" type="button" id={i + "-note4"} data-note={note[i + "-note4"]?.active || false} onClick={props.toggleDelete ? undefined : handleNote} value={note[i+"-note4"]?.value || props.settings.note4[0]} />
+            <input className="br-round button note " style={{ textAlign: "center" }} name="note5" type="text" key={student + "-note5"} id={i + "-note5"} placeholder="?" data-note={note[i + "-note5"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
           </div>
         </div>
       </React.Fragment>

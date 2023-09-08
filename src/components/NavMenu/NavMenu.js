@@ -88,12 +88,12 @@ class NavMenu extends Component {
         })
         links.push({
           to: "/classDetails",
-          text: "Student Numbers",
+          text: "Student Details",
           key: "link7",
         })
         links.push({
           to: "/studentInfo",
-          text: "Student Info",
+          text: "Student Grades",
           key: "link8",
         })
         links.push(logoutLink)

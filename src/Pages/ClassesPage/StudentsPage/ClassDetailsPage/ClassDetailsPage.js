@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { updateStudentNumbers } from "../../../../Lib/LinkReduxToDb"
+import { updateStudentDetails } from "../../../../Lib/LinkReduxToDb"
 import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
 import EditStudentNumbers from "./EditStudentNumbers"
+import "../StudentPage.scss"
 
 const mapStateToProps = (state) => ({
   id: state.id,
@@ -45,7 +46,7 @@ function ClassDetailsPage(props) {
   function handleSave(e) {
     e.preventDefault()
     const gradebookClass = props.cleanGradebook + "-" + props.class
-    updateStudentNumbers(props.id, gradebookClass, studentNumberInputs)
+    updateStudentDetails(props.id, gradebookClass, studentNumberInputs)
     navigate(-1)
   }
 
@@ -68,16 +69,16 @@ function ClassDetailsPage(props) {
 
   return (
     <section className="mt-5 pt-5">
-      {/* <div className="d-flex justify-content-center p-2">
+      <div className="d-flex justify-content-center p-2">
       <select>
         <option value="Student Numbers">Student Numbers</option>
         <option value="Current Pacer">Current Pacer</option>
         <option value="Other">Other</option>
       </select>
-      </div> */}
+      </div>
       <EditStudentNumbers studentNumberInputs={studentNumberInputs} studentNumbersRef={studentNumbersRef} handleChange={handleStudentNumberChanges} handleEnter={handleEnter} />
-      <div className="d-flex justify-content-center p-2">
-        <button className="" onClick={handleSave}>
+      <div className="d-flex justify-content-center p-4">
+        <button className="submit-button" onClick={handleSave}>
           Save
         </button>
       </div>

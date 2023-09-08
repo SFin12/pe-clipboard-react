@@ -19,9 +19,11 @@ import FailureModal from "./components/FailureModal"
 import LoginPage from "./Pages/LoginPage/LoginPage"
 import ClassDetailsPage from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
+import ClassDetailsPage2 from "./Pages/ClassesPage/StudentsPage/ClassDetailsPage/ClassDetailsPage2"
 
 const mapStateToProps = (state) => ({
   signedIn: state.signedIn,
+  currentPage: state.currentPage,
   id: state.id,
   email: state.email,
   name: state.name,
@@ -60,10 +62,9 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     // check on previous state
     // only write when it's different with the new state
-    if(!window.navigator.onLine){
+    if (!window.navigator.onLine) {
       console.log("Not online")
-    }
-    if (
+    } else if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||
       prevProps.gradebookList !== this.props.gradebookList ||
@@ -72,9 +73,7 @@ class App extends React.Component {
       prevProps.studentList !== this.props.studentList ||
       prevProps.studentInfo !== this.props.studentInfo ||
       prevProps.settings !== this.props.settings
-    ) 
-    
-    {
+    ) {
       const userObject = {
         id: this.props.id,
         name: this.props.name,
@@ -90,36 +89,35 @@ class App extends React.Component {
         studentInfo: this.props.studentInfo,
         settings: this.props.settings,
       }
-      
+
       // if there is a user write the above props to firebase
       if (this.props.id) {
-       
-    
-        writeUserData(this.props.id, userObject).then((response) => {
-     
-          // clearTimeout(timeout)
-        
-          if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
-            if (response === "success") {
-              this.setState({ showSuccessModal: true })
-              setTimeout(() => {
-                this.setState({ showSuccessModal: false })
-              }, 2000)
-            } else {
-              
-              this.setState({ showFailureModal: true })
-              setTimeout(() => {
-                this.setState({ showFailureModal: false })
-              }, 2000)
-            }
-        }).catch(err => {
-          alert(err)
-          this.setState({ showFailureModal: true })
-              setTimeout(() => {
-                this.setState({ showFailureModal: false })
-              }, 3000)
-        })
-        
+        writeUserData(this.props.id, userObject)
+          .then((response) => {
+            // clearTimeout(timeout)
+
+            if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
+              if (response === "success") {
+                if (!["Classes", "Info"].some((page) => page === this.props.currentPage)) {
+                  this.setState({ showSuccessModal: true })
+                  setTimeout(() => {
+                    this.setState({ showSuccessModal: false })
+                  }, 2000)
+                }
+              } else {
+                this.setState({ showFailureModal: true })
+                setTimeout(() => {
+                  this.setState({ showFailureModal: false })
+                }, 2000)
+              }
+          })
+          .catch((err) => {
+            alert(err)
+            this.setState({ showFailureModal: true })
+            setTimeout(() => {
+              this.setState({ showFailureModal: false })
+            }, 3000)
+          })
       }
     }
   }
@@ -138,12 +136,12 @@ class App extends React.Component {
           <React.Fragment>
             <NavMenu navOpen={this.state.navOpen} />
             <main className="container">
-              {this.props.currentPage !== "Classes" &&
-              <>
-              <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Information updated." />
-              <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString="Please try again later." />
-              </>
-        }
+              {this.props.currentPage !== "Classes" && (
+                <>
+                  <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Information updated." />
+                  <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString="Please try again later." />
+                </>
+              )}
               <Routes>
                 {/* If no gradebook is found, start on gradebook page otherwise
                                 start on class page. */}
@@ -184,7 +182,7 @@ class App extends React.Component {
                 />
                 <Route //Edit student information for individual days.
                   path="/classDetails"
-                  element={<ClassDetailsPage />}
+                  element={<ClassDetailsPage2 />}
                 />
               </Routes>
             </main>

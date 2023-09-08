@@ -25,7 +25,7 @@ export const MainReducer = (state, action) => {
 
     //UPDATE REDUX STORE FROM DATABASE--------------------------------------------------
     case ActionTypes.UPDATE_STORE:
-      console.log("updating redux store...")
+  
       return { ...state, ...action.payload }
 
     //UPDATE SETTINGS-------------------------------------------------------------------
@@ -69,7 +69,7 @@ export const MainReducer = (state, action) => {
           },
         }
       } else if (!state.classList.currentGb) {
-        console.log("duplicate or first time gradebook")
+  
         return {
           ...state,
           classList: {
@@ -137,7 +137,7 @@ export const MainReducer = (state, action) => {
           },
         }
       }
-      console.log("not able to add student")
+ 
       return { ...state }
     case ActionTypes.DELETE_ROSTER:
       if (state.studentList[currentGb + "-" + currentClass]) {
@@ -171,7 +171,7 @@ export const MainReducer = (state, action) => {
 
         // If user submits studentInfo (grades, attendance, notes) the same day, replace previous submission
         if (date === thisClass.dateLastSubmitted) {
-          console.log("date === date last submitted")
+    
           // Each key is the name of a student
           Object.keys(action.payload).forEach((key) => {
             // If the student exists...
@@ -200,7 +200,7 @@ export const MainReducer = (state, action) => {
           }
           // If it's a new day, create a new submission
         } else if (date > thisClass.dateLastSubmitted) {
-          console.log("date greater than last submitted")
+
           Object.keys(action.payload).forEach((key) => {
             // if student already exists...
             if (thisClass[key]) {
@@ -251,7 +251,7 @@ export const MainReducer = (state, action) => {
             },
           }
         } else {
-          console.log("didn't fall detect date correctly")
+  
           return { ...state }
         }
       }
@@ -277,7 +277,7 @@ export const MainReducer = (state, action) => {
       }
     //DEFAULT-----------------------------------------------------------------------------
     default:
-      console.log("default reducer")
+
       return state
   }
 }
