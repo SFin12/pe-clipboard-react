@@ -166,7 +166,7 @@ function ClassesPage(props) {
 
     function handleChange(e) {
         if (e.target.id === "create-class") {
-            setNewClass({name: e.target.value, start: 0, end: 0, rows: 7});
+            setNewClass({name: e.target.value, start: "00:00", end: "00:00", rows: 7});
         }
     }
 

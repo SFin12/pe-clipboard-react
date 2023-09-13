@@ -52,6 +52,8 @@ class App extends React.Component {
     this.state = {
       showSuccessModal: false,
       showFailureModal: false,
+      showFailureMessage: "",
+      showSuccessMessage: "",
     }
   }
   componentDidMount() {
@@ -61,9 +63,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     // check on previous state
     // only write when it's different with the new state
-    if (!window.navigator.onLine) {
-      console.log("Not online")
-    } else if (
+    if (
       (this.props.signedIn && prevProps.id !== this.props.id) ||
       prevProps.gradebook !== this.props.gradebook ||
       prevProps.gradebookList !== this.props.gradebookList ||
@@ -93,8 +93,6 @@ class App extends React.Component {
       if (this.props.id) {
         writeUserData(this.props.id, userObject)
           .then((response) => {
-            // clearTimeout(timeout)
-
             if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
               if (response === "success") {
                 if (!["Classes", "Info"].some((page) => page === this.props.currentPage)) {
@@ -111,10 +109,10 @@ class App extends React.Component {
               }
           })
           .catch((err) => {
-            alert(err)
-            this.setState({ showFailureModal: true })
+            
+            this.setState({ showFailureModal: true, showFailureMessage: err.message })
             setTimeout(() => {
-              this.setState({ showFailureModal: false })
+              this.setState({ showFailureModal: false, showFailureMessage: "" })
             }, 3000)
           })
       }
@@ -138,7 +136,7 @@ class App extends React.Component {
               {this.props.currentPage !== "Classes" && (
                 <>
                   <SuccessModal showSuccess={this.state.showSuccessModal} title="Saved" messageString="Information updated." />
-                  <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString="Please try again later." />
+                  <FailureModal showFailure={this.state.showFailureModal} title="Save Failed" messageString={this.state.showFailureMessage} />
                 </>
               )}
               <Routes>

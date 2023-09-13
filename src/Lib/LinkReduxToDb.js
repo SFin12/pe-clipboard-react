@@ -3,22 +3,31 @@ import { ref, onValue, update, get, set } from "firebase/database"
 
 export async function writeUserData(userId, userObject) {
   if( !window.navigator.onLine){
-    return "failure"
+    throw new Error("No internet connection")
   }
-  else if (ref(db, "/users/" + userId)) {
+if (ref(db, "/users/" + userId)) {
     const userRef = ref(db, "/users/" + userId)
+    // const unsubscribe = onValue(userRef, (snapshot) => {
+    //   const data = snapshot.val();
+    //   console.log(data)
+    // }, (error) => {
+    //   console.error("Error: ", error);
+    // })
+    // unsubscribe()
     // const studentListRef = ref(db, "/users/" + userId + "/studentList")
     // const studentInfoRef = ref(db, "/users/" + userId + "/studentInfo")
 
     if (userObject) {
+      console.log("Writing user data")
       return update(userRef, userObject)
-        .then(() => {
-  
+        .then((res) => {
+          console.log(res)
           return "success"
         })
         .catch((err) => {
-
-          return "failure"
+          throw new Error(err)
+        }).finally(() => {
+          console.log("Finished writing user data")
         })
     } else {
       console.error("No userObject")
