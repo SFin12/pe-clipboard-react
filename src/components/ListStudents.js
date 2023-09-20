@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions"
 import Confirm from "./ConfirmModal"
 
-
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
   gradebook: state.gradebook,
@@ -134,11 +133,11 @@ function ListStudents(props) {
           [note1]: false,
           [note2]: false,
           [note3]: false,
-          [note4]: {active: false, value: props.settings.note4[0], points: props.settings.note4Points[0]},
+          [note4]: { active: false, value: props.settings.note4[0], points: props.settings.note4Points[0] },
           [note5]: false,
           [customNote]: "",
         }
-   
+
         let studentName = studentList[classKey][i].name
         let studentInfo = null
         if (alreadySubmitted) {
@@ -171,13 +170,13 @@ function ListStudents(props) {
                 case props.settings.note4[0]:
                   notesState = {
                     ...notesState,
-                    [note4]: {active: true, value: props.settings.note4[0], points: props.settings.note4Points[0]},
+                    [note4]: { active: true, value: props.settings.note4[0], points: props.settings.note4Points[0] },
                   }
                   break
                 case props.settings.note4[1]:
                   notesState = {
                     ...notesState,
-                    [note4]: {active: true, value: props.settings.note4[1], points: props.settings.note4Points[1]},
+                    [note4]: { active: true, value: props.settings.note4[1], points: props.settings.note4Points[1] },
                   }
                   break
                 default:
@@ -190,7 +189,7 @@ function ListStudents(props) {
               }
             }
           } else {
-            notesState = { ...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: {active: false, value:props.settings.note4[0], points: props.settings.note4Points[0] }, [note5]: false, [customNote]: "" }
+            notesState = { ...notesState, [note1]: false, [note2]: false, [note3]: false, [note4]: { active: false, value: props.settings.note4[0], points: props.settings.note4Points[0] }, [note5]: false, [customNote]: "" }
           }
         }
       }
@@ -266,30 +265,31 @@ function ListStudents(props) {
     let studentIdNumber
     let buttonName = e.currentTarget.name
     let noteName = e.currentTarget.name
-
+    let note4active = false
     // if note is not active, add the active class and set it to true.
     if (noteName !== "note5") {
       if (noteName === "note4") {
         // if note4[0], check if button is active, if so, switch to note4[1], else keep note4[0] but set button to active.
         let noteValue = e.currentTarget.value
         if (noteValue === props.settings.note4[0] && note[noteId].active === true) {
-
-          setNote({
-            ...note,
-            [noteId]: {value: props.settings.note4[1], points: props.settings.note4Points[1], active: true},
-          })
-        } else if(noteValue === props.settings.note4[0] && note[noteId].active === false) {
- 
-          setNote({
-            ...note,
-            [noteId]: {value: props.settings.note4[0], points: props.settings.note4Points[0], active: true},
-          })
+          note4active = true //lets handlePoints know that note4 is active immediatley without waiting for state update.
+          setNote((prev) => ({
+            ...prev,
+            [noteId]: { value: props.settings.note4[1], points: props.settings.note4Points[1], active: true },
+          }))
+        } else if (noteValue === props.settings.note4[0] && note[noteId].active === false) {
+          note4active = true
+          setNote((prev) => ({
+            ...prev,
+            [noteId]: { value: props.settings.note4[0], points: props.settings.note4Points[0], active: true },
+          }))
         } else {
-
-          setNote({
-            ...note,
-            [noteId]: {value: props.settings.note4[0], points: props.settings.note4Points[0], active: false},
-          })
+          note4active = false
+          // if it's already on the second note(b), switch it back to the first note(a) and set button to not active.
+          setNote((prev) => ({
+            ...prev,
+            [noteId]: { value: props.settings.note4[0], points: props.settings.note4Points[0], active: false },
+          }))
         }
       } else {
         setNote({
@@ -321,11 +321,10 @@ function ListStudents(props) {
             [customNote]: noteValue,
           })
     }
-    handlePoints(e, studentIdNumber, buttonName)
+    handlePoints(e, studentIdNumber, buttonName, note4active)
   }
 
-  function handlePoints(e, studentIdNumber, buttonName, noteValue) {
- 
+  function handlePoints(e, studentIdNumber, buttonName, note4active = false) {
     const studentId = studentIdNumber + "-student"
     const buttonElements = Array.from(e.target.parentElement.children)
     const buttonsClicked = []
@@ -347,29 +346,32 @@ function ListStudents(props) {
         let buttonClicked = button.getAttribute("data-note")
         let buttonClickedBool = buttonClicked === "true" ? true : false
         if (buttonName === button.name) {
-          
           buttonClickedBool = !buttonClickedBool
         }
         if (buttonClickedBool) {
           buttonsClicked.push(props.settings[button.name + "Points"])
         }
       }
-      // check to see if the custom note is clicked.
-      else if (i === 4 && buttonName === "note4") {
-        
-        if( button.value === props.settings.note4[0] &&  button.getAttribute("data-note") !== "true") {
+      // check to see note 4a or 4b is clicked.
+      else if (i === 4) {
+        if (button.value === props.settings.note4[0] && button.getAttribute("data-note") !== "true" && note4active) {
           buttonsClicked.push(Number(props.settings.note4Points[0]))
+        } else if (button.value === props.settings.note4[0] && button.getAttribute("data-note") === "true" && note4active) {
+          buttonsClicked.push(Number(props.settings.note4Points[1]))
+        } else if (button.value === props.settings.note4[0] && button.getAttribute("data-note") === "true" && !note4active) {
+          buttonsClicked.push(Number(props.settings.note4Points[0]))
+        } else if (buttonName !== button.name && button.value === props.settings.note4[1] && button.getAttribute("data-note") === "true" && !note4active) {
+          buttonsClicked.push(Number(props.settings.note4Points[1]))
         }
-         else if ( button.value === props.settings.note4[0] && button.getAttribute("data-note") === "true") {
-            buttonsClicked.push(Number(props.settings.note4Points[1]))
-          }
-        
       }
     })
+    console.log(buttonsClicked)
     let pointValues = buttonsClicked.length > 0 ? buttonsClicked.reduce((total, current) => total + current) : 0
     let pointsChanged = studentPoints[studentId + "changed"] //add to currentPoints to subtract from customized points rather than base value set from daily points.
     let currentPoints = props.settings.dailyPoints + pointValues + pointsChanged
-
+    console.log("currentPoints", currentPoints)
+    console.log("pointsChanged", pointsChanged)
+    console.log("pointsValues", pointValues)
     if (currentPoints < 0) {
       currentPoints = 0
     }
@@ -377,6 +379,9 @@ function ListStudents(props) {
       ...prevState,
       [studentId]: currentPoints,
     }))
+    console.log("currentPoints after", currentPoints)
+    console.log("pointsChanged after", pointsChanged)
+    console.log("pointsValues after", pointValues)
   }
 
   function handleDelete(e) {
@@ -414,7 +419,7 @@ function ListStudents(props) {
             <input className="button note" name="note1" type="button" id={i + "-note1"} data-note={note[i + "-note1"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note1} />
             <input className="button note" name="note2" type="button" id={i + "-note2"} data-note={note[i + "-note2"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note2} />
             <input className="button note " name="note3" type="button" id={i + "-note3"} data-note={note[i + "-note3"]} onClick={props.toggleDelete ? undefined : handleNote} value={props.settings.note3} />
-            <input className="button note " name="note4" type="button" id={i + "-note4"} data-note={note[i + "-note4"]?.active || false} onClick={props.toggleDelete ? undefined : handleNote} value={note[i+"-note4"]?.value || props.settings.note4[0]} />
+            <input className="button note " name="note4" type="button" id={i + "-note4"} data-note={note[i + "-note4"]?.active || false} onClick={props.toggleDelete ? undefined : handleNote} value={note[i + "-note4"]?.value || props.settings.note4[0]} />
             <input className="br-round button note " style={{ textAlign: "center" }} name="note5" type="text" key={student + "-note5"} id={i + "-note5"} placeholder="?" data-note={note[i + "-note5"]} value={note[i + "-customNote"]} onChange={props.toggleDelete ? undefined : handleNote} />
           </div>
         </div>
