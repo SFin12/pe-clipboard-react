@@ -14,7 +14,6 @@ import { connect } from "react-redux"
 import { updatePage, updateDbResponse } from "./Redux/actions"
 import { writeUserData } from "./Lib/LinkReduxToDb"
 import SuccessModal from "./components/SuccessModal"
-import isEqual from "lodash.isequal"
 import FailureModal from "./components/FailureModal"
 import LoginPage from "./Pages/LoginPage/LoginPage"
 import EditStudentInfoPage from "./Pages/ClassesPage/StudentInfoPage/EditStudentInfoPage"
@@ -92,8 +91,8 @@ class App extends React.Component {
       // if there is a user write the above props to firebase
       if (this.props.id) {
         writeUserData(this.props.id, userObject)
-          .then((response) => {
-            if (!isEqual(prevProps.studentInfo, this.props.studentInfo))
+          .then((response) => { 
+
               if (response === "success") {
                 if (!["Classes", "Info"].some((page) => page === this.props.currentPage)) {
                   this.setState({ showSuccessModal: true })

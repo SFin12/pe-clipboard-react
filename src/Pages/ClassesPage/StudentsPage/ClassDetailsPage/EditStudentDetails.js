@@ -2,7 +2,6 @@ import "../StudentPage.scss"
 
 
 export default function EditStudentDetails({studentDetailInputs, studentDetailsRef, detailType, handleChange, handleEnter}) {
-  
   const inputModeType = {
     number: "numeric",
     group: "text",
@@ -10,6 +9,8 @@ export default function EditStudentDetails({studentDetailInputs, studentDetailsR
     phone: "tel",
     pacer: "numeric",
     mileRun: "decimal",
+    laps: "numeric",
+    mileResults: "text",
     pushUps: "numeric",
     curlUps: "numeric",
     trunkLift: "numeric",
@@ -50,7 +51,7 @@ export default function EditStudentDetails({studentDetailInputs, studentDetailsR
                 onKeyDown={handleEnter}
                 style={{width: s[detailType]?.length * 12 + 10 || 50, minWidth:50, maxWidth:220}}
               />
-            </div>  
+            </div>
           </div>
         )
       })}

@@ -5,6 +5,9 @@ import { updateStudentDetails } from "../../../../Lib/LinkReduxToDb"
 import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
 import "../StudentPage.scss"
 import EditStudentDetails from "./EditStudentDetails"
+import TimedMileDetails from "./TimedMileDetails"
+import { formatMileTime } from "../../../../utils/utilities"
+
 
 const mapStateToProps = (state) => ({
   id: state.id,
@@ -27,6 +30,7 @@ function ClassDetailsPage(props) {
   const studentDetailsRef = useRef([])
   const [detailType, setDetailType] = useState("number")
   const navigate = useNavigate()
+   
 
   useEffect(() => {
     const studentDetails = props.studentList[props.cleanGradebook + "-" + props.class]
@@ -44,11 +48,18 @@ function ClassDetailsPage(props) {
     })
   }
 
+  function handleMileRunChange(newStudentDetailInputs){
+    setStudentDetailInputs(newStudentDetailInputs)
+  }
+
   function handleSave(e) {
     e.preventDefault()
     const gradebookClass = props.cleanGradebook + "-" + props.class
-    updateStudentDetails(props.id, gradebookClass, studentDetailInputs)
+    const updatedStudentDetails = studentDetailInputs.map((s) => ({ ...s, mileResults: formatMileTime(s.mileRun)}))
+    updateStudentDetails(props.id, gradebookClass, updatedStudentDetails)
+    if(detailType !== "mileRun") {
     navigate(-1)
+    }
   }
 
   function handleEnter(e) {
@@ -68,6 +79,8 @@ function ClassDetailsPage(props) {
     }
   }
 
+
+
   return (
     <section className="mt-5 pt-5">
       <div className="d-flex justify-content-center p-2">
@@ -78,6 +91,8 @@ function ClassDetailsPage(props) {
         <option value="phone">Student Phone</option>
         <option value="pacer">Pacer</option>
         <option value="mileRun">Mile Run</option>
+        <option value="laps">Laps</option>
+        <option value="mileResults">Mile Results</option>
         <option value="pushUps">Push Ups</option>
         <option value="curlUps">Curl Ups</option>
         <option value="trunkLift">Trunk Lift</option>
@@ -90,7 +105,10 @@ function ClassDetailsPage(props) {
         <option value="notes">Notes</option>
       </select>
       </div>
-      {detailType && <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} />}
+      {detailType === "mileRun" ? 
+        <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} />
+        :
+       detailType ? <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} /> : null }
       <div className="d-flex justify-content-center p-4">
         <button className="submit-button" onClick={handleSave}>
           Save
