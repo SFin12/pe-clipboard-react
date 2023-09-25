@@ -94,7 +94,7 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         <button className="submit-button w-25 m-2 bg-danger text-white" onClick={resetTimer}>
           Reset
         </button>
-        <input className="submit-button w-25 m-2 px-2 fixed bottom-3 right-3" onChange={toggleKeypad} placeholder="Keypad" value={keypad} type="text" inputMode="numerical" />
+        <input className="submit-button w-25 m-2 px-2 fixed bottom-3 right-3" onChange={toggleKeypad} placeholder="Keypad" value={keypad} type="text" inputMode="numeric" />
       </div>
       {studentState.map((s, i) => {
         if (!showAll && s["laps"] > 3) return null
