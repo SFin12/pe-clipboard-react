@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import "../StudentPage.scss"
 import { formatMileTime } from "../../../../utils/utilities"
+import Keypad from "../../../../components/Keypad"
 
 export default function TimedMileDetails({ studentDetailInputs, handleChange }) {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [studentState, setStudentState] = useState(studentDetailInputs.map((s) => ({ ...s, mileRun: 0, laps: 0 })) || [])
   const [keypad, setKeypad] = useState("")
+  const [showKeypad, setShowKeypad] = useState(false)
   const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
@@ -44,16 +46,11 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
     setSeconds(0)
   }
 
-  const toggleKeypad = (e) => {
+  const handleKeypad = (e) => {
     e.preventDefault()
-    console.log(e.target.value)
-    // if the number ends with "." act as return key and submit the number typed. If the number is equal to a studentState.number value, then get the curren time and stamp it to the studentState.mileRun value
-    setKeypad(e.target.value)
-    console.log(keypad)
-    if (e.target.value.endsWith(".")) {
-      console.log("target.value", e.target.value)
-      // if the numbers prior to the "." are equal to a studentState.number value, then get the curren time and stamp it to the studentState.mileRun value
-      const number = e.target.value.slice(0, -1)
+
+    if (e.target.value === "enter") {
+      const number = keypad
       const objIndex = studentState.findIndex((obj) => obj.number === number)
       if (objIndex !== -1) {
         setStudentState((prev) => {
@@ -65,10 +62,14 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
           }
           return newState
         })
-        console.log(studentState)
       }
       setKeypad("")
+      return
+    } else if (e.target.value === "backspace") {
+      setKeypad((prev) => prev.slice(0, -1))
+      return
     }
+    setKeypad((prev) => prev + e.target.value)
   }
 
   const stampCurrentTime = (e) => {
@@ -87,6 +88,9 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
 
   return (
     <>
+ 
+       {showKeypad && keypad && <span className="m-auto mt-2 bg-secondary p-1 text-white fixed-top w-25 text-center p-2">{keypad}</span>}
+ 
       <div className="d-flex w-100 pl-2 py-1 mw-100 overflow-hidden justify-content-between position-relative">
         <button className="submit-button w-25 m-2" onClick={toggleTimer}>
           {seconds ? formatMileTime(seconds) : "Start"}
@@ -94,7 +98,10 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         <button className="submit-button w-25 m-2 bg-danger text-white" onClick={resetTimer}>
           Reset
         </button>
-        <input className="submit-button w-25 m-2 px-2 fixed bottom-3 right-3" onChange={toggleKeypad} placeholder="Keypad" value={keypad} type="text" inputMode="decimal" />
+        <button className="submit-button w-25 m-2 px-2 fixed bottom-3 right-3" onClick={() => setShowKeypad((prev) => !prev)}>
+          {showKeypad ? "Close" : "Keypad"}
+        </button>
+
       </div>
       {studentState.map((s, i) => {
         if (!showAll && s["laps"] > 3) return null
@@ -122,6 +129,7 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
       <button className="bg-secondary" onClick={() => setShowAll((prev) => !prev)}>
         {showAll ? "Hide Finished?" : "Show All?"}
       </button>
+      <Keypad isKeypadVisible={showKeypad} handleKeypad={handleKeypad} />
     </>
   )
 }

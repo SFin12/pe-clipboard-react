@@ -1,0 +1,53 @@
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.keypad {
+  position: fixed;
+  bottom: -300px;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5;
+  transition: bottom 0.3s;
+  border-top: 1px solid #ccc;
+}
+
+.keypad.visible {
+  bottom: 0;
+}
+
+.keypad-row {
+  display: flex;
+  justify-content: space-around;
+
+}
+
+.keypad-button {
+  // flex-grow:1;
+  margin: 2px;
+  // padding: 20px 20px;
+  width: 33%;
+  min-height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.keypad-button:active {
+  outline: none;
+  background: grey;
+}
+
+
+
+.enter-btn {
+  flex-grow: 1;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 2px;
+  margin: 2px;
+  padding: 20px 0px;
+}
