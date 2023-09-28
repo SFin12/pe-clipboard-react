@@ -30,11 +30,11 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
 
   const lapColor = {
     0: "transparent",
-    1: "#4200CF", // purple,
-    2: "#003FCF", // dark blue
-    3: "#007D85",
-    4: "yellow",
-    5: "#B10000", // red
+    1: "#FFD7B3",
+    2: "#FFC0EA",
+    3: "#B0F5FF",
+    4: "#CDFFB2",
+    5: "#F7FF93",
   }
 
   const toggleTimer = () => {
@@ -72,28 +72,29 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
     setKeypad((prev) => prev + e.target.value)
   }
 
+
   const stampCurrentTime = (e) => {
-    const name = e.target.name
+    const name = e.currentTarget.getAttribute("name")
     const objIndex = studentState.findIndex((obj) => obj.name === name)
+    setShowKeypad(false)
     setStudentState((prev) => {
       const newState = [...prev]
-      if (newState[objIndex]["laps"] < 4) {
+      if (newState[objIndex]["laps"]) {
         newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["laps"] + 1 }
       } else {
         newState[objIndex] = { ...newState[objIndex], laps: newState[objIndex]["laps"] + 1 }
       }
       return newState
     })
+   
   }
 
   return (
     <>
- 
-       {showKeypad && keypad && <span className="m-auto mt-2 bg-secondary p-1 text-white fixed-top w-25 text-center p-2">{keypad}</span>}
- 
+      {seconds > 0 && <div className="fixed-top w-25 m-auto text-center p-3">{formatMileTime(seconds)}</div>}
       <div className="d-flex w-100 pl-2 py-1 mw-100 overflow-hidden justify-content-between position-relative">
         <button className="submit-button w-25 m-2" onClick={toggleTimer}>
-          {seconds ? formatMileTime(seconds) : "Start"}
+          {isRunning ? "Pause" : "Start"}
         </button>
         <button className="submit-button w-25 m-2 bg-danger text-white" onClick={resetTimer}>
           Reset
@@ -101,22 +102,21 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         <button className="submit-button w-25 m-2 px-2 fixed bottom-3 right-3" onClick={() => setShowKeypad((prev) => !prev)}>
           {showKeypad ? "Close" : "Keypad"}
         </button>
-
       </div>
       {studentState.map((s, i) => {
         if (!showAll && s["laps"] > 3) return null
         return (
           <div className="d-flex w-100 student-details pl-2 py-1 mw-100 overflow-hidden">
             <div className="d-flex flex-column align-items-end text-white w-100">
-              <div className="d-flex my-1 p-1 justify-content-between w-100">
-                <div>
-                  <span className="rounded-circle p-1">{s.number}</span>
-                  <button className="text-white border-0 text-start rounded-3 bg-transparent" name={s.name} onClick={stampCurrentTime}>
+              <div className="d-flex my-1 p-1 justify-content-between w-100" onClick={stampCurrentTime} name={s.name}>
+                <div className="mile-num-name">
+                  <span className="p-1">{s.number}</span>
+                  <button className="text-white border-0 text-start rounded-3 bg-transparent overflow-elipsis" name={s.name}>
                     {s.name}
                   </button>
                 </div>
                 <div className="">
-                  <span className="px-2 py-1 rounded-3" style={{ background: s.laps < 4 ? lapColor[s.laps] : lapColor[4], color: s.laps < 4 ? "white" : "black" }}>
+                  <span className="px-2 py-1 rounded-3" style={{ background: s.laps < 5 ? lapColor[s.laps] : lapColor[5], color: "black" }}>
                     {s["laps"]}
                   </span>
                   <span className="justify-content-between px-2 rounded-3">{formatMileTime(s["mileRun"])}</span>
@@ -129,6 +129,13 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
       <button className="bg-secondary" onClick={() => setShowAll((prev) => !prev)}>
         {showAll ? "Hide Finished?" : "Show All?"}
       </button>
+      {showKeypad && keypad && (
+        <div className="w-full fixed-top h-100">
+          <div className="d-flex w-full h-100 justify-content-center align-items-center">
+            <div className={`mile-run-num-popup ${keypad.length == 3 ? "red-background" : keypad.length == 2 ? "green-background" : null}`} ><span>{keypad}</span></div>
+          </div>
+        </div>
+      )}
       <Keypad isKeypadVisible={showKeypad} handleKeypad={handleKeypad} />
     </>
   )

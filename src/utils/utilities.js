@@ -38,6 +38,6 @@ export function formatMileTime(seconds) {
   let minutes = ~~(seconds / 60)
   let extraSeconds = seconds % 60
   if (extraSeconds < 10) extraSeconds = "0" + extraSeconds
-  const formattedTime = minutes + " : " + extraSeconds
+  const formattedTime = minutes + ":" + extraSeconds
   return formattedTime
 }

@@ -16,6 +16,7 @@
         "lodash.isequal": "^4.5.0",
         "react": "^17.0.2",
         "react-bootstrap": "^2.0.0-rc.1",
+        "react-csv": "^2.2.2",
         "react-date-range": "^1.4.0",
         "react-dom": "^17.0.2",
         "react-icons": "^4.3.1",
@@ -30,7 +31,7 @@
         "sass": "^1.66.1"
     },
     "devDependencies": {
-      "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+        "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -59,6 +60,6 @@
         ]
     },
     "resolutions": {
-      "autoprefixer": "10.4.5"
-  }
+        "autoprefixer": "10.4.5"
+    }
 }

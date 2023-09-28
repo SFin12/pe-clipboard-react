@@ -8,6 +8,7 @@ import { useViewport } from "../utils/utilities"
 import DesktopStudentInfo from "./DesktopStudentInfo"
 import DropDownStudentInfo from "./DropDown/DropDownStudentInfo"
 import "./ListStudentInfo.scss"
+import { CSVLink } from "react-csv"
 
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
@@ -242,6 +243,9 @@ function ListStudentsInfo(props) {
                     Copy Grades
                   </Button>
                 </div>
+                  <div>
+                    <CSVLink data={studentInfoArr} filename={"grades.csv"} className="btn btn-secondary btn-sm mt-1">Download Grades</CSVLink>
+                  </div>
                 Student
               </th>
               <th className="narrow">Total Points</th>

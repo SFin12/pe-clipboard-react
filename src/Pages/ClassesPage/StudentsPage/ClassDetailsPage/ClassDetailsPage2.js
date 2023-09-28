@@ -6,7 +6,9 @@ import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
 import "../StudentPage.scss"
 import EditStudentDetails from "./EditStudentDetails"
 import TimedMileDetails from "./TimedMileDetails"
-import { formatMileTime } from "../../../../utils/utilities"
+import { formatMileTime, useViewport } from "../../../../utils/utilities"
+import { Button } from "react-bootstrap"
+import { CSVLink } from "react-csv"
 
 
 const mapStateToProps = (state) => ({
@@ -29,6 +31,7 @@ function ClassDetailsPage(props) {
   const [studentDetailInputs, setStudentDetailInputs] = useState([])
   const studentDetailsRef = useRef([])
   const [detailType, setDetailType] = useState("number")
+  const { screenWidth } = useViewport()
   const navigate = useNavigate()
    
 
@@ -79,11 +82,67 @@ function ClassDetailsPage(props) {
     }
   }
 
+  function handleCopy(e) {
+    navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
+      if (result.state === "granted" || result.state === "prompt") {
+        /* write to the clipboard now */
+        async function writeToClipboard() {
+          try {
+            const grades = JSON.stringify(organizeStundenDetails(studentDetailInputs))
+            await navigator.clipboard.writeText(grades)
+          } catch (error) {
+            alert(error)
+          }
+        }
+        writeToClipboard()
+      } else {
+        console.log("not permitted")
+      }
+    })
+  }
+
+  function organizeStundenDetails() {
+    const organizedStudentDetails = studentDetailInputs.map((s) => {
+      const student = {}
+      student["name"] = s.name
+      student["number"] = s.number
+      student["group"] = s.group
+      student["email"] = s.email
+      student["phone"] = s.phone
+      student["pacer"] = s.pacer
+      student["mileRun"] = s.mileRun
+      student["laps"] = s.laps
+      student["mileResults"] = s.mileResults
+      student["pushUps"] = s.pushUps
+      student["curlUps"] = s.curlUps
+      student["trunkLift"] = s.trunkLift
+      student["shoulderLeft"] = s.shoulderLeft
+      student["shoulderRight"] = s.shoulderRight
+      student["sitReachLeft"] = s.sitReachLeft
+      student["sitReachRight"] = s.sitReachRight
+      student["height"] = s.height
+      student["weight"] = s.weight
+      student["notes"] = s.notes
+      return student
+    })
+    return organizedStudentDetails
+  }
 
 
   return (
-    <section className="mt-5 pt-5">
-      <div className="d-flex justify-content-center p-2">
+    <section className="mt-5 pt-5 relative w-full">
+       { screenWidth > 750 && detailType !== "mileRun" && <div className="position-absolute w-100 d-flex justify-content-between"><div className="left-3">
+       
+                    </div>
+                    <div className="right-3">
+                   
+                      </div>
+                      </div>
+      }
+      <div className={`d-flex ${screenWidth > 750 ? "justify-content-between" : "justify-content-center"} p-2`}>
+      { screenWidth > 750 &&<Button size="sm" variant="secondary" onClick={handleCopy}>
+                      Copy Info
+                    </Button>}
       <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
         <option value="number">Student Numbers</option>
         <option value="group">Student Group</option>
@@ -104,6 +163,8 @@ function ClassDetailsPage(props) {
         <option value="weight">Weight</option>
         <option value="notes">Notes</option>
       </select>
+      { screenWidth > 750 && <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"} className="btn btn-secondary btn-sm">
+                      Download as CSV</CSVLink>}
       </div>
       {detailType === "mileRun" ? 
         <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} />

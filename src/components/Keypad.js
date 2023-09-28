@@ -19,9 +19,9 @@ export default function Keypad({ isKeypadVisible, handleKeypad }) {
           <button className='keypad-button' value={9}>9</button>
         </div>
         <div className="keypad-row">
-          <button className="keypad-button enter-btn" value={"enter"}>Enter</button>
-          <button className='keypad-button' value={0}>0</button>
           <button value={"backspace"} className='keypad-button backspace'>{'<<'}</button>
+          <button className='keypad-button' value={0}>0</button>
+          <button className="keypad-button enter-btn" value={"enter"}>Enter</button>
         </div>
       </div>
   )

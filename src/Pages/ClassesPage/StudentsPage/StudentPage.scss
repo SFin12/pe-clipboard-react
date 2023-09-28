@@ -51,7 +51,6 @@ input[type="range"] {
   background-color: #256400;
 }
 
-
 .student-info-form {
   max-width: -webkit-fill-available;
 }
@@ -152,8 +151,8 @@ input[type="range"] {
   color: black;
   font-weight: bold;
   width: 40%;
-  border-radius: .25rem;
-  padding: .25rem
+  border-radius: 0.25rem;
+  padding: 0.25rem;
 }
 
 //absent
@@ -192,6 +191,38 @@ input[type="range"] {
     height: 3px;
     background-color: white;
   }
+}
+
+.mile-num-name {
+  display: flex;
+  max-width: 70%;
+  flex-wrap: nowrap;
+  .overflow-elipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.mile-run-num-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  height: 5rem;
+  background-color: yellow;
+  color: black;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+}
+
+.green-background {
+  background-color: rgb(50, 255, 50);
+}
+
+.red-background {
+  background-color: rgb(255, 62, 45);
 }
 
 @media (min-width: 736px) {
