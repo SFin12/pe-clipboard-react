@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import "../StudentPage.scss"
-import { formatMileTime } from "../../../../utils/utilities"
+import { formatMileTime, organizeStundenDetails } from "../../../../utils/utilities"
 import Keypad from "../../../../components/Keypad"
+import { CSVLink } from "react-csv"
 
 export default function TimedMileDetails({ studentDetailInputs, handleChange }) {
   const [seconds, setSeconds] = useState(0)
@@ -72,21 +73,15 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
     setKeypad((prev) => prev + e.target.value)
   }
 
-
   const stampCurrentTime = (e) => {
     const name = e.currentTarget.getAttribute("name")
     const objIndex = studentState.findIndex((obj) => obj.name === name)
     setShowKeypad(false)
     setStudentState((prev) => {
       const newState = [...prev]
-      if (newState[objIndex]["laps"]) {
-        newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["laps"] + 1 }
-      } else {
-        newState[objIndex] = { ...newState[objIndex], laps: newState[objIndex]["laps"] + 1 }
-      }
+      newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["laps"] + 1 }
       return newState
     })
-   
   }
 
   return (
@@ -126,13 +121,18 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
           </div>
         )
       })}
-      <button className="bg-secondary" onClick={() => setShowAll((prev) => !prev)}>
-        {showAll ? "Hide Finished?" : "Show All?"}
-      </button>
+      <div className="d-flex justify-content-between m-1">
+        <button className="btn btn-secondary w-full" onClick={() => setShowAll((prev) => !prev)}>
+          {showAll ? "Hide Finished?" : "Show All?"}
+        </button>
+        <CSVLink className="btn btn-secondary " data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"}>Download</CSVLink>
+      </div>
       {showKeypad && keypad && (
         <div className="w-full fixed-top h-100">
           <div className="d-flex w-full h-100 justify-content-center align-items-center">
-            <div className={`mile-run-num-popup ${keypad.length == 3 ? "red-background" : keypad.length == 2 ? "green-background" : null}`} ><span>{keypad}</span></div>
+            <div className={`mile-run-num-popup ${keypad.length == 3 ? "red-background" : keypad.length == 2 ? "green-background" : null}`}>
+              <span>{keypad}</span>
+            </div>
           </div>
         </div>
       )}

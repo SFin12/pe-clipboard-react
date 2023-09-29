@@ -21,7 +21,7 @@ if (ref(db, "/users/" + userId)) {
       console.log("Writing user data")
       return update(userRef, userObject)
         .then((res) => {
-          console.log(res)
+       
           return "success"
         })
         .catch((err) => {

@@ -365,13 +365,10 @@ function ListStudents(props) {
         }
       }
     })
-    console.log(buttonsClicked)
+
     let pointValues = buttonsClicked.length > 0 ? buttonsClicked.reduce((total, current) => total + current) : 0
     let pointsChanged = studentPoints[studentId + "changed"] //add to currentPoints to subtract from customized points rather than base value set from daily points.
     let currentPoints = props.settings.dailyPoints + pointValues + pointsChanged
-    console.log("currentPoints", currentPoints)
-    console.log("pointsChanged", pointsChanged)
-    console.log("pointsValues", pointValues)
     if (currentPoints < 0) {
       currentPoints = 0
     }
@@ -379,9 +376,6 @@ function ListStudents(props) {
       ...prevState,
       [studentId]: currentPoints,
     }))
-    console.log("currentPoints after", currentPoints)
-    console.log("pointsChanged after", pointsChanged)
-    console.log("pointsValues after", pointValues)
   }
 
   function handleDelete(e) {

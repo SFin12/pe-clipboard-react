@@ -6,9 +6,9 @@ import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
 import "../StudentPage.scss"
 import EditStudentDetails from "./EditStudentDetails"
 import TimedMileDetails from "./TimedMileDetails"
-import { formatMileTime, useViewport } from "../../../../utils/utilities"
+import { formatMileTime, organizeStundenDetails, splitMinutesAndSeconds, useViewport } from "../../../../utils/utilities"
 import { Button } from "react-bootstrap"
-import { CSVLink } from "react-csv"
+import { CSVDownload, CSVLink } from "react-csv"
 
 
 const mapStateToProps = (state) => ({
@@ -33,10 +33,13 @@ function ClassDetailsPage(props) {
   const [detailType, setDetailType] = useState("number")
   const { screenWidth } = useViewport()
   const navigate = useNavigate()
+  const currentGb = props.cleanGradebook.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
+  const currentClass = props.class.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
    
 
   useEffect(() => {
-    const studentDetails = props.studentList[props.cleanGradebook + "-" + props.class]
+
+    const studentDetails = props.studentList[ currentGb + "-" + currentClass]
     setStudentDetailInputs(studentDetails)
   }, [props.studentList, props.cleanGradebook, props.class])
 
@@ -57,12 +60,14 @@ function ClassDetailsPage(props) {
 
   function handleSave(e) {
     e.preventDefault()
-    const gradebookClass = props.cleanGradebook + "-" + props.class
+    const gradebookClass = currentGb + "-" + currentClass
     const updatedStudentDetails = studentDetailInputs.map((s) => ({ ...s, mileResults: formatMileTime(s.mileRun)}))
     updateStudentDetails(props.id, gradebookClass, updatedStudentDetails)
     if(detailType !== "mileRun") {
-    navigate(-1)
+      navigate(-1)
+      return true
     }
+    return true
   }
 
   function handleEnter(e) {
@@ -101,34 +106,6 @@ function ClassDetailsPage(props) {
     })
   }
 
-  function organizeStundenDetails() {
-    const organizedStudentDetails = studentDetailInputs.map((s) => {
-      const student = {}
-      student["name"] = s.name
-      student["number"] = s.number
-      student["group"] = s.group
-      student["email"] = s.email
-      student["phone"] = s.phone
-      student["pacer"] = s.pacer
-      student["mileRun"] = s.mileRun
-      student["laps"] = s.laps
-      student["mileResults"] = s.mileResults
-      student["pushUps"] = s.pushUps
-      student["curlUps"] = s.curlUps
-      student["trunkLift"] = s.trunkLift
-      student["shoulderLeft"] = s.shoulderLeft
-      student["shoulderRight"] = s.shoulderRight
-      student["sitReachLeft"] = s.sitReachLeft
-      student["sitReachRight"] = s.sitReachRight
-      student["height"] = s.height
-      student["weight"] = s.weight
-      student["notes"] = s.notes
-      return student
-    })
-    return organizedStudentDetails
-  }
-
-
   return (
     <section className="mt-5 pt-5 relative w-full">
        { screenWidth > 750 && detailType !== "mileRun" && <div className="position-absolute w-100 d-flex justify-content-between"><div className="left-3">
@@ -163,17 +140,15 @@ function ClassDetailsPage(props) {
         <option value="weight">Weight</option>
         <option value="notes">Notes</option>
       </select>
-      { screenWidth > 750 && <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"} className="btn btn-secondary btn-sm">
-                      Download as CSV</CSVLink>}
+      { screenWidth > 725 && <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"} className="btn btn-secondary btn-sm">
+                      Download</CSVLink>}
       </div>
       {detailType === "mileRun" ? 
         <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} />
         :
        detailType ? <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} /> : null }
       <div className="d-flex justify-content-center p-4">
-        <button className="submit-button" onClick={handleSave}>
-          Save
-        </button>
+          <button className="submit-button w-100" onClick={handleSave}>Save</button>
       </div>
     </section>
   )

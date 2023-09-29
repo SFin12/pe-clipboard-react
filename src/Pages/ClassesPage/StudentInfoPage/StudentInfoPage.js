@@ -13,7 +13,6 @@ const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
   gradebook: state.gradebook,
   class: state.class,
-  studentList: state.studentList,
   dailyPoints: state.settings.dailyPoints,
   studentInfo: state.studentInfo,
 })

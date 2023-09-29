@@ -41,3 +41,38 @@ export function formatMileTime(seconds) {
   const formattedTime = minutes + ":" + extraSeconds
   return formattedTime
 }
+
+export function splitMinutesAndSeconds(time) {
+  const minutes = ~~(time / 60)
+  const seconds = time % 60
+  return { minutes, seconds }
+}
+
+export function organizeStundenDetails(studentDetailInputs) {
+  const organizedStudentDetails = studentDetailInputs.map((s) => {
+    const student = {}
+    student["number"] = s.number
+    student["name"] = s.name
+    student["minutes"] = splitMinutesAndSeconds(s.mileRun).minutes
+    student["seconds"] = splitMinutesAndSeconds(s.mileRun).seconds
+    student["totalSeconds"] = s.mileRun
+    student["mileResults"] = s.mileResults
+    student["laps"] = s.laps
+    student["pacer"] = s.pacer
+    student["group"] = s.group
+    student["email"] = s.email
+    student["phone"] = s.phone
+    student["pushUps"] = s.pushUps
+    student["curlUps"] = s.curlUps
+    student["trunkLift"] = s.trunkLift
+    student["shoulderLeft"] = s.shoulderLeft
+    student["shoulderRight"] = s.shoulderRight
+    student["sitReachLeft"] = s.sitReachLeft
+    student["sitReachRight"] = s.sitReachRight
+    student["height"] = s.height
+    student["weight"] = s.weight
+    student["notes"] = s.notes
+    return student
+  })
+  return organizedStudentDetails
+}
