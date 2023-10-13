@@ -64,7 +64,6 @@ function ClassDetailsPage(props) {
     const updatedStudentDetails = studentDetailInputs.map((s) => ({ ...s, mileResults: formatMileTime(s.mileRun)}))
     updateStudentDetails(props.id, gradebookClass, updatedStudentDetails)
     if(detailType !== "mileRun") {
-      navigate(-1)
       return true
     }
     return true

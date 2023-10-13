@@ -92,7 +92,6 @@ class App extends React.Component {
       if (this.props.id) {
         writeUserData(this.props.id, userObject)
           .then((response) => { 
-
               if (response === "success") {
                 if (!["Classes", "Info"].some((page) => page === this.props.currentPage)) {
                   this.setState({ showSuccessModal: true })
