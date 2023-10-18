@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { updateStudentDetails } from "../../../../Lib/LinkReduxToDb"
-import { updateDbResponse, updateStudentList } from "../../../../Redux/actions"
+import { updateDbResponse } from "../../../../Redux/actions"
 import "../StudentPage.scss"
 import EditStudentDetails from "./EditStudentDetails"
 import TimedMileDetails from "./TimedMileDetails"
-import { formatMileTime, organizeStundenDetails, splitMinutesAndSeconds, useViewport } from "../../../../utils/utilities"
+import { formatMileTime, organizeStundenDetails, useViewport } from "../../../../utils/utilities"
 import { Button } from "react-bootstrap"
-import { CSVDownload, CSVLink } from "react-csv"
-
+import { CSVLink } from "react-csv"
 
 const mapStateToProps = (state) => ({
   id: state.id,
@@ -23,7 +21,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  updateStudentList,
   updateDbResponse,
 }
 
@@ -32,14 +29,11 @@ function ClassDetailsPage(props) {
   const studentDetailsRef = useRef([])
   const [detailType, setDetailType] = useState("number")
   const { screenWidth } = useViewport()
-  const navigate = useNavigate()
   const currentGb = props.cleanGradebook.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
   const currentClass = props.class.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ")
-   
 
   useEffect(() => {
-
-    const studentDetails = props.studentList[ currentGb + "-" + currentClass]
+    const studentDetails = props.studentList[currentGb + "-" + currentClass]
     setStudentDetailInputs(studentDetails)
   }, [props.studentList, props.cleanGradebook, props.class])
 
@@ -54,19 +48,24 @@ function ClassDetailsPage(props) {
     })
   }
 
-  function handleMileRunChange(newStudentDetailInputs){
+  function handleMileRunChange(newStudentDetailInputs) {
     setStudentDetailInputs(newStudentDetailInputs)
   }
 
   function handleSave(e) {
     e.preventDefault()
     const gradebookClass = currentGb + "-" + currentClass
-    const updatedStudentDetails = studentDetailInputs.map((s) => ({ ...s, mileResults: formatMileTime(s.mileRun)}))
+    const updatedStudentDetails = studentDetailInputs.map((s) => {
+      if (detailType === "mileRun") {
+        // const currentLaps = s.currentLaps
+        // delete s.currentLaps
+        return { ...s, mileResults: formatMileTime(s.mileRun), laps: Number(s.currentLaps) }
+      } else {
+        return s
+      }
+    })
     updateStudentDetails(props.id, gradebookClass, updatedStudentDetails)
-    if(detailType !== "mileRun") {
-      return true
-    }
-    return true
+
   }
 
   function handleEnter(e) {
@@ -107,47 +106,53 @@ function ClassDetailsPage(props) {
 
   return (
     <section className="mt-5 pt-5 relative w-full">
-       { screenWidth > 750 && detailType !== "mileRun" && <div className="position-absolute w-100 d-flex justify-content-between"><div className="left-3">
-       
-                    </div>
-                    <div className="right-3">
-                   
-                      </div>
-                      </div>
-      }
+      {screenWidth > 750 && detailType !== "mileRun" && (
+        <div className="position-absolute w-100 d-flex justify-content-between">
+          <div className="left-3"></div>
+          <div className="right-3"></div>
+        </div>
+      )}
       <div className={`d-flex ${screenWidth > 750 ? "justify-content-between" : "justify-content-center"} p-2`}>
-      { screenWidth > 750 &&<Button size="sm" variant="secondary" onClick={handleCopy}>
-                      Copy Info
-                    </Button>}
-      <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
-        <option value="number">Student Numbers</option>
-        <option value="group">Student Group</option>
-        <option value="email">Student Email</option>
-        <option value="phone">Student Phone</option>
-        <option value="pacer">Pacer</option>
-        <option value="mileRun">Mile Run</option>
-        <option value="laps">Laps</option>
-        <option value="mileResults">Mile Results</option>
-        <option value="pushUps">Push Ups</option>
-        <option value="curlUps">Curl Ups</option>
-        <option value="trunkLift">Trunk Lift</option>
-        <option value="shoulderLeft">Shoulder Left</option>
-        <option value="shoulderRight">Shoulder Right</option>
-        <option value="sitReachLeft">Sit Reach Left</option>
-        <option value="sitReachRight">Sit Reach Right</option>
-        <option value="height">Height</option>
-        <option value="weight">Weight</option>
-        <option value="notes">Notes</option>
-      </select>
-      { screenWidth > 725 && <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"} className="btn btn-secondary btn-sm">
-                      Download</CSVLink>}
+        {screenWidth > 750 && (
+          <Button size="sm" variant="secondary" onClick={handleCopy}>
+            Copy Info
+          </Button>
+        )}
+        <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
+          <option value="number">Student Numbers</option>
+          <option value="group">Student Group</option>
+          <option value="email">Student Email</option>
+          <option value="phone">Student Phone</option>
+          <option value="pacer">Pacer</option>
+          <option value="mileRun">Mile Run</option>
+          <option value="laps">Laps</option>
+          <option value="mileResults">Mile Results</option>
+          <option value="pushUps">Push Ups</option>
+          <option value="curlUps">Curl Ups</option>
+          <option value="trunkLift">Trunk Lift</option>
+          <option value="shoulderLeft">Shoulder Left</option>
+          <option value="shoulderRight">Shoulder Right</option>
+          <option value="sitReachLeft">Sit Reach Left</option>
+          <option value="sitReachRight">Sit Reach Right</option>
+          <option value="height">Height</option>
+          <option value="weight">Weight</option>
+          <option value="notes">Notes</option>
+        </select>
+        {screenWidth > 725 && (
+          <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
+            Download
+          </CSVLink>
+        )}
       </div>
-      {detailType === "mileRun" ? 
+      {detailType === "mileRun" ? (
         <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} />
-        :
-       detailType ? <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} /> : null }
+      ) : detailType ? (
+        <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} />
+      ) : null}
       <div className="d-flex justify-content-center p-4">
-          <button className="submit-button w-100" onClick={handleSave}>Save</button>
+        <button className="submit-button w-100" onClick={handleSave}>
+          Save
+        </button>
       </div>
     </section>
   )

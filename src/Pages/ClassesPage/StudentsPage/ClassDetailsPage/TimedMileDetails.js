@@ -7,7 +7,7 @@ import { CSVLink } from "react-csv"
 export default function TimedMileDetails({ studentDetailInputs, handleChange }) {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
-  const [studentState, setStudentState] = useState(studentDetailInputs.map((s) => ({ ...s, mileRun: 0, laps: 0 })) || [])
+  const [studentState, setStudentState] = useState(studentDetailInputs.map((s) => ({ ...s, mileRun: 0, currentLaps: 0 })) || [])
   const [keypad, setKeypad] = useState("")
   const [showKeypad, setShowKeypad] = useState(false)
   const [showAll, setShowAll] = useState(false)
@@ -56,10 +56,10 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
       if (objIndex !== -1) {
         setStudentState((prev) => {
           const newState = [...prev]
-          if (newState[objIndex]["laps"] < 4) {
-            newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["laps"] + 1 }
+          if (newState[objIndex]["currentLaps"] < 4) {
+            newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["currentLaps"] + 1 }
           } else {
-            newState[objIndex] = { ...newState[objIndex], laps: newState[objIndex]["laps"] + 1 }
+            newState[objIndex] = { ...newState[objIndex], laps: newState[objIndex]["currentLaps"] + 1 }
           }
           return newState
         })
@@ -79,7 +79,7 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
     setShowKeypad(false)
     setStudentState((prev) => {
       const newState = [...prev]
-      newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["laps"] + 1 }
+      newState[objIndex] = { ...newState[objIndex], mileRun: seconds, currentLaps: newState[objIndex]["currentLaps"] + 1 }
       return newState
     })
   }
@@ -99,9 +99,9 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         </button>
       </div>
       {studentState.map((s, i) => {
-        if (!showAll && s["laps"] > 3) return null
+        if (!showAll && s["currentLaps"] > 3) return null
         return (
-          <div className="d-flex w-100 student-details pl-2 py-1 mw-100 overflow-hidden">
+          <div className="d-flex w-100 student-details pl-2 py-1 mw-100 overflow-hidden" key={i + s.name}>
             <div className="d-flex flex-column align-items-end text-white w-100">
               <div className="d-flex my-1 p-1 justify-content-between w-100" onClick={stampCurrentTime} name={s.name}>
                 <div className="mile-num-name">
@@ -111,8 +111,8 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
                   </button>
                 </div>
                 <div className="">
-                  <span className="px-2 py-1 rounded-3" style={{ background: s.laps < 5 ? lapColor[s.laps] : lapColor[5], color: "black" }}>
-                    {s["laps"]}
+                  <span className="px-2 py-1 rounded-3" style={{ background: s.currentLaps < 5 ? lapColor[s.currentLaps] : lapColor[5], color: "black" }}>
+                    {s["currentLaps"]}
                   </span>
                   <span className="justify-content-between px-2 rounded-3">{formatMileTime(s["mileRun"])}</span>
                 </div>
@@ -125,7 +125,9 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         <button className="btn btn-secondary w-full" onClick={() => setShowAll((prev) => !prev)}>
           {showAll ? "Hide Finished?" : "Show All?"}
         </button>
-        <CSVLink className="btn btn-secondary " data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"}>Download</CSVLink>
+        <CSVLink className="btn btn-secondary " data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"}>
+          Download
+        </CSVLink>
       </div>
       {showKeypad && keypad && (
         <div className="w-full fixed-top h-100">
