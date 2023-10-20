@@ -15,7 +15,6 @@ const mapStateToProps = (state) => ({
   gradebook: state.gradebook,
   cleanGradebook: state.cleanGradebook,
   class: state.class,
-  classList: state.classList,
   student: state.student,
   studentList: state.studentList,
 })
@@ -145,7 +144,7 @@ function ClassDetailsPage(props) {
         )}
       </div>
       {detailType === "mileRun" ? (
-        <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} />
+        <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} currentClass={currentClass} />
       ) : detailType ? (
         <EditStudentDetails studentDetailInputs={studentDetailInputs} studentDetailsRef={studentDetailsRef} detailType={detailType} handleChange={handleStudentDetailChanges} handleEnter={handleEnter} />
       ) : null}

@@ -53,8 +53,13 @@ export function organizeStundenDetails(studentDetailInputs) {
     const student = {}
     student["number"] = s.number
     student["name"] = s.name
+    if (s.mileRun !== 0) {
     student["minutes"] = splitMinutesAndSeconds(s.mileRun).minutes
     student["seconds"] = splitMinutesAndSeconds(s.mileRun).seconds
+    } else {
+    student["minutes"] = s.mileResults.split(":")[0]
+    student["seconds"] = s.mileResults.split(":")[1]
+    }
     student["totalSeconds"] = s.mileRun
     student["mileResults"] = s.mileResults
     student["laps"] = s.laps

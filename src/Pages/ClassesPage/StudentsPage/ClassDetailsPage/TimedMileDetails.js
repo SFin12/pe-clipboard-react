@@ -4,7 +4,7 @@ import { formatMileTime, organizeStundenDetails } from "../../../../utils/utilit
 import Keypad from "../../../../components/Keypad"
 import { CSVLink } from "react-csv"
 
-export default function TimedMileDetails({ studentDetailInputs, handleChange }) {
+export default function TimedMileDetails({ studentDetailInputs, handleChange, currentClass }) {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [studentState, setStudentState] = useState(studentDetailInputs.map((s) => ({ ...s, mileRun: 0, currentLaps: 0 })) || [])
@@ -125,7 +125,7 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange }) 
         <button className="btn btn-secondary w-full" onClick={() => setShowAll((prev) => !prev)}>
           {showAll ? "Hide Finished?" : "Show All?"}
         </button>
-        <CSVLink className="btn btn-secondary " data={organizeStundenDetails(studentDetailInputs)} filename={"student-scores.csv"}>
+        <CSVLink className="btn btn-secondary " data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`}>
           Download
         </CSVLink>
       </div>
