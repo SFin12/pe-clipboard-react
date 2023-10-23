@@ -57,9 +57,9 @@ export default function TimedMileDetails({ studentDetailInputs, handleChange, cu
         setStudentState((prev) => {
           const newState = [...prev]
           if (newState[objIndex]["currentLaps"] < 4) {
-            newState[objIndex] = { ...newState[objIndex], mileRun: seconds, laps: newState[objIndex]["currentLaps"] + 1 }
+            newState[objIndex] = { ...newState[objIndex], mileRun: seconds, currentLaps: newState[objIndex]["currentLaps"] + 1 }
           } else {
-            newState[objIndex] = { ...newState[objIndex], laps: newState[objIndex]["currentLaps"] + 1 }
+            newState[objIndex] = { ...newState[objIndex], currentLaps: newState[objIndex]["currentLaps"] + 1 }
           }
           return newState
         })
