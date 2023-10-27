@@ -4,6 +4,7 @@ import "../StudentPage.scss"
 export default function EditStudentDetails({studentDetailInputs, studentDetailsRef, detailType, handleChange, handleEnter}) {
   const inputModeType = {
     number: "numeric",
+    gender:"text",
     group: "text",
     email: "email",
     phone: "tel",

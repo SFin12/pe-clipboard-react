@@ -108,7 +108,7 @@ export const updateStudentList = (arrayStudentNames) => {
         })
         .map((n) => {
           n.replace(" ", ", ")
-          return {name: n, number:"", group:"", email:"", phone:"", pacer: "", mileRun:"", pushUps:"", curlUps: "", trunkLift:"", shoulderLeft: "", shoulderRight:"", sitReachLeft: "", sitReachRight:"", height: "", weight:"", notes: ""}
+          return {gender:"", name: n, number:"", group:"", email:"", phone:"", pacer: "", mileRun:"", pushUps:"", curlUps: "", trunkLift:"", shoulderLeft: "", shoulderRight:"", sitReachLeft: "", sitReachRight:"", height: "", weight:"", notes: ""}
         });
    
     return {

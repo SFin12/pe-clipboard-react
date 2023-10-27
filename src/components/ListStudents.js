@@ -379,7 +379,12 @@ function ListStudents(props) {
   }
 
   function handleDelete(e) {
-    setStudentToDelete(e.currentTarget.id.split("-")[0])
+    const targetArray = e.currentTarget.id.split("-")
+    let studentToDelete = targetArray[0]
+    if(targetArray.length > 2) {
+      studentToDelete = targetArray[0] + "-" + targetArray[1]
+    }
+    setStudentToDelete(studentToDelete)
     setShowModal(true)
   }
 

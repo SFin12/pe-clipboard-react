@@ -119,6 +119,7 @@ function ClassDetailsPage(props) {
         )}
         <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
           <option value="number">Student Numbers</option>
+          <option value="gender">Student Gender</option>
           <option value="group">Student Group</option>
           <option value="email">Student Email</option>
           <option value="phone">Student Phone</option>
