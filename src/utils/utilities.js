@@ -54,10 +54,14 @@ export function organizeStundenDetails(studentDetailInputs) {
     student["number"] = s.number
     student["gender"] = s.gender || ""
     student["name"] = s.name
-    student["mileResults"] = s.mileResults
+    student["mileResults"] = s.mileResults || ""
     if (s.mileRun !== 0) {
     student["minutes"] = splitMinutesAndSeconds(s.mileRun).minutes
     student["seconds"] = splitMinutesAndSeconds(s.mileRun).seconds
+    }
+    else if (!s.mileResults) {
+      student["minutes"] = ""
+      student["seconds"] = ""
     } else {
     student["minutes"] = s.mileResults.split(":")[0]
     student["seconds"] = s.mileResults.split(":")[1]
