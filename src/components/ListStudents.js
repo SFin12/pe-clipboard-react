@@ -412,7 +412,7 @@ function ListStudents(props) {
         ) : null}
         <div className={props.toggleDelete ? "student delete" : "student"} style={{position:"relative"}} name="student-info" id={student.name + "-info"} onClick={props.toggleDelete ? handleDelete : null}>
           {student.email && screenWidth > 800 && (
-            <a className="student-email" style={{ color: "white", position:"absolute", left:-80 }} href={`mailto:${student.email}`}>
+            <a className="student-email" style={{ color: "white", position:"absolute", left:-80 }} href={`mailto:${student.email}?subject=Physical Education Class`}>
               <CiMail size={40} />
             </a>
           )}
