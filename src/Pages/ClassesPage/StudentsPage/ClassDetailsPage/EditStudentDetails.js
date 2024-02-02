@@ -30,7 +30,9 @@ export default function EditStudentDetails({studentDetailInputs, studentDetailsR
         return (
           <div className="d-flex w-100 student-details pl-2 py-1 mw-100 overflow-hidden" key={i + s.name}>
           <div className="d-flex flex-column w-100" >
-            <div className="">{s.name}</div>
+            <div className="">
+              {s.name}
+            </div>
             </div>
             <div className="d-flex flex-column align-items-end">
               <input

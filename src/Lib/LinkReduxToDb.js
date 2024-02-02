@@ -7,18 +7,9 @@ export async function writeUserData(userId, userObject) {
   }
 if (ref(db, "/users/" + userId)) {
     const userRef = ref(db, "/users/" + userId)
-    // const unsubscribe = onValue(userRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(data)
-    // }, (error) => {
-    //   console.error("Error: ", error);
-    // })
-    // unsubscribe()
-    // const studentListRef = ref(db, "/users/" + userId + "/studentList")
-    // const studentInfoRef = ref(db, "/users/" + userId + "/studentInfo")
 
     if (userObject) {
-      console.log("Writing user data")
+      
       return update(userRef, userObject)
         .then((res) => {
        
@@ -27,7 +18,7 @@ if (ref(db, "/users/" + userId)) {
         .catch((err) => {
           throw new Error(err)
         }).finally(() => {
-          console.log("Finished writing user data")
+          console.log("finally")
         })
     } else {
       console.error("No userObject")
@@ -100,7 +91,7 @@ export async function updateDbCurrentClass(userId, currentClass) {
 
 export async function getUserData(userId) {
   if (!userId) {
-    return console.log("No user Id")
+    return 
   }
   const userRef = ref(db, "/users/" + userId)
   const snapshot = await get(userRef)

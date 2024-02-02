@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { updatePage, updateStudentList, deleteStudent } from "../Redux/actions"
+import { CiMail } from "react-icons/ci"
 import Confirm from "./ConfirmModal"
+import { useViewport } from "../utils/utilities"
 
 const mapStateToProps = (state) => ({
   currentPage: state.currentPage,
@@ -28,6 +30,7 @@ function ListStudents(props) {
   const [note, setNote] = useState({})
   const [studentToDelete, setStudentToDelete] = useState("")
   const [showModal, setShowModal] = useState(false)
+  const { screenWidth } = useViewport()
 
   const uncleanCurrentGb = props.gradebook
   const uncleanCurrentClass = props.class
@@ -381,7 +384,7 @@ function ListStudents(props) {
   function handleDelete(e) {
     const targetArray = e.currentTarget.id.split("-")
     let studentToDelete = targetArray[0]
-    if(targetArray.length > 2) {
+    if (targetArray.length > 2) {
       studentToDelete = targetArray[0] + "-" + targetArray[1]
     }
     setStudentToDelete(studentToDelete)
@@ -407,7 +410,13 @@ function ListStudents(props) {
             <hr></hr>
           </div>
         ) : null}
-        <div className={props.toggleDelete ? "student delete" : "student"} name="student-info" id={student.name + "-info"} onClick={props.toggleDelete ? handleDelete : null}>
+        <div className={props.toggleDelete ? "student delete" : "student"} style={{position:"relative"}} name="student-info" id={student.name + "-info"} onClick={props.toggleDelete ? handleDelete : null}>
+          {student.email && screenWidth > 800 && (
+            <a className="student-email" style={{ color: "white", position:"absolute", left:-80 }} href={`mailto:${student.email}`}>
+              <CiMail size={40} />
+            </a>
+          )}
+
           <div className="flex-space-between">
             {/* Student Button with their name */}
             <input className="tl-round student-button button" type="button" key={student.name} id={i + "-" + student.name} name="name" value={student.name} onClick={props.toggleDelete ? undefined : handleDecrement} />

@@ -165,7 +165,7 @@ export const updateAttendance = (attendanceObj) => {
 };
 
 export const updateSettings = (settingsObj) => {
-    console.log("updatingSettings", settingsObj);
+    
     return {
         type: ActionTypes.UPDATE_SETTINGS,
         payload: settingsObj,
