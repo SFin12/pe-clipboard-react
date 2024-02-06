@@ -138,7 +138,7 @@ function ClassDetailsPage(props) {
           <option value="weight">Weight</option>
           <option value="notes">Notes</option>
         </select>
-        {screenWidth > 700 && (
+        {screenWidth > 600 && (
           <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
             Download
           </CSVLink>
