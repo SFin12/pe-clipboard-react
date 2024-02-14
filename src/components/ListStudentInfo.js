@@ -115,13 +115,18 @@ function ListStudentsInfo(props) {
             } else if (note === note3) {
               n3Count++
             } else {
+              // split custom notes by comma and strip whitespace, then add to customNotesObj
               // count how many times each specific custom note was used.
-              const n = note.toUpperCase()
+
+              const customNotes = note.split(",").map((note) => note.trim())
+              customNotes.forEach((note) => {
+                const n = note.toUpperCase()
               if (customNotesObj[n]) {
                 customNotesObj[n] += 1
               } else {
                 customNotesObj[n] = 1
               }
+              })
             }
           })
         }
