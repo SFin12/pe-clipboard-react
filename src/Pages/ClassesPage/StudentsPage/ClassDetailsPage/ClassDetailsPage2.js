@@ -105,18 +105,20 @@ function ClassDetailsPage(props) {
   return (
     <section className="mt-5 pt-5 relative w-full">
       {screenWidth > 750 && detailType !== "mileRun" && (
-        <div className="position-absolute w-100 d-flex justify-content-between">
+        <div className={`position-absolute w-100 d-flex justify-content-between}`}>
           <div className="left-3"></div>
           <div className="right-3"></div>
         </div>
       )}
-      <div className={`d-flex justify-content-between p-2`}>
+      <div className={`d-flex ${detailType !== "mileRun" ? "justify-content-between" : "justify-content-center"} p-2`}>
         {screenWidth > 750 && (
           <Button size="sm" variant="secondary" onClick={handleCopy}>
-            Copy Info
+            Copy
           </Button>
         )}
-        <div className="invisible">Copy Info</div>
+        {screenWidth <= 750 && detailType !== "mileRun" && (
+        <div className="invisible px-2">Copy</div>
+          )}
         <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
           <option value="number">Student Numbers</option>
           <option value="gender">Student Gender</option>
@@ -139,9 +141,11 @@ function ClassDetailsPage(props) {
           <option value="notes">Notes</option>
         </select>
 
-        <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
-          Download
-        </CSVLink>
+       { detailType !== "mileRun" && <div className="px-2">
+          <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
+            Download
+          </CSVLink>
+        </div>}
       </div>
       {detailType === "mileRun" ? (
         <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} currentClass={currentClass} />
