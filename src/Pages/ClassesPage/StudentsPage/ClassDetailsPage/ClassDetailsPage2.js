@@ -64,7 +64,6 @@ function ClassDetailsPage(props) {
       }
     })
     updateStudentDetails(props.id, gradebookClass, updatedStudentDetails)
-
   }
 
   function handleEnter(e) {
@@ -111,12 +110,13 @@ function ClassDetailsPage(props) {
           <div className="right-3"></div>
         </div>
       )}
-      <div className={`d-flex ${screenWidth > 750 ? "justify-content-between" : "justify-content-center"} p-2`}>
+      <div className={`d-flex justify-content-between p-2`}>
         {screenWidth > 750 && (
           <Button size="sm" variant="secondary" onClick={handleCopy}>
             Copy Info
           </Button>
         )}
+        <div className="invisible">Copy Info</div>
         <select onChange={(e) => setDetailType(e.currentTarget.value)} defaultValue={""}>
           <option value="number">Student Numbers</option>
           <option value="gender">Student Gender</option>
@@ -138,11 +138,10 @@ function ClassDetailsPage(props) {
           <option value="weight">Weight</option>
           <option value="notes">Notes</option>
         </select>
-        {screenWidth > 600 && (
-          <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
-            Download
-          </CSVLink>
-        )}
+
+        <CSVLink data={organizeStundenDetails(studentDetailInputs)} filename={`cc-scores-${currentClass}-${new Date().toLocaleDateString()}.csv`} className="btn btn-secondary btn-sm">
+          Download
+        </CSVLink>
       </div>
       {detailType === "mileRun" ? (
         <TimedMileDetails studentDetailInputs={studentDetailInputs} handleChange={handleMileRunChange} currentClass={currentClass} />
